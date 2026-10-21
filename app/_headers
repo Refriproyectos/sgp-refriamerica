@@ -1,0 +1,20 @@
+# Netlify: cabeceras de seguridad y de caché
+
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(self), geolocation=(self), microphone=(), payment=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://lwhczkzhsnqawettzzfw.supabase.co; connect-src 'self' https://lwhczkzhsnqawettzzfw.supabase.co wss://lwhczkzhsnqawettzzfw.supabase.co; font-src 'self'; manifest-src 'self'; worker-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+
+# La página y el Service Worker no se guardan en caché del navegador:
+# así cada despliegue llega a todos los dispositivos.
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/sw.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Cache-Control: no-cache

@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="es-VE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SGP · Proyectos · Grupo RefriAmerica</title>
+<meta name="description" content="Sistema de Gestión de Proyectos del Departamento de Proyectos de Grupo RefriAmerica">
+<meta name="theme-color" content="#00205C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Proyectos">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<style>
+/* -----------------------------------------------------------------------------
+   Tipografía: Source Sans 3 (sustituto libre de Myriad Pro, manual de marca 2016).
+   Copiada en vendor/ para que funcione sin conexión.
+   ----------------------------------------------------------------------------- */
+@font-face { font-family: 'Source Sans 3'; font-weight: 400; font-display: swap; src: url(vendor/source-sans-3-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Source Sans 3'; font-weight: 600; font-display: swap; src: url(vendor/source-sans-3-latin-600-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Source Sans 3'; font-weight: 700; font-display: swap; src: url(vendor/source-sans-3-latin-700-normal.woff2) format('woff2'); }
+
+/* -----------------------------------------------------------------------------
+   Colores. Marca según «RefriAmérica · Identidad Corporativa» (MEGAIDEA, 2016):
+     281 C #00205C  ·  286 C #0033A1  ·  3005 C #0075C9  ·  361 C #3DAF2C  ·  282 C #011E41
+   3005 C y 361 C NO alcanzan 4,5:1 sobre blanco: son de marca, no de texto.
+   Los colores de estado (ok, alerta, error) son decisión de interfaz: el manual no los norma.
+   ----------------------------------------------------------------------------- */
+:root {
+  --p281: #00205C; --p286: #0033A1; --p3005: #0075C9; --p361: #3DAF2C; --p282: #011E41;
+  --fondo: #F3F5F9; --tarjeta: #FFFFFF; --linea: #D5DCE6; --linea2: #B8C2D1;
+  --texto: #0E1B33; --texto2: #4A5468; --marca: var(--p281); --enlace: var(--p286);
+  --primario: var(--p281); --primario-texto: #FFFFFF; --primario-hover: var(--p286);
+  --suave: #E6EBF3;
+  --ok: #1B6E35; --ok-fondo: #E3F3E6; --alerta: #7A4F00; --alerta-fondo: #FFF2D2;
+  --error: #A8231A; --error-fondo: #FCE8E6; --info-fondo: #E5EEFA;
+  --foco: #0075C9;
+  --radio: 12px; --sombra: 0 1px 2px rgba(14,27,51,.06), 0 2px 8px rgba(14,27,51,.06);
+  --barra-alto: 60px; --tabs-alto: 64px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #011E41; --tarjeta: #0A2B55; --linea: #22436E; --linea2: #335A8A;
+    --texto: #EEF3FA; --texto2: #A9BAD3; --marca: #EEF3FA; --enlace: #7CC4F2;
+    --primario: #00A1E0; --primario-texto: #011E41; --primario-hover: #3AB8EA;
+    --suave: #0F3463;
+    --ok: #7FD69A; --ok-fondo: #0F3A28; --alerta: #FFD27A; --alerta-fondo: #3D2E07;
+    --error: #FF9C93; --error-fondo: #4A1712; --info-fondo: #0F3463;
+    --foco: #00A1E0;
+    --sombra: none;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 16px; line-height: 1.45; color: var(--texto); background: var(--fondo);
+  -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+}
+h1, h2, h3 { margin: 0 0 .5rem; line-height: 1.2; color: var(--marca); }
+h1 { font-size: 1.5rem; font-weight: 700; } h2 { font-size: 1.2rem; font-weight: 700; } h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0 0 .75rem; }
+a { color: var(--enlace); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+[hidden] { display: none !important; }
+.oculto-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Logotipo: siempre como imagen, con su proporción original (height fija, width auto).
+   En modo oscuro va sobre una placa blanca para no alterar sus colores. */
+.logo { display: block; height: auto; max-width: 100%; }
+.placa-logo { background: #FFFFFF; border-radius: 10px; padding: 6px 10px; display: inline-flex; }
+
+/* Controles */
+.campo { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.campo label { font-weight: 600; font-size: .95rem; }
+.campo .ayuda { font-size: .85rem; color: var(--texto2); }
+input, select, textarea {
+  min-height: 48px; padding: 10px 12px; border: 1.5px solid var(--linea2); border-radius: 10px;
+  background: var(--tarjeta); width: 100%;
+}
+textarea { min-height: 96px; resize: vertical; }
+input:focus, select:focus, textarea:focus { border-color: var(--foco); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--foco) 30%, transparent); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 18px; border-radius: 10px; border: 1.5px solid transparent;
+  font-weight: 600; cursor: pointer; text-decoration: none; white-space: nowrap;
+}
+.btn-primario { background: var(--primario); color: var(--primario-texto); }
+.btn-primario:hover { background: var(--primario-hover); }
+.btn-secundario { background: transparent; border-color: var(--linea2); color: var(--texto); }
+.btn-secundario:hover { background: var(--suave); }
+.btn-peligro { background: transparent; border-color: var(--error); color: var(--error); }
+.btn-texto { background: none; border: none; color: var(--enlace); padding: 0 6px; min-height: 44px; }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+.btn-bloque { width: 100%; }
+.icono { width: 22px; height: 22px; flex: none; }
+
+/* Avisos en pantalla */
+.aviso { border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; border-left: 5px solid; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.aviso-error { background: var(--error-fondo); border-color: var(--error); color: var(--error); }
+.aviso-ok { background: var(--ok-fondo); border-color: var(--ok); color: var(--ok); }
+.aviso-info { background: var(--info-fondo); border-color: var(--enlace); }
+.aviso-alerta { background: var(--alerta-fondo); border-color: var(--alerta); color: var(--alerta); }
+
+/* Pantallas de acceso */
+.acceso { min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px; }
+.acceso .tarjeta { width: 100%; max-width: 420px; padding: 28px 24px; }
+.acceso .encabezado { text-align: center; margin-bottom: 22px; }
+.acceso .encabezado .placa-logo { padding: 10px 16px; margin-bottom: 14px; }
+.acceso .encabezado img { height: 96px; width: auto; }
+.acceso .pie { text-align: center; color: var(--texto2); font-size: .85rem; margin-top: 18px; }
+
+.tarjeta { background: var(--tarjeta); border: 1px solid var(--linea); border-radius: var(--radio); box-shadow: var(--sombra); padding: 18px; }
+
+/* Estructura de la aplicación */
+.franja-modo { background: var(--alerta-fondo); color: var(--alerta); text-align: center; font-weight: 600; font-size: .85rem; padding: 4px 8px; }
+.franja-red { background: var(--error-fondo); color: var(--error); text-align: center; font-weight: 600; font-size: .85rem; padding: 4px 8px; }
+.barra {
+  position: sticky; top: 0; z-index: 20; height: var(--barra-alto);
+  display: flex; align-items: center; gap: 10px; padding: 0 12px;
+  padding-top: env(safe-area-inset-top);
+  background: var(--tarjeta); border-bottom: 1px solid var(--linea);
+}
+.barra .placa-logo { padding: 4px 8px; }
+.barra .placa-logo img { height: 34px; width: auto; }
+.barra .titulo { font-weight: 700; color: var(--marca); font-size: 1.05rem; margin-right: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn-icono { position: relative; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 12px; border: none; background: transparent; cursor: pointer; color: var(--texto); }
+.btn-icono:hover { background: var(--suave); }
+.contador { position: absolute; top: 6px; right: 6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: var(--error); color: #fff; font-size: .75rem; font-weight: 700; display: grid; place-items: center; }
+
+.cuerpo { display: flex; }
+.lateral { display: none; }
+.principal { flex: 1; min-width: 0; padding: 18px 16px calc(var(--tabs-alto) + 24px + env(safe-area-inset-bottom)); max-width: 1100px; margin: 0 auto; }
+.pestanas {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 20; display: flex;
+  background: var(--tarjeta); border-top: 1px solid var(--linea);
+  padding-bottom: env(safe-area-inset-bottom); height: calc(var(--tabs-alto) + env(safe-area-inset-bottom));
+}
+.pestanas a, .lateral a {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  text-decoration: none; color: var(--texto2); font-size: .78rem; font-weight: 600; min-height: 48px;
+}
+.pestanas a[aria-current="page"], .lateral a[aria-current="page"] { color: var(--enlace); }
+.pestanas a[aria-current="page"] .icono { stroke-width: 2.4; }
+
+@media (min-width: 900px) {
+  .pestanas { display: none; }
+  .lateral {
+    display: flex; flex-direction: column; gap: 4px; width: 232px; flex: none; padding: 16px 12px;
+    position: sticky; top: var(--barra-alto); height: calc(100dvh - var(--barra-alto)); border-right: 1px solid var(--linea); background: var(--tarjeta);
+  }
+  .lateral a { flex: none; flex-direction: row; justify-content: flex-start; gap: 12px; padding: 0 14px; border-radius: 10px; font-size: .98rem; }
+  .lateral a:hover { background: var(--suave); }
+  .lateral a[aria-current="page"] { background: var(--suave); color: var(--marca); }
+  .principal { padding: 28px 32px 40px; }
+}
+
+/* Contenido */
+.cabecera-modulo { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.cabecera-modulo p { color: var(--texto2); margin: 0; }
+.rejilla { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .rejilla { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .rejilla.tres { grid-template-columns: repeat(3, 1fr); } }
+.modulo-proximo h3 { display: flex; align-items: center; gap: 8px; }
+.modulo-proximo p { color: var(--texto2); margin: 0; font-size: .95rem; }
+.distintivo { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 12px; font-size: .78rem; font-weight: 700; background: var(--suave); color: var(--marca); white-space: nowrap; }
+.distintivo.ok { background: var(--ok-fondo); color: var(--ok); }
+.distintivo.apagado { background: var(--fondo); color: var(--texto2); border: 1px solid var(--linea); }
+.distintivo.alerta { background: var(--alerta-fondo); color: var(--alerta); }
+
+.lista { list-style: none; margin: 0; padding: 0; }
+.lista > li { border-bottom: 1px solid var(--linea); padding: 14px 4px; display: flex; gap: 12px; align-items: flex-start; }
+.lista > li:last-child { border-bottom: none; }
+.lista .principal-fila { flex: 1; min-width: 0; }
+.lista .nombre { font-weight: 600; }
+.lista .detalle { color: var(--texto2); font-size: .92rem; overflow-wrap: anywhere; }
+.lista .acciones { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.aviso-item.no-leido .nombre::before { content: ''; display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--p3005); margin-right: 8px; vertical-align: middle; }
+.vacio { text-align: center; color: var(--texto2); padding: 28px 8px; }
+
+.filtros { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.filtros input { flex: 1 1 220px; }
+.filtros select { flex: 0 1 220px; }
+
+dl.datos { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; margin: 0; }
+dl.datos dt { color: var(--texto2); }
+dl.datos dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+/* Ventana de formulario */
+dialog { border: none; border-radius: 16px; padding: 0; overflow-y: auto; overscroll-behavior: contain; width: min(560px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--tarjeta); color: var(--texto); box-shadow: 0 10px 40px rgba(0,0,0,.35); }
+dialog::backdrop { background: rgba(1, 30, 65, .55); }
+dialog form { padding: 22px 20px 18px; }
+dialog .botones { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-top: 8px; }
+.dos-columnas { display: grid; gap: 0 12px; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .dos-columnas { grid-template-columns: 1fr 1fr; } }
+
+.cargando { display: grid; place-items: center; min-height: 100dvh; color: var(--texto2); }
+.giro { width: 32px; height: 32px; border: 3px solid var(--linea); border-top-color: var(--p3005); border-radius: 50%; animation: giro 0.9s linear infinite; margin: 0 auto 12px; }
+@keyframes giro { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .giro { animation: none; } }
+.toast { position: fixed; left: 50%; bottom: calc(var(--tabs-alto) + 16px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 50; max-width: calc(100vw - 32px); }
+@media (min-width: 900px) { .toast { bottom: 24px; } }
+.version { color: var(--texto2); font-size: .82rem; }
+</style>
+</head>
+<body>
+<div id="raiz"><div class="cargando"><div><div class="giro"></div>Cargando…</div></div></div>
+
+<!-- Iconos (trazos, heredan el color del texto) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-inicio" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-avisos" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15zM10 20a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-personal" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1M16 3.5a4 4 0 0 1 0 7M22 21v-1a6 6 0 0 0-4-5.6"/></symbol>
+  <symbol id="i-cuenta" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-mas" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-reloj" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2"/></symbol>
+</svg>
+
+<script src="vendor/supabase.js"></script>
+<script>
+'use strict';
+// =============================================================================
+// SGP · Sistema de Gestión de Proyectos · Grupo RefriAmerica
+// Aplicación de un solo archivo. Toda la lógica de permisos vive en la base (RLS y
+// funciones rpc_*): lo que aquí se oculta es cortesía, no seguridad.
+// =============================================================================
+const APP_VERSION = '0.2.0';
+
+// Configuración pública. La clave publicable PUEDE estar aquí: los datos los protegen
+// las reglas de la base. La clave secreta NUNCA va en la aplicación.
+const CONFIG = {
+  supabaseUrl: 'https://lwhczkzhsnqawettzzfw.supabase.co',
+  supabaseKey: 'sb_publishable_VLKiZ4kToyptxjQUgNqbCw_SJ2ryv-_',
+  latidoMs: 30000,
+};
+
+const ROLES = {
+  admin: 'Administrador', gerente: 'Gerente de Ingeniería', coordinador: 'Coordinador de Proyectos',
+  ingeniero: 'Ingeniero', control_gestion: 'Control de Gestión', ventas: 'Ventas', construccion: 'Construcción',
+};
+const DISCIPLINAS = { HV: 'HVAC mecánico', AU: 'Automatización y controles', GE: 'General' };
+const CONDUCE = ['admin', 'gerente', 'coordinador'];
+const VE_TODO = [...CONDUCE, 'control_gestion'];
+
+// Módulos que llegan en las próximas sesiones (Plan de arranque, sección 6)
+const PROXIMOS = [
+  { nombre: 'Requerimientos', proceso: 'PRY-01', sesion: 2, texto: 'Registro de solicitudes de Ventas, código PRY-AA-NNNN, modalidad y asignación.' },
+  { nombre: 'Levantamientos', proceso: 'PRY-02', sesion: 3, texto: 'Visitas a sitio desde el teléfono, con fotos y GPS aunque no haya señal.' },
+  { nombre: 'Control documental', proceso: 'PRY-03 · 07 · 10', sesion: 4, texto: 'Documentos codificados, revisiones, aprobación y firma con número CIV.' },
+  { nombre: 'Equipos', proceso: 'PRY-07 · 08 · 10', sesion: 5, texto: 'Ficha única de equipo, compatible con el sistema de Servicios.' },
+  { nombre: 'Horas e indicadores', proceso: 'Todos', sesion: 6, texto: 'Horas por proyecto, modalidad y disciplina; tablero de indicadores.' },
+];
+
+// ----------------------------------------------------------------------------- utilidades
+const $ = (sel, raiz = document) => raiz.querySelector(sel);
+const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const icono = (id) => `<svg class="icono" aria-hidden="true"><use href="#i-${id}"/></svg>`;
+const fmtFechaHora = (iso) => iso ? new Intl.DateTimeFormat('es-VE', { timeZone: 'America/Caracas', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(iso)) : '';
+
+// Mensajes en castellano llano, nunca un código de error
+function mensajeError(e) {
+  const m = (e && (e.message || e.error_description || e.msg)) || String(e || '');
+  if (/Invalid login credentials/i.test(m)) return 'Correo o contraseña incorrectos.';
+  if (/Email not confirmed/i.test(m)) return 'Su cuenta aún no está confirmada. Avise a la Coordinación de Proyectos.';
+  if (/Failed to fetch|NetworkError|Load failed|fetch/i.test(m)) return 'No hay conexión con el servidor. Revise su conexión e intente de nuevo.';
+  if (/rate limit|too many/i.test(m)) return 'Demasiados intentos seguidos. Espere unos minutos e intente de nuevo.';
+  if (/Password should be at least/i.test(m)) return 'La contraseña debe tener al menos 8 caracteres.';
+  if (/same password|different from the old/i.test(m)) return 'La contraseña nueva debe ser distinta de la anterior.';
+  if (/JWT expired|invalid JWT|session/i.test(m)) return 'Su sesión venció. Inicie sesión de nuevo.';
+  if (/permission denied|violates row-level security/i.test(m)) return 'No tiene permiso para esta acción.';
+  return m || 'Ocurrió un error inesperado.';
+}
+
+function toast(texto, tipo = 'ok') {
+  const t = document.createElement('div');
+  t.className = `toast aviso aviso-${tipo}`; t.setAttribute('role', 'status'); t.textContent = texto;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 3800);
+}
+
+// ----------------------------------------------------------------------------- estado
+// El enlace de invitación o de recuperación trae el tipo en la dirección. Se lee ANTES de
+// crear el cliente, que la limpia al procesarla.
+const enlace = new URLSearchParams(location.hash.replace(/^#/, '') + '&' + location.search.replace(/^\?/, ''));
+const estado = {
+  sb: null, sesion: null, perfil: null, ruta: 'inicio',
+  definirClave: ['invite', 'recovery'].includes(enlace.get('type')),
+  latido: null, noLeidos: 0, personal: [],
+};
+
+if (!window.supabase || !window.supabase.createClient) {
+  document.getElementById('raiz').innerHTML = '<div class="acceso"><div class="tarjeta aviso aviso-error">No se pudo cargar la aplicación. Recargue la página.</div></div>';
+  throw new Error('supabase-js no cargó');
+}
+estado.sb = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+});
+
+// ----------------------------------------------------------------------------- pantallas de acceso
+function encabezadoAcceso(subtitulo) {
+  return `<div class="encabezado">
+    <span class="placa-logo"><img class="logo" src="assets/logo-centrado.png" alt="Grupo RefriAmerica" width="720" height="385"></span>
+    <h1>Sistema de Gestión de Proyectos</h1>
+    <p style="color:var(--texto2);margin:0">${esc(subtitulo)}</p>
+  </div>`;
+}
+
+function pantallaLogin(mensaje) {
+  detenerLatido();
+  $('#raiz').innerHTML = `<main class="acceso"><div class="tarjeta">
+    ${encabezadoAcceso('Departamento de Proyectos')}
+    <div id="msj">${mensaje ? `<div class="aviso aviso-info">${esc(mensaje)}</div>` : ''}</div>
+    <form id="f-login" novalidate>
+      <div class="campo"><label for="correo">Correo</label>
+        <input id="correo" name="correo" type="email" autocomplete="username" inputmode="email" required autocapitalize="none"></div>
+      <div class="campo"><label for="clave">Contraseña</label>
+        <input id="clave" name="clave" type="password" autocomplete="current-password" required></div>
+      <button class="btn btn-primario btn-bloque" type="submit">Entrar</button>
+    </form>
+    <p style="text-align:center;margin:14px 0 0"><button class="btn-texto" id="b-olvido" type="button">¿Olvidó su contraseña?</button></p>
+    <p class="pie">Grupo RefriAmerica · v${APP_VERSION}</p>
+  </div></main>`;
+  $('#f-login').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const correo = $('#correo').value.trim(), clave = $('#clave').value;
+    if (!correo || !clave) return mostrarError('Escriba su correo y su contraseña.');
+    const b = ev.submitter || $('#f-login button'); b.disabled = true; b.textContent = 'Entrando…';
+    try {
+      const { error } = await estado.sb.auth.signInWithPassword({ email: correo, password: clave });
+      if (error) throw error;
+      await iniciarSesion();
+    } catch (e) { mostrarError(mensajeError(e)); b.disabled = false; b.textContent = 'Entrar'; }
+  });
+  $('#b-olvido').addEventListener('click', pantallaRecuperar);
+  setTimeout(() => $('#correo')?.focus(), 50);
+}
+
+function mostrarError(texto) {
+  const m = $('#msj'); if (m) m.innerHTML = `<div class="aviso aviso-error" role="alert">${esc(texto)}</div>`;
+}
+
+function pantallaRecuperar() {
+  $('#raiz').innerHTML = `<main class="acceso"><div class="tarjeta">
+    ${encabezadoAcceso('Recuperar la contraseña')}
+    <div id="msj"></div>
+    <p>Escriba el correo de su cuenta. Le enviaremos un enlace para definir una contraseña nueva.</p>
+    <form id="f-rec" novalidate>
+      <div class="campo"><label for="correo">Correo</label>
+        <input id="correo" type="email" autocomplete="username" inputmode="email" required autocapitalize="none"></div>
+      <button class="btn btn-primario btn-bloque" type="submit">Enviar enlace</button>
+    </form>
+    <p style="text-align:center;margin:14px 0 0"><button class="btn-texto" id="b-volver" type="button">Volver a iniciar sesión</button></p>
+  </div></main>`;
+  $('#b-volver').addEventListener('click', () => pantallaLogin());
+  $('#f-rec').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const correo = $('#correo').value.trim();
+    if (!correo) return mostrarError('Escriba su correo.');
+    const b = $('#f-rec button'); b.disabled = true;
+    try {
+      const { error } = await estado.sb.auth.resetPasswordForEmail(correo, { redirectTo: location.origin + location.pathname });
+      if (error) throw error;
+      // Mismo mensaje exista o no la cuenta: no se revela qué correos están registrados.
+      $('#msj').innerHTML = '<div class="aviso aviso-ok" role="status">Si el correo tiene una cuenta, recibirá un enlace en unos minutos. Revise también la carpeta de correo no deseado.</div>';
+    } catch (e) { mostrarError(mensajeError(e)); }
+    b.disabled = false;
+  });
+}
+
+function pantallaDefinirClave() {
+  $('#raiz').innerHTML = `<main class="acceso"><div class="tarjeta">
+    ${encabezadoAcceso('Defina su contraseña')}
+    <div id="msj"></div>
+    <form id="f-clave" novalidate>
+      <div class="campo"><label for="c1">Contraseña nueva</label>
+        <input id="c1" type="password" autocomplete="new-password" minlength="8" required>
+        <span class="ayuda">Al menos 8 caracteres.</span></div>
+      <div class="campo"><label for="c2">Repita la contraseña</label>
+        <input id="c2" type="password" autocomplete="new-password" minlength="8" required></div>
+      <button class="btn btn-primario btn-bloque" type="submit">Guardar contraseña</button>
+    </form>
+  </div></main>`;
+  $('#f-clave').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const c1 = $('#c1').value, c2 = $('#c2').value;
+    if (c1.length < 8) return mostrarError('La contraseña debe tener al menos 8 caracteres.');
+    if (c1 !== c2) return mostrarError('Las dos contraseñas no coinciden.');
+    try {
+      const { error } = await estado.sb.auth.updateUser({ password: c1 });
+      if (error) throw error;
+      estado.definirClave = false;
+      history.replaceState(null, '', location.pathname);
+      toast('Contraseña guardada.');
+      await iniciarSesion();
+    } catch (e) { mostrarError(mensajeError(e)); }
+  });
+}
+
+// ----------------------------------------------------------------------------- sesión
+async function iniciarSesion() {
+  const { data, error } = await estado.sb.auth.getSession();
+  if (error || !data.session) return pantallaLogin();
+  estado.sesion = data.session;
+  if (estado.definirClave) return pantallaDefinirClave();
+  const r = await estado.sb.rpc('rpc_mi_sesion');
+  if (r.error) {
+    await estado.sb.auth.signOut();
+    return pantallaLogin(mensajeError(r.error));
+  }
+  estado.perfil = r.data;
+  const ruta = location.hash.replace(/^#\/?/, '');
+  estado.ruta = rutasPermitidas().some((x) => x.id === ruta) ? ruta : 'inicio';
+  pintarAplicacion();
+  iniciarLatido();
+}
+
+async function cerrarSesion() {
+  detenerLatido();
+  await estado.sb.auth.signOut();
+  estado.perfil = null; estado.sesion = null;
+  history.replaceState(null, '', location.pathname);
+  pantallaLogin('Sesión cerrada.');
+}
+
+const tieneRol = (lista) => !!estado.perfil && lista.includes(estado.perfil.rol);
+
+function rutasPermitidas() {
+  const r = [{ id: 'inicio', nombre: 'Inicio', icono: 'inicio' }];
+  if (estado.perfil?.rol) r.push({ id: 'avisos', nombre: 'Avisos', icono: 'avisos' });
+  if (tieneRol(VE_TODO)) r.push({ id: 'personal', nombre: 'Personal', icono: 'personal' });
+  r.push({ id: 'cuenta', nombre: 'Mi cuenta', icono: 'cuenta' });
+  return r;
+}
+
+// ----------------------------------------------------------------------------- estructura
+function pintarAplicacion() {
+  const rutas = rutasPermitidas();
+  const nav = (clase) => rutas.map((x) => `<a href="#/${x.id}" data-ruta="${x.id}" ${x.id === estado.ruta ? 'aria-current="page"' : ''}>${icono(x.icono)}<span>${x.nombre}</span></a>`).join('');
+  $('#raiz').innerHTML = `
+    ${estado.perfil.modo === 'prueba' ? '<div class="franja-modo" role="note">MODO PRUEBA · los datos registrados son de práctica</div>' : ''}
+    <div class="franja-red" id="franja-red" role="status" ${navigator.onLine ? 'hidden' : ''}>Sin conexión · lo que vea puede no estar actualizado</div>
+    <header class="barra">
+      <span class="placa-logo"><img class="logo" src="assets/logo-horizontal.png" alt="Grupo RefriAmerica" width="640" height="191"></span>
+      <span class="titulo">Proyectos</span>
+      ${estado.perfil.rol ? `<button class="btn-icono" id="b-campana" type="button" aria-label="Avisos">${icono('avisos')}<span class="contador" id="contador" hidden>0</span></button>` : ''}
+    </header>
+    <div class="cuerpo">
+      <nav class="lateral" aria-label="Menú principal">${nav('lateral')}</nav>
+      <main class="principal" id="principal" tabindex="-1"></main>
+    </div>
+    <nav class="pestanas" aria-label="Menú principal">${nav('pestanas')}</nav>`;
+  document.querySelectorAll('[data-ruta]').forEach((a) => a.addEventListener('click', (ev) => { ev.preventDefault(); ir(a.dataset.ruta); }));
+  $('#b-campana')?.addEventListener('click', () => ir('avisos'));
+  pintarContador();
+  pintarRuta();
+}
+
+function ir(ruta) {
+  if (!rutasPermitidas().some((x) => x.id === ruta)) ruta = 'inicio';
+  estado.ruta = ruta;
+  history.replaceState(null, '', '#/' + ruta);
+  document.querySelectorAll('[data-ruta]').forEach((a) => {
+    if (a.dataset.ruta === ruta) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+  pintarRuta();
+}
+
+function pintarRuta() {
+  const p = $('#principal'); if (!p) return;
+  ({ inicio: vistaInicio, avisos: vistaAvisos, personal: vistaPersonal, cuenta: vistaCuenta }[estado.ruta] || vistaInicio)(p);
+  p.focus({ preventScroll: true }); window.scrollTo(0, 0);
+}
+
+// ----------------------------------------------------------------------------- Inicio
+function vistaInicio(p) {
+  const pf = estado.perfil;
+  const primerNombre = (pf.nombre || '').split(' ')[0];
+  if (!pf.rol) {
+    p.innerHTML = `<h1>Hola, ${esc(primerNombre)}</h1>
+      <div class="aviso aviso-alerta" role="note"><strong>Su cuenta está creada, pero todavía no tiene un rol asignado.</strong><br>
+      La Coordinación de Proyectos debe asignárselo para que pueda usar el sistema.</div>`;
+    return;
+  }
+  p.innerHTML = `
+    <div class="cabecera-modulo"><div><h1>Hola, ${esc(primerNombre)}</h1>
+      <p>${esc(ROLES[pf.rol] || pf.rol)}${pf.cargo && pf.cargo !== ROLES[pf.rol] ? ' · ' + esc(pf.cargo) : ''}</p></div></div>
+    <div class="aviso aviso-info">Versión inicial del sistema: ya funcionan el acceso, el personal y los avisos. Los módulos de trabajo se incorporan en las próximas sesiones.</div>
+    <h2 style="margin-top:6px">Módulos en preparación</h2>
+    <div class="rejilla tres">
+      ${PROXIMOS.map((m) => `<section class="tarjeta modulo-proximo" aria-label="${esc(m.nombre)}">
+        <h3>${esc(m.nombre)} <span class="distintivo apagado">${icono('reloj').replace('class="icono"', 'class="icono" style="width:14px;height:14px;margin-right:4px"')}Sesión ${m.sesion}</span></h3>
+        <p><strong>${esc(m.proceso)}</strong> · ${esc(m.texto)}</p></section>`).join('')}
+    </div>`;
+}
+
+// ----------------------------------------------------------------------------- Avisos
+async function vistaAvisos(p) {
+  p.innerHTML = `<div class="cabecera-modulo"><div><h1>Avisos</h1><p>Se actualizan cada 30 segundos.</p></div></div>
+    <div class="tarjeta"><ul class="lista" id="l-avisos"><li class="vacio">Cargando…</li></ul></div>`;
+  const { data, error } = await estado.sb.from('notificaciones').select('id,tipo,titulo,cuerpo,enlace,leida_en,creado_en').order('creado_en', { ascending: false }).limit(100);
+  const ul = $('#l-avisos'); if (!ul) return;
+  if (error) { ul.innerHTML = `<li class="vacio">${esc(mensajeError(error))}</li>`; return; }
+  if (!data.length) { ul.innerHTML = '<li class="vacio">No tiene avisos.</li>'; return; }
+  ul.innerHTML = data.map((n) => `<li class="aviso-item ${n.leida_en ? '' : 'no-leido'}">
+      <div class="principal-fila"><div class="nombre">${esc(n.titulo)}</div>
+        ${n.cuerpo ? `<div class="detalle">${esc(n.cuerpo)}</div>` : ''}
+        <div class="detalle">${esc(fmtFechaHora(n.creado_en))}</div></div>
+      ${n.leida_en ? '' : `<div class="acciones"><button class="btn btn-secundario" data-leer="${n.id}" type="button">Marcar leído</button></div>`}
+    </li>`).join('');
+  ul.querySelectorAll('[data-leer]').forEach((b) => b.addEventListener('click', async () => {
+    b.disabled = true;
+    const { error: e } = await estado.sb.rpc('rpc_marcar_leida', { p_id: Number(b.dataset.leer) });
+    if (e) { toast(mensajeError(e), 'error'); b.disabled = false; return; }
+    await latido(); vistaAvisos(p);
+  }));
+}
+
+// ----------------------------------------------------------------------------- Personal
+async function vistaPersonal(p) {
+  const edita = tieneRol(CONDUCE);
+  p.innerHTML = `<div class="cabecera-modulo"><div><h1>Personal</h1><p>Fichas del departamento y su acceso al sistema.</p></div>
+      ${edita ? `<button class="btn btn-primario" id="b-nueva" type="button">${icono('mas')}Agregar persona</button>` : ''}</div>
+    <div class="filtros">
+      <input id="f-buscar" type="search" placeholder="Buscar por nombre, correo o cargo" aria-label="Buscar">
+      <select id="f-estado" aria-label="Estado"><option value="activos">Activos</option><option value="retirados">Retirados</option><option value="todos">Todos</option></select>
+    </div>
+    <div class="tarjeta"><ul class="lista" id="l-personal"><li class="vacio">Cargando…</li></ul></div>`;
+  $('#b-nueva')?.addEventListener('click', () => dialogoPersona(null));
+  $('#f-buscar').addEventListener('input', pintarListaPersonal);
+  $('#f-estado').addEventListener('change', pintarListaPersonal);
+  await cargarPersonal();
+}
+
+async function cargarPersonal() {
+  const { data, error } = await estado.sb.from('perfiles')
+    .select('id,nombre,cargo,rol,correo,telefono,disciplina,numero_civ,activo,auth_id,retirado_motivo').order('nombre');
+  if (error) { const ul = $('#l-personal'); if (ul) ul.innerHTML = `<li class="vacio">${esc(mensajeError(error))}</li>`; return; }
+  estado.personal = data; pintarListaPersonal();
+}
+
+function pintarListaPersonal() {
+  const ul = $('#l-personal'); if (!ul) return;
+  const q = ($('#f-buscar')?.value || '').trim().toLowerCase();
+  const filtro = $('#f-estado')?.value || 'activos';
+  const edita = tieneRol(CONDUCE);
+  const lista = estado.personal.filter((x) =>
+    (filtro === 'todos' || (filtro === 'activos' ? x.activo : !x.activo)) &&
+    (!q || [x.nombre, x.correo, x.cargo].some((v) => (v || '').toLowerCase().includes(q))));
+  if (!lista.length) { ul.innerHTML = '<li class="vacio">No hay personas que coincidan.</li>'; return; }
+  ul.innerHTML = lista.map((x) => `<li>
+      <div class="principal-fila">
+        <div class="nombre">${esc(x.nombre)}</div>
+        <div class="detalle">${esc([x.cargo, x.correo].filter(Boolean).join(' · ') || 'Sin cargo ni correo')}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+          ${x.rol ? `<span class="distintivo">${esc(ROLES[x.rol] || x.rol)}</span>` : '<span class="distintivo alerta">Sin rol</span>'}
+          ${x.disciplina ? `<span class="distintivo apagado">${esc(x.disciplina)}</span>` : ''}
+          ${x.auth_id ? '<span class="distintivo ok">Con acceso</span>' : '<span class="distintivo apagado">Sin cuenta</span>'}
+          ${x.activo ? '' : '<span class="distintivo apagado">Retirado</span>'}
+        </div>
+      </div>
+      ${edita && x.activo ? `<div class="acciones"><button class="btn btn-secundario" data-editar="${x.id}" type="button">Editar</button></div>` : ''}
+    </li>`).join('');
+  ul.querySelectorAll('[data-editar]').forEach((b) => b.addEventListener('click', () => dialogoPersona(estado.personal.find((x) => x.id === b.dataset.editar))));
+}
+
+function dialogoPersona(x) {
+  const nueva = !x; x = x || {};
+  const esAdmin = estado.perfil.rol === 'admin';
+  const opcionesRol = Object.entries(ROLES).filter(([k]) => esAdmin || k !== 'admin' || x.rol === 'admin')
+    .map(([k, v]) => `<option value="${k}" ${x.rol === k ? 'selected' : ''}>${v}</option>`).join('');
+  const d = document.createElement('dialog');
+  d.innerHTML = `<form method="dialog" novalidate>
+    <h2>${nueva ? 'Agregar persona' : 'Editar ficha'}</h2>
+    <div id="msj"></div>
+    <div class="campo"><label for="p-nombre">Nombre y apellido *</label><input id="p-nombre" value="${esc(x.nombre)}" required autocomplete="off"></div>
+    <div class="dos-columnas">
+      <div class="campo"><label for="p-cargo">Cargo</label><input id="p-cargo" value="${esc(x.cargo)}"></div>
+      <div class="campo"><label for="p-rol">Rol en el sistema</label><select id="p-rol"><option value="">Sin rol (sin permisos)</option>${opcionesRol}</select></div>
+      <div class="campo"><label for="p-correo">Correo</label><input id="p-correo" type="email" value="${esc(x.correo)}" autocapitalize="none" inputmode="email"></div>
+      <div class="campo"><label for="p-tel">Teléfono</label><input id="p-tel" type="tel" value="${esc(x.telefono)}" inputmode="tel"></div>
+      <div class="campo"><label for="p-disc">Disciplina</label><select id="p-disc"><option value="">—</option>${Object.entries(DISCIPLINAS).map(([k, v]) => `<option value="${k}" ${x.disciplina === k ? 'selected' : ''}>${k} · ${v}</option>`).join('')}</select></div>
+      <div class="campo"><label for="p-civ">N.º CIV</label><input id="p-civ" value="${esc(x.numero_civ)}" inputmode="numeric"><span class="ayuda">Para firmar documentos de ingeniería.</span></div>
+    </div>
+    ${!nueva && !x.auth_id ? `<div class="aviso aviso-info" style="margin-top:4px">Esta persona no tiene cuenta de acceso. Cuando el administrador la cree en Supabase con el mismo correo, se enlazará sola.</div>` : ''}
+    <div class="campo" id="p-retiro" hidden><label for="p-motivo">Motivo del retiro *</label><input id="p-motivo" placeholder="Ej.: fin de contrato"><span class="ayuda">La ficha no se borra: queda retirada con su historial.</span></div>
+    <div class="botones">
+      ${!nueva ? '<button class="btn btn-peligro" type="button" id="p-retirar" style="margin-right:auto">Retirar</button>' : ''}
+      <button class="btn btn-secundario" type="button" id="p-cancelar">Cancelar</button>
+      <button class="btn btn-primario" type="submit" id="p-guardar">Guardar</button>
+    </div></form>`;
+  document.body.appendChild(d);
+  const cerrar = () => { d.close(); d.remove(); };
+  d.addEventListener('cancel', (ev) => { ev.preventDefault(); cerrar(); });
+  $('#p-cancelar', d).addEventListener('click', cerrar);
+  const err = (t) => { $('#msj', d).innerHTML = `<div class="aviso aviso-error" role="alert">${esc(t)}</div>`; };
+  $('form', d).addEventListener('input', () => { $('#msj', d).innerHTML = ''; });
+  $('form', d).addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const nombre = $('#p-nombre', d).value.trim();
+    if (nombre.length < 2) return err('El nombre es obligatorio.');
+    const correo = $('#p-correo', d).value.trim();
+    if (correo && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)) return err('El correo no tiene un formato válido.');
+    const b = $('#p-guardar', d); b.disabled = true;
+    const { error } = await estado.sb.rpc('rpc_personal_guardar', {
+      p_id: x.id || null, p_nombre: nombre, p_cargo: $('#p-cargo', d).value.trim() || null,
+      p_rol: $('#p-rol', d).value || null, p_correo: correo || null,
+      p_telefono: $('#p-tel', d).value.trim() || null, p_disciplina: $('#p-disc', d).value || null,
+      p_numero_civ: $('#p-civ', d).value.trim() || null,
+    });
+    if (error) { b.disabled = false; return err(mensajeError(error)); }
+    cerrar(); toast(nueva ? 'Persona agregada.' : 'Ficha actualizada.'); cargarPersonal();
+  });
+  $('#p-retirar', d)?.addEventListener('click', async (ev) => {
+    const campo = $('#p-retiro', d);
+    if (campo.hidden) {   // primer toque: pide el motivo; segundo toque: confirma
+      campo.hidden = false; ev.target.textContent = 'Confirmar retiro'; $('#p-motivo', d).focus(); return;
+    }
+    const motivo = $('#p-motivo', d).value;
+    if (motivo.trim().length < 3) return err('Indique el motivo del retiro.');
+    const { error } = await estado.sb.rpc('rpc_personal_retirar', { p_id: x.id, p_motivo: motivo.trim() });
+    if (error) return err(mensajeError(error));
+    cerrar(); toast('Ficha retirada.'); cargarPersonal();
+  });
+  d.showModal();
+  setTimeout(() => $('#p-nombre', d).focus(), 30);
+}
+
+// ----------------------------------------------------------------------------- Mi cuenta
+function vistaCuenta(p) {
+  const pf = estado.perfil;
+  p.innerHTML = `<div class="cabecera-modulo"><div><h1>Mi cuenta</h1></div></div>
+    <div class="rejilla">
+      <section class="tarjeta"><h2>Datos</h2>
+        <dl class="datos">
+          <dt>Nombre</dt><dd>${esc(pf.nombre)}</dd>
+          <dt>Correo</dt><dd>${esc(estado.sesion?.user?.email)}</dd>
+          <dt>Rol</dt><dd>${esc(ROLES[pf.rol] || 'Sin rol')}</dd>
+          ${pf.cargo ? `<dt>Cargo</dt><dd>${esc(pf.cargo)}</dd>` : ''}
+          ${pf.disciplina ? `<dt>Disciplina</dt><dd>${esc(pf.disciplina)} · ${esc(DISCIPLINAS[pf.disciplina])}</dd>` : ''}
+        </dl></section>
+      <section class="tarjeta"><h2>Cambiar contraseña</h2>
+        <div id="msj"></div>
+        <form id="f-cambio" novalidate>
+          <div class="campo"><label for="c1">Contraseña nueva</label><input id="c1" type="password" autocomplete="new-password" minlength="8"><span class="ayuda">Al menos 8 caracteres.</span></div>
+          <div class="campo"><label for="c2">Repita la contraseña</label><input id="c2" type="password" autocomplete="new-password" minlength="8"></div>
+          <button class="btn btn-secundario" type="submit">Guardar contraseña</button>
+        </form></section>
+      <section class="tarjeta"><h2>Sistema</h2>
+        <dl class="datos">
+          <dt>Aplicación</dt><dd>v${APP_VERSION}</dd>
+          <dt>Esquema</dt><dd>${esc(pf.version_esquema)}</dd>
+          <dt>Modo</dt><dd>${pf.modo === 'prueba' ? 'Prueba' : 'Operación real'}</dd>
+        </dl>
+        <p style="margin-top:16px"><button class="btn btn-peligro btn-bloque" id="b-salir" type="button">Cerrar sesión</button></p>
+      </section>
+    </div>`;
+  $('#b-salir').addEventListener('click', cerrarSesion);
+  $('#f-cambio').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const c1 = $('#c1').value, c2 = $('#c2').value;
+    if (c1.length < 8) return mostrarError('La contraseña debe tener al menos 8 caracteres.');
+    if (c1 !== c2) return mostrarError('Las dos contraseñas no coinciden.');
+    const { error } = await estado.sb.auth.updateUser({ password: c1 });
+    if (error) return mostrarError(mensajeError(error));
+    $('#msj').innerHTML = '<div class="aviso aviso-ok" role="status">Contraseña actualizada.</div>';
+    ev.target.reset();
+  });
+}
+
+// ----------------------------------------------------------------------------- latido de avisos
+async function latido() {
+  if (!estado.perfil?.rol || !navigator.onLine) return;
+  const { count, error } = await estado.sb.from('notificaciones').select('id', { count: 'exact', head: true }).is('leida_en', null);
+  if (!error) { estado.noLeidos = count || 0; pintarContador(); }
+}
+function pintarContador() {
+  const c = $('#contador'); if (!c) return;
+  c.hidden = !estado.noLeidos; c.textContent = estado.noLeidos > 99 ? '99+' : String(estado.noLeidos);
+  $('#b-campana')?.setAttribute('aria-label', estado.noLeidos ? `Avisos: ${estado.noLeidos} sin leer` : 'Avisos');
+}
+function iniciarLatido() { detenerLatido(); latido(); estado.latido = setInterval(latido, CONFIG.latidoMs); }
+function detenerLatido() { if (estado.latido) clearInterval(estado.latido); estado.latido = null; }
+
+// ----------------------------------------------------------------------------- conexión y arranque
+addEventListener('online', () => { $('#franja-red')?.setAttribute('hidden', ''); latido(); });
+addEventListener('offline', () => $('#franja-red')?.removeAttribute('hidden'));
+
+estado.sb.auth.onAuthStateChange((evento) => {
+  if (evento === 'PASSWORD_RECOVERY') { estado.definirClave = true; pantallaDefinirClave(); }
+  if (evento === 'SIGNED_OUT' && estado.perfil) { estado.perfil = null; pantallaLogin('Su sesión terminó. Inicie sesión de nuevo.'); }
+});
+
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+
+iniciarSesion().catch((e) => pantallaLogin(mensajeError(e)));
+</script>
+</body>
+</html>
