@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'app');
 const CAPTURAS = process.argv[2] || null;
 const SUPA = 'https://lwhczkzhsnqawettzzfw.supabase.co';
-const TIPOS = { '.html': 'text/html', '.js': 'text/javascript', '.png': 'image/png', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json' };
+const TIPOS = { '.json': 'application/json', '.html': 'text/html', '.js': 'text/javascript', '.png': 'image/png', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json' };
 
 // ---------------------------------------------------------------- servidor local de app/
 const servidor = http.createServer((req, res) => {
@@ -353,6 +353,20 @@ await caso('5 · computadora: Clientes en el menú lateral, edición y aviso que
   await oscuro.click('.lateral [data-ruta="requerimientos"]'); await oscuro.waitForSelector('#l-req .fila-req');
   await captura(oscuro, '30_lista_computadora_oscuro');
   await oscuro.context().close();
+  await p.context().close();
+});
+
+await caso('6 · versión nueva publicada: franja «Actualizar ahora»', async () => {
+  const p = await pagina();
+  await entrar(p, 'coord@refri.test');
+  await p.waitForSelector('h1:has-text("Hola, Juan")');
+  await p.waitForTimeout(300);
+  afirmar(await p.isHidden('#franja-version'), 'con la misma versión no debe avisar');
+  await p.route('**/version.json*', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{"version":"9.9.9"}' }));
+  await p.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+  await p.waitForSelector('#franja-version:not([hidden])');
+  afirmar(await sinDesborde(p), 'la franja desborda a 390 px');
+  await captura(p, '31_version_nueva_telefono');
   await p.context().close();
 });
 

@@ -56,5 +56,13 @@ persona del departamento con su correo y su rol.
    correo**. La cuenta se enlaza sola con la ficha.
 3. La persona recibe un correo, abre el enlace y define su contraseña en la aplicación.
 
+**Personal con correo personal** (Gmail u otro): se registra igual, con ese correo en su ficha y
+su rol. Es un usuario interno más.
+
+**Cuando alguien deja el departamento** (sobre todo si usa correo personal, que la empresa no
+controla): en la aplicación, **Personal → Editar → Retirar**; y en Supabase,
+**Authentication → Users → ⋮ → Delete user** (o *Ban user*). Las dos cosas: la ficha conserva
+el historial y la cuenta deja de poder entrar.
+
 > El servicio de correo incluido en Supabase envía pocos correos por hora. Alcanza para la
 > puesta en marcha; para operación real conviene configurar el correo de la empresa (SMTP).

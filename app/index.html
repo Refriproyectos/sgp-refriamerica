@@ -119,6 +119,57 @@ input:focus, select:focus, textarea:focus { border-color: var(--foco); outline: 
 
 /* Estructura de la aplicación */
 .franja-modo { background: var(--alerta-fondo); color: var(--alerta); text-align: center; font-weight: 600; font-size: .85rem; padding: 4px 8px; }
+/* Levantamientos */
+.estado-sinc { font-size: .88rem; font-weight: 600; padding: 6px 10px; border-radius: 8px; margin: 8px 0 12px; }
+.estado-sinc:empty { display: none; }
+.estado-sinc.ok { background: var(--ok-fondo); color: var(--ok); }
+.estado-sinc.pendiente, .estado-sinc.subiendo { background: var(--alerta-fondo); color: var(--alerta); }
+.estado-sinc.error { background: var(--error-fondo); color: var(--error); }
+.pasos { display: flex; gap: 6px; overflow-x: auto; padding: 4px 2px 10px; margin: 6px 0 8px; scrollbar-width: thin; }
+.pasos button { flex: 0 0 auto; display: flex; align-items: center; gap: 6px; border: 1px solid var(--linea); background: var(--tarjeta); color: var(--texto2);
+  border-radius: 999px; padding: 6px 12px 6px 6px; font: inherit; font-size: .88rem; cursor: pointer; min-height: 40px; }
+.pasos button .n { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--fondo); font-weight: 700; }
+.pasos button[aria-current="step"] { border-color: var(--marca); color: var(--marca); font-weight: 600; }
+.pasos button[aria-current="step"] .n { background: var(--marca); color: var(--tarjeta); }
+@media (max-width: 639px) { .pasos button:not([aria-current]) .t { display: none; } .pasos button:not([aria-current]) { padding-right: 6px; } }
+.paso-lev { background: var(--tarjeta); border: 1px solid var(--linea); border-radius: 12px; padding: 16px; }
+.paso-lev h2 { margin-top: 0; }
+.paso-lev h3 { margin: 18px 0 8px; }
+fieldset.sin-borde { border: 0; padding: 0; margin: 0; min-width: 0; }
+.nav-pasos { display: flex; justify-content: space-between; gap: 10px; margin: 14px 0 24px; }
+.opciones-tipo { display: grid; gap: 8px; }
+@media (min-width: 640px) { .opciones-tipo { grid-template-columns: repeat(3, 1fr); } }
+.opcion-tipo { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--linea); border-radius: 10px; padding: 10px; cursor: pointer; font-weight: 400; }
+.opcion-tipo:has(input:checked) { border-color: var(--marca); background: var(--fondo); }
+.opcion-tipo input { margin-top: 3px; width: 20px; height: 20px; flex: 0 0 auto; }
+.item-lista { border: 1px solid var(--linea); border-radius: 10px; margin: 0 0 10px; background: var(--tarjeta); }
+.item-lista > summary { display: flex; gap: 10px; align-items: center; padding: 12px; cursor: pointer; font-weight: 600; min-height: 48px; list-style: none; }
+.item-lista > summary::-webkit-details-marker { display: none; }
+.item-lista > summary::after { content: '▾'; margin-left: auto; color: var(--texto2); }
+.item-lista[open] > summary::after { content: '▴'; }
+.item-lista > summary > span:nth-child(2) { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.n-item { background: var(--fondo); color: var(--marca); border-radius: 6px; padding: 2px 8px; font-size: .85rem; font-weight: 700; }
+.cuerpo-item { padding: 0 12px 12px; border-top: 1px solid var(--linea); }
+.grupo-cargas { margin-top: 10px; }
+.valor-calc { min-height: 44px; display: flex; align-items: center; font-weight: 700; color: var(--marca); }
+.btn-texto.peligro { color: var(--error); }
+.bloque-fotos { margin: 12px 0 4px; }
+.titulo-fotos { font-weight: 600; margin-bottom: 6px; }
+.fotos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.foto { margin: 0; border: 1px solid var(--linea); border-radius: 8px; overflow: hidden; background: var(--fondo); }
+.foto img, .foto .sin-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+.foto .sin-img { display: grid; place-items: center; color: var(--texto2); font-size: .85rem; }
+.foto figcaption { padding: 6px; display: grid; gap: 4px; }
+.foto figcaption input { min-height: 38px; font-size: .9rem; }
+.nfoto { font-weight: 700; font-size: .85rem; color: var(--marca); }
+.botones-foto { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.botones-foto .btn { cursor: pointer; }
+.chequeo { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 6px; }
+.chequeo li { padding: 8px 10px; border-radius: 8px; background: var(--fondo); }
+.chequeo li.ok { color: var(--ok); } .chequeo li.falta { color: var(--error); background: var(--error-fondo); } .chequeo li.aviso { color: var(--alerta); }
+.botones-revision { display: flex; gap: 10px; flex-wrap: wrap; }
+.franja-version { background: var(--marca); color: #fff; text-align: center; font-weight: 600; font-size: .9rem; padding: 6px 8px; }
+.franja-version .btn-texto { color: #fff; text-decoration: underline; font-weight: 700; margin-left: 6px; padding: 0; min-height: 0; }
 .franja-red { background: var(--error-fondo); color: var(--error); text-align: center; font-weight: 600; font-size: .85rem; padding: 4px 8px; }
 .barra {
   position: sticky; top: 0; z-index: 20; height: var(--barra-alto);
@@ -240,6 +291,10 @@ legend { font-weight: 700; color: var(--marca); padding: 0 6px; }
   <symbol id="i-clientes" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16M14 9h5a1 1 0 0 1 1 1v11M3 21h18M7.5 8h3M7.5 12h3M7.5 16h3M17 13h0M17 17h0"/></symbol>
   <symbol id="i-volver" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
   <symbol id="i-mas" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-levantamientos" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10zM12 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></symbol>
+  <symbol id="i-camara" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1zM12 17a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/></symbol>
+  <symbol id="i-galeria" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v16H4zM4 16l5-5 4 4 3-3 4 4M15.5 9.5h0"/></symbol>
+  <symbol id="i-documento" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5M12 11v6M9.5 14.5 12 17l2.5-2.5"/></symbol>
   <symbol id="i-reloj" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2"/></symbol>
 </svg>
 
@@ -251,7 +306,7 @@ legend { font-weight: 700; color: var(--marca); padding: 0 6px; }
 // Aplicación de un solo archivo. Toda la lógica de permisos vive en la base (RLS y
 // funciones rpc_*): lo que aquí se oculta es cortesía, no seguridad.
 // =============================================================================
-const APP_VERSION = '0.3.0';
+const APP_VERSION = '0.4.0';   // subir junto con sw.js (VERSION) y version.json
 
 // Configuración pública. La clave publicable PUEDE estar aquí: los datos los protegen
 // las reglas de la base. La clave secreta NUNCA va en la aplicación.
@@ -274,7 +329,6 @@ const REGISTRA_REQ = [...CONDUCE, 'ventas'];
 
 // Módulos que llegan en las próximas sesiones (Plan de arranque, sección 6)
 const PROXIMOS = [
-  { nombre: 'Levantamientos', proceso: 'PRY-02', sesion: 3, texto: 'Visitas a sitio desde el teléfono, con fotos y GPS aunque no haya señal.' },
   { nombre: 'Control documental', proceso: 'PRY-03 · 07 · 10', sesion: 4, texto: 'Documentos codificados, revisiones, aprobación y firma con número CIV.' },
   { nombre: 'Equipos', proceso: 'PRY-07 · 08 · 10', sesion: 5, texto: 'Ficha única de equipo, compatible con el sistema de Servicios.' },
   { nombre: 'Horas e indicadores', proceso: 'Todos', sesion: 6, texto: 'Horas por proyecto, modalidad y disciplina; tablero de indicadores.' },
@@ -427,23 +481,47 @@ function pantallaDefinirClave() {
 // ----------------------------------------------------------------------------- sesión
 async function iniciarSesion() {
   const { data, error } = await estado.sb.auth.getSession();
-  if (error || !data.session) return pantallaLogin();
-  estado.sesion = data.session;
-  if (estado.definirClave) return pantallaDefinirClave();
-  const r = await estado.sb.rpc('rpc_mi_sesion');
-  if (r.error) {
-    await estado.sb.auth.signOut();
-    return pantallaLogin(mensajeError(r.error));
+  estado.sinConexion = false;
+  let sesion = data?.session;
+  if (!sesion) {
+    // Sin señal y con la sesión vencida: se trabaja con lo guardado en el teléfono
+    const guardado = perfilLocal();
+    if (guardado && esErrorDeRed(error) && localStorage.getItem(`sb-${new URL(CONFIG.supabaseUrl).hostname.split('.')[0]}-auth-token`)) {
+      sesion = { user: { id: guardado.uid } }; estado.sinConexion = true;
+    } else return pantallaLogin();
   }
-  estado.perfil = r.data;
+  estado.sesion = sesion;
+  if (estado.definirClave) return pantallaDefinirClave();
+  if (estado.sinConexion) estado.perfil = perfilLocal(sesion.user.id).perfil;
+  else {
+    const r = await estado.sb.rpc('rpc_mi_sesion');
+    if (r.error) {
+      const guardado = perfilLocal(sesion.user.id);
+      if (esErrorDeRed(r.error) && guardado) { estado.perfil = guardado.perfil; estado.sinConexion = true; }
+      else { await estado.sb.auth.signOut(); return pantallaLogin(mensajeError(r.error)); }
+    } else { estado.perfil = r.data; guardarPerfilLocal(sesion.user.id, r.data); }
+  }
+  await asegurarDueno(sesion.user.id);
   const [ruta, param] = location.hash.replace(/^#\/?/, '').split('/');
   estado.ruta = rutasPermitidas().some((x) => x.id === ruta) ? ruta : 'inicio';
   estado.param = estado.ruta === ruta ? (param || null) : null;
   pintarAplicacion();
-  iniciarLatido();
+  iniciarLatido(); revisarVersion();
+  if (estado.sinConexion) toast('Sin señal: trabaja con lo guardado en este equipo. Se sincroniza al recuperar la conexión.', 'info');
+  else programarSinc(1500);
 }
 
 async function cerrarSesion() {
+  const p = await pendientesLocales();
+  if (p.lev + p.fotos && !estado.confirmaSalir) {
+    abrirDialogo({ titulo: 'Hay datos sin subir', textoAceptar: 'Cerrar sesión de todos modos', peligro: true,
+      html: `<p>En este equipo hay ${p.lev} levantamiento(s) y ${p.fotos} foto(s) que todavía no llegan al servidor. Si cierra la sesión <strong>se pierden</strong>.</p>
+             <p>Recomendado: cancele, busque señal y espere a ver «Todo guardado en el servidor».</p>`,
+      alAceptar: () => { estado.confirmaSalir = true; cerrarSesion(); return true; } });
+    return;
+  }
+  estado.confirmaSalir = false;
+  try { await BD.vaciar(); localStorage.removeItem(PERFIL_LOCAL); } catch { /* */ }
   detenerLatido();
   await estado.sb.auth.signOut();
   estado.perfil = null; estado.sesion = null;
@@ -455,7 +533,9 @@ const tieneRol = (lista) => !!estado.perfil && lista.includes(estado.perfil.rol)
 
 function rutasPermitidas() {
   const r = [{ id: 'inicio', nombre: 'Inicio', icono: 'inicio' }];
-  if (tieneRol(VE_REQ)) r.push({ id: 'requerimientos', nombre: 'Requerimientos', icono: 'requerimientos' });
+  if (tieneRol(VE_REQ)) r.push({ id: 'requerimientos', nombre: 'Requerimientos', corto: 'Requerim.', icono: 'requerimientos' });
+  // En el teléfono, Levantamientos ocupa pestaña solo si caben (máximo 5): quien ve Personal lo abre desde el menú o la ficha
+  if (tieneRol(VE_REQ)) r.push({ id: 'levantamientos', nombre: 'Levantamientos', corto: 'Levantam.', icono: 'levantamientos', soloLateral: tieneRol(VE_TODO) });
   if (tieneRol(VE_CLIENTES)) r.push({ id: 'clientes', nombre: 'Clientes', icono: 'clientes', soloLateral: true });
   if (estado.perfil?.rol) r.push({ id: 'avisos', nombre: 'Avisos', icono: 'avisos' });
   if (tieneRol(VE_TODO)) r.push({ id: 'personal', nombre: 'Personal', icono: 'personal' });
@@ -466,10 +546,12 @@ function rutasPermitidas() {
 // ----------------------------------------------------------------------------- estructura
 function pintarAplicacion() {
   const rutas = rutasPermitidas();
-  const nav = (clase) => rutas.filter((x) => clase === 'lateral' || !x.soloLateral).map((x) => `<a href="#/${x.id}" data-ruta="${x.id}" ${x.id === estado.ruta ? 'aria-current="page"' : ''}>${icono(x.icono)}<span>${x.nombre}</span></a>`).join('');
+  const nav = (clase) => rutas.filter((x) => clase === 'lateral' || !x.soloLateral).map((x) => `<a href="#/${x.id}" data-ruta="${x.id}" aria-label="${x.nombre}" ${x.id === estado.ruta ? 'aria-current="page"' : ''}>${icono(x.icono)}<span>${clase === 'lateral' ? x.nombre : x.corto || x.nombre}</span></a>`).join('');
   $('#raiz').innerHTML = `
     ${estado.perfil.modo === 'prueba' ? '<div class="franja-modo" role="note">MODO PRUEBA · los datos registrados son de práctica</div>' : ''}
     <div class="franja-red" id="franja-red" role="status" ${navigator.onLine ? 'hidden' : ''}>Sin conexión · lo que vea puede no estar actualizado</div>
+    <div class="franja-version" id="franja-version" role="status" hidden>Hay una versión nueva del sistema.
+      <button class="btn-texto" id="b-actualizar" type="button">Actualizar ahora</button></div>
     <header class="barra">
       <span class="placa-logo"><img class="logo" src="assets/logo-horizontal.png" alt="Grupo RefriAmerica" width="640" height="191"></span>
       <span class="titulo">Proyectos</span>
@@ -499,7 +581,7 @@ function ir(ruta, param = null) {
 function pintarRuta() {
   const p = $('#principal'); if (!p) return;
   const vistas = { inicio: vistaInicio, avisos: vistaAvisos, personal: vistaPersonal, cuenta: vistaCuenta,
-                   clientes: vistaClientes, requerimientos: vistaRequerimientos };
+                   clientes: vistaClientes, requerimientos: vistaRequerimientos, levantamientos: vistaLevantamientos };
   (vistas[estado.ruta] || vistaInicio)(p);
   p.focus({ preventScroll: true }); window.scrollTo(0, 0);
 }
@@ -518,13 +600,14 @@ function vistaInicio(p) {
     <div class="cabecera-modulo"><div><h1>Hola, ${esc(primerNombre)}</h1>
       <p>${esc(ROLES[pf.rol] || pf.rol)}${pf.cargo && pf.cargo !== ROLES[pf.rol] ? ' · ' + esc(pf.cargo) : ''}</p></div></div>
     <div id="resumen-req"></div>
+    <div id="resumen-lev"></div>
     <h2 style="margin-top:18px">Módulos en preparación</h2>
     <div class="rejilla tres">
       ${PROXIMOS.map((m) => `<section class="tarjeta modulo-proximo" aria-label="${esc(m.nombre)}">
         <h3>${esc(m.nombre)} <span class="distintivo apagado">${icono('reloj').replace('class="icono"', 'class="icono" style="width:14px;height:14px;margin-right:4px"')}Sesión ${m.sesion}</span></h3>
         <p><strong>${esc(m.proceso)}</strong> · ${esc(m.texto)}</p></section>`).join('')}
     </div>`;
-  if (tieneRol(VE_REQ)) resumenRequerimientos($('#resumen-req'));
+  if (tieneRol(VE_REQ)) { resumenRequerimientos($('#resumen-req')); resumenLevantamientos($('#resumen-lev')); }
 }
 
 // ----------------------------------------------------------------------------- Avisos
@@ -825,11 +908,20 @@ async function vistaRequerimientos(p) {
   $('#f-buscar').addEventListener('input', pintarListaReq);
   $('#f-grupo').addEventListener('change', () => { estado.filtroReq = $('#f-grupo').value; pintarListaReq(); });
   const { data, error } = await estado.sb.from('requerimientos')
-    .select('id,codigo,obra_nombre,ciudad,estado_geo,estado,prioridad,modalidad,registrado_en,fecha_compromiso,cliente:clientes(razon_social),ingeniero:perfiles!requerimientos_ingeniero_id_fkey(nombre)')
+    .select('*, cliente:clientes(codigo,razon_social,rif), ingeniero:perfiles!requerimientos_ingeniero_id_fkey(nombre)')
     .order('registrado_en', { ascending: false }).limit(500);
   const ul = $('#l-req'); if (!ul) return;
-  if (error) { ul.innerHTML = `<li class="vacio">${esc(mensajeError(error))}</li>`; return; }
-  estado.reqs = data; pintarListaReq();
+  if (error) {
+    // Sin señal: la copia guardada en el teléfono (para poder iniciar levantamientos en sitio)
+    const copia = esErrorDeRed(error) ? await BD.todos('reqs').catch(() => []) : [];
+    if (!copia.length) { ul.innerHTML = `<li class="vacio">${esc(mensajeError(error))}</li>`; return; }
+    estado.reqs = copia.sort((a, b) => (b.registrado_en || '').localeCompare(a.registrado_en || ''));
+    toast('Sin señal: se muestra la copia guardada en este equipo.', 'info');
+  } else {
+    estado.reqs = data;
+    guardarReqsLocal(data.filter((r) => ['asignado', 'en_levantamiento', 'en_ingenieria'].includes(r.estado)));
+  }
+  pintarListaReq();
 }
 
 function pintarListaReq() {
@@ -915,6 +1007,7 @@ async function formularioRequerimiento(p) {
   const cargarClientes = async (elegir) => {
     const { data } = await estado.sb.from('clientes').select('id,codigo,razon_social,rif,contacto_nombre,contacto_cargo,contacto_telefono,contacto_correo').eq('activo', true).order('razon_social');
     estado.clientes = data || [];
+    if (!$('#r-cliente')) return;
     $('#r-cliente').innerHTML = '<option value="">— Seleccione —</option>' + estado.clientes.map((c) =>
       `<option value="${c.id}" ${c.id === elegir ? 'selected' : ''}>${esc(c.razon_social)}${c.rif ? ' · ' + esc(c.rif) : ''}</option>`).join('');
   };
@@ -924,6 +1017,7 @@ async function formularioRequerimiento(p) {
     const sel = $('#r-vendedor'); if (sel) sel.innerHTML = (data?.length ? '<option value="">— Seleccione —</option>' : '<option value="">No hay personal con rol Ventas: agréguelo en Personal</option>') +
       (data || []).map((v) => `<option value="${v.id}">${esc(v.nombre)}${v.auth_id ? '' : ' (sin cuenta)'}</option>`).join('');
   }
+  if (!$('#b-cliente-nuevo')) return;   // ya se navegó a otra pantalla
   $('#b-cliente-nuevo').addEventListener('click', () => dialogoCliente(null, (id) => cargarClientes(id)));
   // Al elegir el cliente se proponen sus datos de contacto, solo en las casillas vacías.
   $('#r-cliente').addEventListener('change', () => {
@@ -981,11 +1075,18 @@ async function detalleRequerimiento(p, id) {
     estado.sb.from('requerimiento_estados').select('estado_antes,estado_nuevo,motivo,en,perfil:perfiles(nombre)').eq('requerimiento_id', id).order('en'),
   ]);
   if (estado.param !== id) return;   // el usuario ya navegó a otra parte
-  if (error || !r) {
+  let rr = r, sinRed = false;
+  if (error && esErrorDeRed(error)) { rr = await BD.get('reqs', id).catch(() => null); sinRed = !!rr; }
+  else if (r) BD.put('reqs', r).catch(() => {});
+  if (!rr) {
     p.innerHTML = `<button class="btn-texto" id="b-volver" type="button">${icono('volver')}Requerimientos</button>
       <div class="aviso aviso-alerta" style="margin-top:12px">${error ? esc(mensajeError(error)) : 'El requerimiento no existe o no tiene acceso a él.'}</div>`;
     $('#b-volver').addEventListener('click', () => ir('requerimientos')); return;
   }
+  return pintarDetalleReq(p, rr, sinRed ? [] : hist, sinRed);
+}
+
+function pintarDetalleReq(p, r, hist, sinRed) {
   const lista = (arr, dic) => (arr || []).map((x) => dic[x] || x).join(', ') || '—';
   const fila = (t, v) => v ? `<dt>${esc(t)}</dt><dd>${v}</dd>` : '';
   const puedeAsignar = tieneRol(CONDUCE) && ['registrado', 'asignado', 'en_levantamiento', 'en_ingenieria'].includes(r.estado);
@@ -1035,6 +1136,8 @@ async function detalleRequerimiento(p, id) {
       </dl>
       <h3 style="margin-top:14px">Descripción</h3><p style="white-space:pre-wrap;margin:0">${esc(r.descripcion)}</p></section>
     </div>
+    ${sinRed ? '<div class="aviso aviso-info" style="margin-top:14px">Sin señal: se muestra la copia guardada en este equipo.</div>' : ''}
+    <section class="tarjeta" style="margin-top:14px" id="sec-lev"></section>
     <section class="tarjeta" style="margin-top:14px"><h2>Historial</h2><ol class="historial">
       ${(hist || []).map((h) => `<li><strong>${esc(ESTADOS_REQ[h.estado_nuevo]?.[0] || h.estado_nuevo)}</strong>
         <div class="detalle" style="color:var(--texto2)">${esc(fmtFechaHora(h.en))}${h.perfil ? ' · ' + esc(h.perfil.nombre) : ''}</div>
@@ -1042,6 +1145,7 @@ async function detalleRequerimiento(p, id) {
   $('#b-volver').addEventListener('click', () => ir('requerimientos'));
   $('#b-asignar')?.addEventListener('click', () => dialogoAsignar(r));
   p.querySelectorAll('[data-estado]').forEach((b) => b.addEventListener('click', () => dialogoEstado(r, b.dataset.estado)));
+  seccionLevantamientosReq($('#sec-lev'), r);
 }
 
 async function dialogoAsignar(r) {
@@ -1092,6 +1196,7 @@ async function vistaClientes(p) {
   $('#b-cli-nuevo')?.addEventListener('click', () => dialogoCliente(null, () => vistaClientes(p)));
   $('#f-buscar').addEventListener('input', () => pintarClientes(edita, p));
   const { data, error } = await estado.sb.from('clientes').select('*').order('razon_social');
+  if (!$('#l-cli')) return;
   if (error) { $('#l-cli').innerHTML = `<li class="vacio">${esc(mensajeError(error))}</li>`; return; }
   estado.clientes = data; pintarClientes(edita, p);
 }
@@ -1141,9 +1246,938 @@ function dialogoCliente(c, alGuardar) {
   });
 }
 
+// ----------------------------------------------------------------------------- almacenamiento local
+// IndexedDB guarda en el teléfono lo necesario para trabajar sin señal: requerimientos
+// asignados, levantamientos y fotos pendientes de subir. Todo lleva el uid de la cuenta:
+// si en el equipo entra otra persona, se borra lo de la anterior.
+const BD = {
+  db: null,
+  abrir() {
+    if (this.db) return Promise.resolve(this.db);
+    return new Promise((ok, mal) => {
+      const r = indexedDB.open('sgp', 1);
+      r.onupgradeneeded = () => {
+        const d = r.result;
+        d.createObjectStore('reqs', { keyPath: 'id' });
+        d.createObjectStore('lev', { keyPath: 'id' });
+        d.createObjectStore('fotos', { keyPath: 'id' }).createIndex('lev', 'levantamiento_id');
+        d.createObjectStore('meta', { keyPath: 'k' });
+      };
+      r.onsuccess = () => { this.db = r.result; ok(this.db); };
+      r.onerror = () => mal(r.error);
+    });
+  },
+  async op(almacen, modo, fn) {
+    const d = await this.abrir();
+    return new Promise((ok, mal) => {
+      const t = d.transaction(almacen, modo); const s = t.objectStore(almacen);
+      const r = fn(s); t.oncomplete = () => ok(r?.result); t.onerror = () => mal(t.error); t.onabort = () => mal(t.error);
+    });
+  },
+  get(a, k) { return this.op(a, 'readonly', (s) => s.get(k)); },
+  put(a, v) { return this.op(a, 'readwrite', (s) => s.put(v)); },
+  del(a, k) { return this.op(a, 'readwrite', (s) => s.delete(k)); },
+  todos(a) { return this.op(a, 'readonly', (s) => s.getAll()); },
+  fotosDe(lev) { return this.op('fotos', 'readonly', (s) => s.index('lev').getAll(lev)); },
+  async vaciar() { for (const a of ['reqs', 'lev', 'fotos', 'meta']) await this.op(a, 'readwrite', (s) => s.clear()); },
+};
+
+// Perfil guardado para abrir la aplicación sin señal
+const PERFIL_LOCAL = 'sgp-perfil';
+function guardarPerfilLocal(uid, perfil) { try { localStorage.setItem(PERFIL_LOCAL, JSON.stringify({ uid, perfil })); } catch { /* sin almacenamiento */ } }
+function perfilLocal(uid) {
+  try { const x = JSON.parse(localStorage.getItem(PERFIL_LOCAL) || 'null'); return x && (!uid || x.uid === uid) ? x : null; } catch { return null; }
+}
+const esErrorDeRed = (e) => !navigator.onLine || /Failed to fetch|NetworkError|Load failed|network|fetch/i.test(e?.message || String(e || '')) || e?.name === 'AuthRetryableFetchError';
+async function asegurarDueno(uid) {
+  try {
+    const m = await BD.get('meta', 'uid');
+    if (m && m.v !== uid) await BD.vaciar();
+    await BD.put('meta', { k: 'uid', v: uid });
+  } catch { /* IndexedDB no disponible: la app funciona, pero no sin señal */ }
+}
+
+// ----------------------------------------------------------------------------- levantamientos: catálogos
+const TIPOS_LEV = {
+  nueva: ['Instalación nueva', 'Edificación sin climatizar, local vacío u obra en construcción'],
+  existente: ['Instalación existente', 'Inspección o diagnóstico de sistemas en funcionamiento'],
+  mixto: ['Mixto', 'Ampliación, reemplazo o adecuación: hay equipos existentes y una necesidad nueva'],
+};
+const ESTADOS_LEV = { borrador: ['Borrador', 'apagado'], en_revision: ['En revisión', 'alerta'], devuelto: ['Devuelto', 'error'], aprobado: ['Aprobado', 'ok'] };
+const distLev = (e) => `<span class="distintivo ${ESTADOS_LEV[e]?.[1] || ''}">${esc(ESTADOS_LEV[e]?.[0] || e)}</span>`;
+const ORIENTACIONES = { N: 'Norte', NE: 'Noreste', E: 'Este', SE: 'Sureste', S: 'Sur', SO: 'Suroeste', O: 'Oeste', NO: 'Noroeste' };
+const VIDRIOS = { simple: 'Simple', doble: 'Doble', reflectivo: 'Reflectivo / tintado', sin_vidrio: 'Sin vidrio' };
+const TECHOS = { losa: 'Losa de concreto', lamina: 'Lámina metálica', teja: 'Teja', otro: 'Otro' };
+const SI_NO = { si: 'Sí', no: 'No', ns: 'No se sabe' };
+const TIPOS_EQUIPO = { split: 'Split de pared', piso_techo: 'Piso-techo', cassette: 'Cassette', ducto: 'Split de ducto',
+  paquete: 'Paquete', vrf: 'VRF', chiller: 'Chiller', uma: 'UMA', fan_coil: 'Fan coil', extractor: 'Extractor / ventilador', otro: 'Otro' };
+const REFRIGERANTES = { 'R-410A': 'R-410A', 'R-32': 'R-32', 'R-22': 'R-22', 'R-134a': 'R-134a', 'R-407C': 'R-407C', 'R-454B': 'R-454B', otro: 'Otro', ns: 'No identificado' };
+const DESTINOS = { conserva: 'Se conserva', retira: 'Se retira', reubica: 'Se reubica' };
+const ESTADOS_OBRA = { planos: 'En planos', construccion: 'En construcción', terminada: 'Terminada' };
+const COINCIDE = { si: 'Sí', no: 'No', parcial: 'Parcialmente', sin_planos: 'Sin planos del cliente' };
+const SEVERIDAD = { alta: 'Alta', media: 'Media', baja: 'Baja' };
+const PRIORIDAD_REC = { inmediata: 'Inmediata', corto: 'Corto plazo', mediano: 'Mediano plazo' };
+const BENEFICIO = { eficiencia: 'Eficiencia', calidad_aire: 'Calidad de aire', confort: 'Confort', seguridad: 'Seguridad', otro: 'Otro' };
+const ES_NUEVA = (t) => t === 'nueva';
+const PASOS_LEV = [
+  ['visita', 'Visita'], ['alcance', 'Antecedentes y alcance'], ['areas', 'Áreas'], ['equipos', 'Equipos existentes'],
+  ['facilidades', 'Facilidades'], ['mediciones', 'Instrumentos y mediciones'], ['hallazgos', 'Hallazgos'],
+  ['analisis', 'Análisis'], ['revision', 'Revisión'],
+];
+// Títulos que cambian según el tipo (formato RFA-PRY-FOR-002)
+function titulosLev(tipo) {
+  const n = ES_NUEVA(tipo);
+  return {
+    antecedentes: n ? 'Antecedentes y motivo de la visita' : 'Antecedentes y motivo de la inspección',
+    descripcion: n ? 'Descripción del sitio' : 'Descripción de las instalaciones',
+    hallazgos: n ? 'Condicionantes del sitio' : 'Hallazgos',
+    hallazgo: n ? 'Condicionante' : 'Hallazgo',
+    severidad: n ? 'Impacto en el diseño' : 'Severidad',
+    analisis: n ? 'Criterios preliminares de diseño' : 'Análisis y diagnóstico',
+  };
+}
+const num = (v) => { const x = Number(String(v ?? '').replace(/\s/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.')); return Number.isFinite(x) && String(v ?? '').trim() !== '' ? x : null; };
+const fmtNum = (x, d = 2) => x === null || x === undefined ? '' : Number(x).toLocaleString('es-VE', { minimumFractionDigits: 0, maximumFractionDigits: d });
+const nuevoId = () => (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-8xxx-xxxxxxxxxxxx'.replace(/x/g, () => (Math.random() * 16 | 0).toString(16)));
+const idCorto = () => nuevoId().slice(0, 8);
+const pad2 = (n) => String(n).padStart(2, '0');
+
+// Contenido inicial armado en el teléfono (mismo resultado que fn_lev_contenido_inicial de la base)
+function contenidoInicial(r) {
+  const tipo = r.tipo_solicitud === 'sistema_nuevo' ? 'nueva' : r.tipo_solicitud === 'diagnostico' ? 'existente' : 'mixto';
+  return {
+    tipo,
+    visita: {
+      cliente: r.cliente?.razon_social || '', rif: r.cliente?.rif || '',
+      direccion: [r.direccion, r.ciudad, r.estado_geo].filter(Boolean).join(', '),
+      contacto: [r.contacto_nombre, r.contacto_cargo, r.contacto_telefono].filter(Boolean).join(' · '),
+      tipo_instalacion: EDIFICACIONES[r.tipo_edificacion] || '',
+      sistemas: (r.sistemas || []).map((s) => SISTEMAS[s] || s).join(', '),
+    },
+    alcance: r.descripcion || '', areas: [], equipos: [], instrumentos: [], hallazgos: [], recomendaciones: [],
+  };
+}
+
+// ----------------------------------------------------------------------------- sincronización
+const sinc = { corriendo: null, temporizador: null, ultimoError: null };
+function programarSinc(ms = 2500) { clearTimeout(sinc.temporizador); sinc.temporizador = setTimeout(() => sincronizar(), ms); }
+
+async function pendientesLocales() {
+  await volcarEdicion();
+  try {
+    const [levs, fotos] = await Promise.all([BD.todos('lev'), BD.todos('fotos')]);
+    return { lev: levs.filter((l) => l.sucio || !l.codigo).length, fotos: fotos.filter((f) => !f.subida || f.descSucia || f.borrar).length,
+             conflictos: levs.filter((l) => l.conflicto).length };
+  } catch { return { lev: 0, fotos: 0, conflictos: 0 }; }
+}
+
+async function sincronizar() {
+  if (sinc.corriendo) return sinc.corriendo;
+  if (!navigator.onLine || !estado.perfil || estado.sinConexion) return;
+  sinc.corriendo = (async () => {
+    await volcarEdicion();
+    pintarEstadoSinc('subiendo');
+    try {
+      for (const l of await BD.todos('lev')) {
+        if (l.conflicto) continue;
+        // 1. Registrar los iniciados sin señal: aquí reciben su código
+        if (!l.codigo) {
+          const { data, error } = await estado.sb.rpc('rpc_levantamiento_crear', { p_id: l.id, p_requerimiento: l.requerimiento_id, p_contenido: l.contenido });
+          if (error) { if (esErrorDeRed(error)) throw error; l.errorSinc = mensajeError(error); await BD.put('lev', l); continue; }
+          const actual = await BD.get('lev', l.id) || l;
+          Object.assign(actual, { codigo: data.codigo, version: data.version, sucio: actual.sucio && actual.edicion !== l.edicion, errorSinc: null });
+          await BD.put('lev', actual);
+          toast(`Levantamiento registrado: ${data.codigo}`);
+          continue;
+        }
+        // 2. Subir el contenido modificado
+        if (l.sucio) {
+          const { data, error } = await estado.sb.rpc('rpc_levantamiento_guardar', { p_id: l.id, p_contenido: l.contenido, p_version: l.version });
+          const actual = await BD.get('lev', l.id) || l;
+          if (error) {
+            if (esErrorDeRed(error)) throw error;
+            if (/^CONFLICTO/.test(error.message)) {
+              const { data: srv } = await estado.sb.from('levantamientos').select('version,contenido').eq('id', l.id).maybeSingle();
+              actual.conflicto = srv ? { version: srv.version, contenido: srv.contenido } : null;
+            } else actual.errorSinc = mensajeError(error);
+            await BD.put('lev', actual); continue;
+          }
+          actual.version = data; actual.errorSinc = null;
+          if (actual.edicion === l.edicion) actual.sucio = false;   // si se editó durante la subida, queda pendiente
+          await BD.put('lev', actual);
+        }
+      }
+      // 3. Fotos: subir archivo, registrar ficha, borrar las quitadas
+      const levs = Object.fromEntries((await BD.todos('lev')).map((l) => [l.id, l]));
+      for (const f of await BD.todos('fotos')) {
+        const l = levs[f.levantamiento_id];
+        if (l && !l.codigo) continue;                 // primero debe existir el levantamiento en la base
+        if (f.borrar) {
+          if (f.subida) {
+            const { error } = await estado.sb.rpc('rpc_foto_eliminar', { p_id: f.id });
+            if (error) { if (esErrorDeRed(error)) throw error; continue; }
+            await estado.sb.storage.from('levantamientos').remove([`${f.levantamiento_id}/${f.id}.jpg`]);
+          }
+          await BD.del('fotos', f.id); continue;
+        }
+        if (!f.subida || f.descSucia) {
+          if (!f.subida) {
+            const { error } = await estado.sb.storage.from('levantamientos')
+              .upload(`${f.levantamiento_id}/${f.id}.jpg`, f.blob, { contentType: 'image/jpeg', upsert: true });
+            if (error) { if (esErrorDeRed(error)) throw error; f.errorSinc = mensajeError(error); await BD.put('fotos', f); continue; }
+          }
+          const { error } = await estado.sb.rpc('rpc_foto_registrar', { p: {
+            id: f.id, levantamiento_id: f.levantamiento_id, seccion: f.seccion, referencia: f.referencia, descripcion: f.descripcion,
+            tomada_en: f.tomada_en, latitud: f.latitud, longitud: f.longitud, bytes: f.bytes, ancho: f.ancho, alto: f.alto } });
+          if (error) { if (esErrorDeRed(error)) throw error; f.errorSinc = mensajeError(error); await BD.put('fotos', f); continue; }
+          const actual = await BD.get('fotos', f.id);
+          if (actual) { actual.subida = true; actual.errorSinc = null; if (actual.descripcion === f.descripcion) actual.descSucia = false; await BD.put('fotos', actual); }
+        }
+      }
+      sinc.ultimoError = null;
+    } catch (e) { sinc.ultimoError = e; }
+    finally { sinc.corriendo = null; await pintarEstadoSinc(); refrescarEditorTrasSinc(); }
+  })();
+  return sinc.corriendo;
+}
+
+async function pintarEstadoSinc(fase) {
+  const caja = $('#estado-sinc'); if (!caja) return;
+  if (fase === 'subiendo') { caja.className = 'estado-sinc subiendo'; caja.textContent = 'Subiendo al servidor…'; return; }
+  const p = await pendientesLocales();
+  const n = p.lev + p.fotos;
+  if (p.conflictos) { caja.className = 'estado-sinc error'; caja.textContent = 'Hay un conflicto de versiones: revise el levantamiento.'; }
+  else if (!n) { caja.className = 'estado-sinc ok'; caja.textContent = 'Todo guardado en el servidor'; }
+  else {
+    caja.className = 'estado-sinc pendiente';
+    caja.textContent = `Guardado en este equipo · ${p.lev ? p.lev + ' levantamiento(s)' : ''}${p.lev && p.fotos ? ' y ' : ''}${p.fotos ? p.fotos + ' foto(s)' : ''} por subir${navigator.onLine ? '' : ' cuando haya señal'}`;
+  }
+}
+
+// ----------------------------------------------------------------------------- fotos: captura
+async function reducirFoto(archivo) {
+  const bmp = await createImageBitmap(archivo, { imageOrientation: 'from-image' }).catch(() => createImageBitmap(archivo));
+  const lado = 1600, k = Math.min(1, lado / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height); bmp.close?.();
+  const comoBlob = (q) => new Promise((ok) => c.toBlob(ok, 'image/jpeg', q));
+  let b = await comoBlob(0.72);
+  if (b.size > 450000) b = await comoBlob(0.6);
+  return { blob: b, ancho: c.width, alto: c.height };
+}
+// Nunca bloquea: si el permiso no se responde o el GPS tarda, sigue sin coordenadas.
+function ubicacionActual(espera = 7000) {
+  return new Promise((ok) => {
+    if (!navigator.geolocation) return ok(null);
+    setTimeout(() => ok(null), espera + 500);
+    navigator.geolocation.getCurrentPosition((p) => ok({ lat: +p.coords.latitude.toFixed(6), lon: +p.coords.longitude.toFixed(6), precision: Math.round(p.coords.accuracy) }),
+      () => ok(null), { enableHighAccuracy: true, timeout: espera, maximumAge: 120000 });
+  });
+}
+async function agregarFotos(L, archivos, seccion, referencia) {
+  const gps = await ubicacionActual(4000);
+  for (const a of archivos) {
+    try {
+      const r = await reducirFoto(a);
+      await BD.put('fotos', { id: nuevoId(), levantamiento_id: L.id, seccion, referencia: referencia || null, descripcion: '',
+        tomada_en: new Date(a.lastModified || Date.now()).toISOString(), latitud: gps?.lat ?? null, longitud: gps?.lon ?? null,
+        bytes: r.blob.size, ancho: r.ancho, alto: r.alto, blob: r.blob, subida: false });
+    } catch { toast('No se pudo procesar una de las fotos.', 'error'); }
+  }
+  programarSinc(800);
+}
+
+// ----------------------------------------------------------------------------- levantamientos: lista
+async function vistaLevantamientos(p) {
+  if (estado.param) return editorLevantamiento(p, estado.param);
+  p.innerHTML = `<div class="cabecera-modulo"><div><h1>Levantamientos</h1><p>PRY-02 · informes de levantamiento de campo.</p></div></div>
+    <div id="estado-sinc" class="estado-sinc"></div>
+    <div class="filtros"><select id="f-estado-lev" aria-label="Estado"><option value="curso">En curso</option><option value="en_revision">En revisión</option>
+      <option value="aprobado">Aprobados</option><option value="todos">Todos</option></select></div>
+    <div class="tarjeta"><ul class="lista" id="l-lev"><li class="vacio">Cargando…</li></ul></div>`;
+  pintarEstadoSinc();
+  const locales = await BD.todos('lev').catch(() => []);
+  let filas = [];
+  if (navigator.onLine && !estado.sinConexion) {
+    const { data, error } = await estado.sb.from('levantamientos')
+      .select('id,codigo,estado,tipo,actualizado_en,requerimiento:requerimientos(codigo,obra_nombre),responsable:perfiles!levantamientos_responsable_id_fkey(nombre)')
+      .order('actualizado_en', { ascending: false }).limit(300);
+    if (!error) filas = data;
+  }
+  const ids = new Set(filas.map((f) => f.id));
+  for (const l of locales) if (!ids.has(l.id)) filas.unshift({ id: l.id, codigo: l.codigo, estado: l.estado || 'borrador', tipo: l.contenido?.tipo, requerimiento: l.req, responsable: null, local: true });
+  const pintar = () => {
+    const ul = $('#l-lev'); if (!ul) return;
+    const f = $('#f-estado-lev')?.value || 'curso';
+    const lista = filas.filter((x) => f === 'todos' || (f === 'curso' ? ['borrador', 'devuelto'].includes(x.estado) : x.estado === f));
+    ul.innerHTML = lista.length ? lista.map((x) => `<li class="fila-req" data-id="${x.id}" tabindex="0" role="link">
+        <div class="principal-fila"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span class="codigo">${x.codigo ? esc(x.codigo) : 'Código pendiente'}</span>${distLev(x.estado)}
+          ${x.local && !x.codigo ? '<span class="distintivo alerta">Solo en este equipo</span>' : ''}</div>
+          <div class="nombre" style="margin-top:4px">${esc(x.requerimiento?.obra_nombre || '')}</div>
+          <div class="detalle">${esc(TIPOS_LEV[x.tipo]?.[0] || '')}${x.responsable ? ' · ' + esc(x.responsable.nombre) : ''}${x.actualizado_en ? ' · ' + esc(fmtFechaHora(x.actualizado_en)) : ''}</div>
+        </div></li>`).join('') : '<li class="vacio">No hay levantamientos en este filtro. Se inician desde la ficha del requerimiento.</li>';
+    ul.querySelectorAll('[data-id]').forEach((li) => {
+      li.addEventListener('click', () => ir('levantamientos', li.dataset.id));
+      li.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') ir('levantamientos', li.dataset.id); });
+    });
+  };
+  const sel = $('#f-estado-lev'); if (!sel) return;   // ya se navegó a otra pantalla
+  if (estado.filtroLev) sel.value = estado.filtroLev;
+  sel.addEventListener('change', () => { estado.filtroLev = sel.value; pintar(); }); pintar();
+}
+
+// Resumen en Inicio
+async function resumenLevantamientos(caja) {
+  if (!caja) return;
+  const locales = await BD.todos('lev').catch(() => []);
+  let filas = [];
+  if (navigator.onLine && !estado.sinConexion) {
+    const { data } = await estado.sb.from('levantamientos').select('id,estado,responsable_id'); filas = data || [];
+  }
+  if (!caja.isConnected) return;
+  const yo = estado.perfil.perfil_id;
+  const mios = filas.filter((x) => x.responsable_id === yo && ['borrador', 'devuelto'].includes(x.estado)).length + locales.filter((l) => !l.codigo).length;
+  const revision = filas.filter((x) => x.estado === 'en_revision').length;
+  const p = await pendientesLocales();
+  if (!mios && !revision && !p.lev && !p.fotos && !tieneRol(CONDUCE) && !filas.length) { caja.innerHTML = ''; return; }
+  caja.innerHTML = `<h2 style="margin-top:18px">Levantamientos</h2><div class="contadores">
+    <div class="tarjeta" role="button" tabindex="0" data-ir="curso"><div class="cifra">${mios}</div><div class="etiqueta">Míos en curso</div></div>
+    <div class="tarjeta" role="button" tabindex="0" data-ir="en_revision"><div class="cifra">${revision}</div><div class="etiqueta">En revisión</div></div>
+    ${p.lev + p.fotos ? `<div class="tarjeta" role="button" tabindex="0" data-ir="curso"><div class="cifra" style="color:var(--alerta)">${p.lev + p.fotos}</div><div class="etiqueta">Por subir desde este equipo</div></div>` : ''}
+  </div>`;
+  caja.querySelectorAll('[data-ir]').forEach((x) => x.addEventListener('click', () => { estado.filtroLev = x.dataset.ir; ir('levantamientos'); }));
+}
+
+// Sección «Levantamientos» en la ficha del requerimiento
+async function seccionLevantamientosReq(caja, r) {
+  if (!caja) return;
+  const puede = (tieneRol(CONDUCE) || r.ingeniero_id === estado.perfil.perfil_id) && ['asignado', 'en_levantamiento', 'en_ingenieria'].includes(r.estado);
+  const { data } = await estado.sb.from('levantamientos').select('id,codigo,estado,tipo,actualizado_en').eq('requerimiento_id', r.id).order('numero');
+  const locales = (await BD.todos('lev').catch(() => [])).filter((l) => l.requerimiento_id === r.id && !l.codigo);
+  const filas = [...(data || []), ...locales.map((l) => ({ id: l.id, codigo: null, estado: 'borrador', tipo: l.contenido.tipo }))];
+  if (!caja.isConnected) return;
+  caja.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">Levantamientos</h2>
+      ${puede ? `<button class="btn btn-primario" id="b-iniciar-lev" type="button">${icono('mas')}Iniciar levantamiento</button>` : ''}</div>
+    <ul class="lista">${filas.length ? filas.map((x) => `<li class="fila-req" data-lev="${x.id}" tabindex="0" role="link"><div class="principal-fila">
+      <span class="codigo">${x.codigo ? esc(x.codigo) : 'Código pendiente'}</span> ${distLev(x.estado)}
+      <div class="detalle">${esc(TIPOS_LEV[x.tipo]?.[0] || '')}${x.actualizado_en ? ' · ' + esc(fmtFechaHora(x.actualizado_en)) : ''}</div></div></li>`).join('')
+      : '<li class="vacio">Sin levantamientos.</li>'}</ul>`;
+  caja.querySelectorAll('[data-lev]').forEach((li) => li.addEventListener('click', () => ir('levantamientos', li.dataset.lev)));
+  $('#b-iniciar-lev')?.addEventListener('click', () => iniciarLevantamiento(r));
+}
+
+// Iniciar: funciona sin señal. Se guarda en el teléfono y recibe el código al sincronizar.
+async function iniciarLevantamiento(r) {
+  const id = nuevoId();
+  const L = { id, uid: estado.sesion?.user?.id, requerimiento_id: r.id, codigo: null, version: null, estado: 'borrador',
+    responsable_id: r.ingeniero_id, contenido: contenidoInicial(r), sucio: false, edicion: 0,
+    req: { codigo: r.codigo, obra_nombre: r.obra_nombre }, creado_local: new Date().toISOString() };
+  await BD.put('lev', L);
+  toast(navigator.onLine ? 'Levantamiento iniciado.' : 'Levantamiento iniciado sin señal: recibirá su código al conectarse.');
+  programarSinc(300);
+  ir('levantamientos', id);
+}
+
+// Copia en el teléfono de los requerimientos que se ven (para iniciar levantamientos sin señal)
+async function guardarReqsLocal(filas) {
+  try { for (const r of filas) await BD.put('reqs', r); } catch { /* sin almacenamiento */ }
+}
+
+// ----------------------------------------------------------------------------- levantamientos: editor
+const ed = { L: null, fotos: [], urls: {}, paso: 0, meta: null, hist: [], guardarT: null };
+
+async function editorLevantamiento(p, id) {
+  p.innerHTML = '<div class="vacio">Cargando…</div>';
+  let L = await BD.get('lev', id).catch(() => null);
+  let srv = null, hist = [];
+  if (navigator.onLine && !estado.sinConexion && (!L || L.codigo)) {
+    const [{ data }, { data: h }] = await Promise.all([
+      estado.sb.from('levantamientos').select('id,codigo,requerimiento_id,numero,tipo,estado,responsable_id,contenido,version,observaciones_revision,enviado_en,aprobado_en,creado_en,requerimiento:requerimientos(codigo,obra_nombre,ingeniero_id),responsable:perfiles!levantamientos_responsable_id_fkey(nombre),aprobador:perfiles!levantamientos_aprobado_por_fkey(nombre)').eq('id', id).maybeSingle(),
+      estado.sb.from('levantamiento_estados').select('estado_antes,estado_nuevo,motivo,en,perfil:perfiles(nombre)').eq('levantamiento_id', id).order('en'),
+    ]);
+    srv = data; hist = h || [];
+  }
+  if (estado.param !== id) return;
+  if (srv) {
+    const meta = { estado: srv.estado, observaciones_revision: srv.observaciones_revision, responsable: srv.responsable?.nombre,
+      aprobador: srv.aprobador?.nombre, aprobado_en: srv.aprobado_en, enviado_en: srv.enviado_en, creado_en: srv.creado_en };
+    if (!L || (!L.sucio && !L.conflicto)) {
+      L = { ...(L || {}), id, uid: estado.sesion?.user?.id, requerimiento_id: srv.requerimiento_id, codigo: srv.codigo, version: srv.version,
+        estado: srv.estado, responsable_id: srv.responsable_id, contenido: srv.contenido, sucio: false, edicion: L?.edicion || 0,
+        req: srv.requerimiento, meta };
+    } else {
+      Object.assign(L, { codigo: srv.codigo, estado: srv.estado, responsable_id: srv.responsable_id, req: srv.requerimiento, meta });
+      if (L.sucio && !L.conflicto && L.version !== srv.version) L.conflicto = { version: srv.version, contenido: srv.contenido };
+    }
+    await BD.put('lev', L).catch(() => {});
+  }
+  if (!L) {
+    p.innerHTML = `<button class="btn-texto" id="b-volver" type="button">${icono('volver')}Levantamientos</button>
+      <div class="aviso aviso-alerta" style="margin-top:12px">${navigator.onLine ? 'El levantamiento no existe o no tiene acceso a él.'
+        : 'Este levantamiento no está guardado en este equipo. Ábralo una vez con señal antes de ir a sitio.'}</div>`;
+    $('#b-volver').addEventListener('click', () => ir('levantamientos')); return;
+  }
+  ed.L = L; ed.hist = hist; ed.paso = Number(sessionStorage.getItem('paso-' + id) || 0) || 0;
+  await cargarFotosEditor(srv !== null);
+  pintarEditor(p);
+}
+
+const puedeEditarLev = (L) => ['borrador', 'devuelto'].includes(L.estado || 'borrador') && (tieneRol(CONDUCE) || L.responsable_id === estado.perfil.perfil_id);
+
+async function cargarFotosEditor(enLinea) {
+  const L = ed.L;
+  const locales = await BD.fotosDe(L.id).catch(() => []);
+  let servidor = [];
+  if (enLinea && L.codigo) {
+    const { data } = await estado.sb.from('levantamiento_fotos').select('id,ruta,seccion,referencia,descripcion,tomada_en,latitud,longitud').eq('levantamiento_id', L.id);
+    servidor = data || [];
+  }
+  const porId = new Map(servidor.map((f) => [f.id, { ...f, subida: true }]));
+  for (const f of locales) porId.set(f.id, { ...(porId.get(f.id) || {}), ...f });
+  ed.fotos = [...porId.values()].filter((f) => !f.borrar).sort((a, b) => (a.tomada_en || '').localeCompare(b.tomada_en || ''));
+  const faltan = ed.fotos.filter((f) => !f.blob && !ed.urls[f.id]).map((f) => `${L.id}/${f.id}.jpg`);
+  if (faltan.length && enLinea) {
+    const { data } = await estado.sb.storage.from('levantamientos').createSignedUrls(faltan, 3600);
+    for (const s of data || []) if (s.signedUrl) ed.urls[s.path.split('/')[1].replace('.jpg', '')] = s.signedUrl;
+  }
+  for (const f of ed.fotos) if (f.blob && !ed.urls[f.id]) ed.urls[f.id] = URL.createObjectURL(f.blob);
+}
+const numeroFoto = (id) => pad2(ed.fotos.findIndex((f) => f.id === id) + 1);
+
+function pintarEditor(p) {
+  p = p || $('#principal'); if (!p || !ed.L) return;
+  const L = ed.L, c = L.contenido, edita = puedeEditarLev(L), t = titulosLev(c.tipo);
+  const pasos = PASOS_LEV.map(([k, n]) => [k, k === 'hallazgos' ? t.hallazgos : k === 'analisis' ? (ES_NUEVA(c.tipo) ? 'Criterios de diseño' : 'Análisis') : n]);
+  const i = Math.min(ed.paso, pasos.length - 1);
+  p.innerHTML = `<button class="btn-texto" id="b-volver" type="button">${icono('volver')}${L.req?.codigo ? esc(L.req.codigo) : 'Levantamientos'}</button>
+    <div class="cabecera-modulo" style="margin-top:6px"><div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="codigo" style="font-size:1.15rem">${L.codigo ? esc(L.codigo) : 'Código pendiente'}</span>
+        ${distLev(L.estado || 'borrador')}<span class="distintivo info">${esc(TIPOS_LEV[c.tipo]?.[0] || '')}</span></div>
+      <h1 style="margin-top:6px">${esc(L.req?.obra_nombre || 'Levantamiento de campo')}</h1></div></div>
+    <div id="estado-sinc" class="estado-sinc"></div>
+    <div id="avisos-lev"></div>
+    ${L.estado === 'devuelto' && L.meta?.observaciones_revision ? `<div class="aviso aviso-alerta"><strong>Devuelto por la coordinación:</strong> ${esc(L.meta.observaciones_revision)}</div>` : ''}
+    ${!edita ? `<div class="aviso aviso-info">${L.estado === 'en_revision' ? 'En revisión: no se puede modificar.' : L.estado === 'aprobado' ? 'Aprobado: no se puede modificar.' : 'Solo el responsable o la coordinación lo modifican.'}</div>` : ''}
+    <nav class="pasos" aria-label="Pasos">${pasos.map(([k, n], j) => `<button type="button" data-paso="${j}" ${j === i ? 'aria-current="step"' : ''}>
+      <span class="n">${j + 1}</span><span class="t">${esc(n)}</span></button>`).join('')}</nav>
+    <form id="f-lev" class="paso-lev" novalidate autocomplete="off"><h2>Paso ${i + 1} de 9 · ${esc(pasos[i][1])}</h2>
+      ${pasos[i][0] === 'revision' ? PASO_HTML.revision()   /* PDF, envío y revisión: disponibles aunque no se pueda editar */
+        : `<fieldset ${edita ? '' : 'disabled'} class="sin-borde">${PASO_HTML[pasos[i][0]](c, t)}</fieldset>`}</form>
+    <div class="nav-pasos">
+      <button class="btn btn-secundario" id="b-ant" type="button" ${i === 0 ? 'disabled' : ''}>${icono('volver')}Anterior</button>
+      ${i < 8 ? `<button class="btn btn-primario" id="b-sig" type="button">Siguiente</button>` : ''}
+    </div>`;
+  const irPaso = (j) => { ed.paso = j; try { sessionStorage.setItem('paso-' + L.id, j); } catch { /* */ } pintarEditor(); window.scrollTo(0, 0); };
+  $('#b-volver').addEventListener('click', () => (L.req && L.requerimiento_id ? ir('requerimientos', L.requerimiento_id) : ir('levantamientos')));
+  p.querySelectorAll('[data-paso]').forEach((b) => b.addEventListener('click', () => irPaso(Number(b.dataset.paso))));
+  $('#b-ant').addEventListener('click', () => irPaso(i - 1));
+  $('#b-sig')?.addEventListener('click', () => irPaso(i + 1));
+  pintarAvisosLev();
+  enlazarPaso($('#f-lev'), edita);
+  p.querySelector('[aria-current="step"]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
+  pintarEstadoSinc();
+  if (pasos[i][0] === 'revision') pasoRevisionDespues();
+}
+
+// Avisos de sincronización del editor: se pintan aparte para no interrumpir lo que se escribe
+function pintarAvisosLev() {
+  const caja = $('#avisos-lev'), L = ed.L; if (!caja || !L) return;
+  caja.innerHTML = `${L.conflicto ? `<div class="aviso aviso-error" role="alert"><strong>Este levantamiento cambió en otro equipo</strong> (versión ${L.conflicto.version} en el servidor).
+      ¿Qué copia conserva?<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <button class="btn btn-secundario" id="b-usar-servidor" type="button">Usar la del servidor</button>
+      <button class="btn btn-secundario" id="b-usar-mia" type="button">Conservar la de este equipo</button></div></div>` : ''}
+    ${L.errorSinc ? `<div class="aviso aviso-error" role="alert">No se pudo subir: ${esc(L.errorSinc)}</div>` : ''}`;
+  $('#b-usar-servidor')?.addEventListener('click', async () => {
+    Object.assign(L, { contenido: L.conflicto.contenido, version: L.conflicto.version, conflicto: null, sucio: false });
+    await BD.put('lev', L); pintarEditor();
+  });
+  $('#b-usar-mia')?.addEventListener('click', async () => {
+    const { data, error } = await estado.sb.rpc('rpc_levantamiento_guardar', { p_id: L.id, p_contenido: L.contenido, p_version: null });
+    if (error) return toast(mensajeError(error), 'error');
+    Object.assign(L, { version: data, conflicto: null, sucio: false }); await BD.put('lev', L); pintarAvisosLev(); pintarEstadoSinc();
+  });
+}
+
+function refrescarEditorTrasSinc() {
+  if (estado.ruta !== 'levantamientos' || !ed.L || estado.param !== ed.L.id) return;
+  BD.get('lev', ed.L.id).then(async (L) => {
+    if (!L) return;
+    const cambioCodigo = L.codigo !== ed.L.codigo, cambioConf = !!L.conflicto !== !!ed.L.conflicto, cambioErr = L.errorSinc !== ed.L.errorSinc;
+    ed.L.codigo = L.codigo; ed.L.version = L.version; ed.L.sucio = L.sucio; ed.L.conflicto = L.conflicto; ed.L.errorSinc = L.errorSinc;
+    if (cambioConf || cambioErr) pintarAvisosLev();
+    if (cambioCodigo) { const c = $('.cabecera-modulo .codigo'); if (c && L.codigo) c.textContent = L.codigo; }
+    if (PASOS_LEV[ed.paso]?.[0] === 'revision') pasoRevisionDespues();
+  });
+}
+
+// Guardado: cada cambio va primero al teléfono y luego, si hay señal, al servidor
+function marcarCambio() {
+  const L = ed.L; L.sucio = true; L.edicion = (L.edicion || 0) + 1;
+  clearTimeout(ed.guardarT);
+  ed.guardarT = setTimeout(() => volcarEdicion().then(() => { pintarEstadoSinc(); programarSinc(3000); }), 400);
+}
+// Escribe ya en el teléfono lo que se está editando (antes de sincronizar o de salir)
+async function volcarEdicion() {
+  if (!ed.guardarT || !ed.L) return;
+  clearTimeout(ed.guardarT); ed.guardarT = null;
+  await BD.put('lev', ed.L).catch(() => {});
+}
+function fijar(obj, ruta, v) { const k = ruta.split('.'); let o = obj; for (const x of k.slice(0, -1)) o = o[x] = o[x] || {}; o[k.at(-1)] = v; }
+function leer(obj, ruta) { return ruta.split('.').reduce((o, x) => (o ? o[x] : undefined), obj); }
+
+function enlazarPaso(f, edita) {
+  if (!f) return;
+  const c = ed.L.contenido;
+  const objetivo = (el) => { const l = el.dataset.l; return l ? (c[l] || []).find((x) => x.id === el.dataset.i) : c; };
+  f.addEventListener('input', (ev) => {
+    const el = ev.target; if (!el.dataset.c || !edita) return;
+    const o = objetivo(el); if (!o) return;
+    if (el.type === 'checkbox') {
+      const grupo = [...f.querySelectorAll(`input[type=checkbox][data-c="${el.dataset.c}"]${el.dataset.i ? `[data-i="${el.dataset.i}"]` : ''}`)];
+      fijar(o, el.dataset.c, grupo.filter((x) => x.checked).map((x) => x.value));
+    } else fijar(o, el.dataset.c, el.value);
+    marcarCambio();
+    if (el.dataset.c === 'largo' || el.dataset.c === 'ancho') {
+      const s = f.querySelector(`[data-m2="${el.dataset.i}"]`); const a = num(o.largo) !== null && num(o.ancho) !== null ? num(o.largo) * num(o.ancho) : null;
+      if (s) s.textContent = a === null ? '—' : fmtNum(a) + ' m²';
+    }
+    if (el.dataset.c === 'tipo') pintarEditor();
+    if (el.dataset.c === 'nombre' && el.dataset.l === 'areas') { /* las listas de áreas se actualizan al cambiar de paso */ }
+  });
+  f.addEventListener('click', async (ev) => {
+    const b = ev.target.closest('button[data-accion]'); if (!b || !edita) return;
+    ev.preventDefault();
+    const lista = b.dataset.l;
+    if (b.dataset.accion === 'agregar') {
+      c[lista] = c[lista] || [];
+      const item = { id: idCorto() };
+      if (lista === 'equipos') item.tag = 'EQ-' + pad2(c.equipos.length + 1);
+      c[lista].push(item); ed.abierto = item.id; marcarCambio(); pintarEditor();
+      setTimeout(() => $(`[data-i="${item.id}"]`)?.focus(), 30);
+    } else if (b.dataset.accion === 'quitar') {
+      const item = (c[lista] || []).find((x) => x.id === b.dataset.i);
+      const n = ed.fotos.filter((x) => x.referencia === b.dataset.i).length;
+      abrirDialogo({ titulo: '¿Quitar este elemento?', textoAceptar: 'Quitar', peligro: true,
+        html: `<p>Se quita «${esc(item?.nombre || item?.tag || item?.descripcion || item?.texto || item?.instrumento || 'sin nombre')}»${n ? ` y sus ${n} foto(s)` : ''}.</p>`,
+        alAceptar: async () => {
+          c[lista] = c[lista].filter((x) => x.id !== b.dataset.i);
+          for (const fo of ed.fotos.filter((x) => x.referencia === b.dataset.i)) await quitarFoto(fo.id, true);
+          marcarCambio(); pintarEditor(); return true;
+        } });
+    } else if (b.dataset.accion === 'gps') {
+      b.disabled = true; b.textContent = 'Obteniendo ubicación…';
+      const g = await ubicacionActual(15000);
+      if (!g) { toast('No se pudo obtener la ubicación. Revise el permiso de ubicación del navegador.', 'error'); pintarEditor(); return; }
+      c.visita = c.visita || {}; c.visita.gps = { ...g, en: new Date().toISOString() }; marcarCambio(); pintarEditor();
+    } else if (b.dataset.accion === 'quitar-foto') {
+      abrirDialogo({ titulo: `¿Quitar la foto F-${numeroFoto(b.dataset.foto)}?`, textoAceptar: 'Quitar', peligro: true, html: '<p>La numeración de las demás fotos se ajusta.</p>',
+        alAceptar: async () => { await quitarFoto(b.dataset.foto); pintarEditor(); return true; } });
+    }
+  });
+  // Descripción de cada foto
+  f.addEventListener('change', async (ev) => {
+    const el = ev.target;
+    if (el.dataset.desc && edita) {
+      const fo = ed.fotos.find((x) => x.id === el.dataset.desc); if (!fo) return;
+      fo.descripcion = el.value.trim();
+      const local = await BD.get('fotos', fo.id).catch(() => null);
+      await BD.put('fotos', { ...(local || fo), descripcion: fo.descripcion, descSucia: true, subida: local ? local.subida : true }).catch(() => {});
+      programarSinc(2000); pintarEstadoSinc();
+    }
+    if (el.type === 'file' && el.files?.length && edita) {
+      const n = el.files.length; el.disabled = true;
+      toast(`Procesando ${n} foto(s)…`, 'info');
+      await agregarFotos(ed.L, [...el.files], el.dataset.seccion, el.dataset.ref);
+      await cargarFotosEditor(false); pintarEditor();
+    }
+  });
+  f.querySelectorAll('details[data-i]').forEach((d) => d.addEventListener('toggle', () => { if (d.open) ed.abierto = d.dataset.i; }));
+}
+
+async function quitarFoto(id, silencio) {
+  const fo = ed.fotos.find((x) => x.id === id); if (!fo) return;
+  const local = await BD.get('fotos', id).catch(() => null);
+  if (local && !local.subida) await BD.del('fotos', id).catch(() => {});
+  else await BD.put('fotos', { ...(local || fo), borrar: true }).catch(() => {});
+  ed.fotos = ed.fotos.filter((x) => x.id !== id);
+  if (!silencio) toast('Foto quitada.');
+  programarSinc(1000);
+}
+
+// ----------------------------------------------------------------------------- piezas de formulario
+const campoTxt = (etq, c, v, extra = {}) => `<div class="campo"><label>${esc(etq)}</label>${extra.area
+  ? `<textarea rows="${extra.filas || 4}" data-c="${c}" ${extra.l ? `data-l="${extra.l}" data-i="${extra.i}"` : ''} placeholder="${esc(extra.ph || '')}">${esc(v || '')}</textarea>`
+  : `<input type="${extra.tipo || 'text'}" ${extra.dec ? 'inputmode="decimal"' : ''} ${extra.entero ? 'inputmode="numeric"' : ''} data-c="${c}" ${extra.l ? `data-l="${extra.l}" data-i="${extra.i}"` : ''} value="${esc(v ?? '')}" placeholder="${esc(extra.ph || '')}">`}
+  ${extra.ayuda ? `<span class="ayuda">${esc(extra.ayuda)}</span>` : ''}</div>`;
+const campoSel = (etq, c, dic, v, extra = {}) => `<div class="campo"><label>${esc(etq)}</label><select data-c="${c}" ${extra.l ? `data-l="${extra.l}" data-i="${extra.i}"` : ''}>${opciones(dic, v || '', '—')}</select></div>`;
+const campoCasillas = (etq, c, dic, sel, extra = {}) => `<div class="campo"><label>${esc(etq)}</label><div class="casillas">${Object.entries(dic).map(([k, n]) =>
+  `<label><input type="checkbox" value="${esc(k)}" data-c="${c}" ${extra.l ? `data-l="${extra.l}" data-i="${extra.i}"` : ''} ${(sel || []).includes(k) ? 'checked' : ''}>${esc(n)}</label>`).join('')}</div></div>`;
+
+function bloqueFotos(seccion, ref, titulo = 'Fotos') {
+  const lista = ed.fotos.filter((f) => f.seccion === seccion && (f.referencia || null) === (ref || null));
+  const edita = puedeEditarLev(ed.L);
+  return `<div class="bloque-fotos"><div class="titulo-fotos">${esc(titulo)} <span class="ayuda">(${lista.length})</span></div>
+    <div class="fotos">${lista.map((f) => `<figure class="foto">
+      ${ed.urls[f.id] ? `<img src="${esc(ed.urls[f.id])}" alt="Foto F-${numeroFoto(f.id)}" loading="lazy">` : '<div class="sin-img">Sin vista previa</div>'}
+      <figcaption><span class="nfoto">F-${numeroFoto(f.id)}${f.subida ? '' : ' · <span title="Pendiente de subir">⏳</span>'}</span>
+        <input data-desc="${f.id}" value="${esc(f.descripcion || '')}" placeholder="Descripción" aria-label="Descripción de la foto F-${numeroFoto(f.id)}">
+        ${edita ? `<button class="btn-texto peligro" type="button" data-accion="quitar-foto" data-foto="${f.id}">Quitar</button>` : ''}</figcaption></figure>`).join('')}</div>
+    ${edita ? `<div class="botones-foto">
+      <label class="btn btn-secundario">${icono('camara')}Tomar foto<input type="file" accept="image/*" capture="environment" data-seccion="${seccion}" data-ref="${ref || ''}" hidden></label>
+      <label class="btn btn-secundario">${icono('galeria')}Galería<input type="file" accept="image/*" multiple data-seccion="${seccion}" data-ref="${ref || ''}" hidden></label></div>` : ''}</div>`;
+}
+
+function itemLista(lista, item, resumen, cuerpo) {
+  const abierto = ed.abierto === item.id;
+  return `<details class="item-lista" data-i="${item.id}" ${abierto ? 'open' : ''}><summary>${resumen}</summary><div class="cuerpo-item">${cuerpo}
+    ${puedeEditarLev(ed.L) ? `<div style="text-align:right"><button class="btn-texto peligro" type="button" data-accion="quitar" data-l="${lista}" data-i="${item.id}">Quitar</button></div>` : ''}</div></details>`;
+}
+const botonAgregar = (lista, texto) => puedeEditarLev(ed.L) ? `<button class="btn btn-secundario btn-bloque" type="button" data-accion="agregar" data-l="${lista}">${icono('mas')}${esc(texto)}</button>` : '';
+const opcionesAreas = (c) => Object.fromEntries((c.areas || []).map((a) => [a.id, a.nombre || 'Área sin nombre']));
+
+const PASO_HTML = {
+  visita(c) {
+    const v = c.visita || {};
+    return `<div class="campo"><label>Tipo de levantamiento</label><div class="opciones-tipo">${Object.entries(TIPOS_LEV).map(([k, [n, d]]) =>
+      `<label class="opcion-tipo"><input type="radio" name="tipo" value="${k}" data-c="tipo" ${c.tipo === k ? 'checked' : ''}><span><strong>${esc(n)}</strong><br><span class="ayuda">${esc(d)}</span></span></label>`).join('')}</div></div>
+      <div class="tres-columnas">${campoTxt('Fecha de la visita *', 'visita.fecha', v.fecha, { tipo: 'date' })}
+        ${campoTxt('Hora de inicio', 'visita.hora_inicio', v.hora_inicio, { tipo: 'time' })}${campoTxt('Hora de fin', 'visita.hora_fin', v.hora_fin, { tipo: 'time' })}</div>
+      <div class="campo"><label>Responsable de la inspección</label><input value="${esc(ed.L.meta?.responsable || estado.perfil.nombre)}" disabled></div>
+      ${campoTxt('Personal de apoyo', 'visita.personal_apoyo', v.personal_apoyo, { ph: 'Técnicos asistentes' })}
+      <div class="campo"><label>Ubicación GPS</label><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <span>${v.gps ? `${v.gps.lat}, ${v.gps.lon} <span class="ayuda">(±${v.gps.precision} m)</span>` : '<span class="ayuda">Sin registrar</span>'}</span>
+        <button class="btn btn-secundario" type="button" data-accion="gps">${v.gps ? 'Actualizar' : 'Registrar ubicación'}</button></div>
+        <span class="ayuda">Funciona sin señal de datos: usa el GPS del teléfono.</span></div>
+      <h3>Datos del cliente (del requerimiento)</h3>
+      <div class="dos-columnas">${campoTxt('Cliente / razón social', 'visita.cliente', v.cliente)}${campoTxt('RIF', 'visita.rif', v.rif)}</div>
+      ${campoTxt('Dirección', 'visita.direccion', v.direccion)}
+      <div class="dos-columnas">${campoTxt('Persona de contacto', 'visita.contacto', v.contacto, { ph: 'Nombre, cargo y teléfono' })}
+        ${campoTxt('Tipo de instalación', 'visita.tipo_instalacion', v.tipo_instalacion)}</div>
+      ${campoTxt(ES_NUEVA(c.tipo) ? 'Sistemas a proyectar (subtítulo de la portada)' : 'Sistemas inspeccionados (subtítulo de la portada)', 'visita.sistemas', v.sistemas)}
+      ${bloqueFotos('visita', null, 'Fotos generales (fachada, acceso)')}`;
+  },
+  alcance(c, t) {
+    return `${campoTxt(t.antecedentes, 'antecedentes', c.antecedentes, { area: true, ph: ES_NUEVA(c.tipo) ? 'Qué necesita el cliente, uso previsto del espacio y objetivo de la visita.' : 'Situación reportada por el cliente, desde cuándo ocurre, intervenciones previas y objetivo de la visita.' })}
+      ${campoTxt('Alcance', 'alcance', c.alcance, { area: true, ph: 'Sistemas y áreas incluidos.' })}
+      ${campoTxt('Exclusiones', 'exclusiones', c.exclusiones, { area: true, filas: 3, ph: 'p. ej., instalaciones eléctricas aguas arriba del tablero del equipo.' })}`;
+  },
+  areas(c) {
+    const cargas = c.tipo !== 'existente';
+    const lista = (c.areas || []).map((a, j) => {
+      const m2 = num(a.largo) !== null && num(a.ancho) !== null ? num(a.largo) * num(a.ancho) : null;
+      const f = (etq, campo, extra = {}) => campoTxt(etq, campo, a[campo], { ...extra, l: 'areas', i: a.id });
+      return itemLista('areas', a, `<span class="n-item">${j + 1}</span><span>${esc(a.nombre || 'Área sin nombre')}</span><span class="ayuda">${m2 === null ? '' : fmtNum(m2) + ' m²'}</span>`,
+        `${f('Área / nivel *', 'nombre', { ph: 'p. ej., Salón principal · PB' })}${f('Uso', 'uso', { ph: 'p. ej., comedor, oficina, quirófano' })}
+        <div class="tres-columnas">${f('Largo (m)', 'largo', { dec: true })}${f('Ancho (m)', 'ancho', { dec: true })}${f('Alto (m)', 'alto', { dec: true })}</div>
+        <div class="dos-columnas"><div class="campo"><label>Área</label><div class="valor-calc" data-m2="${a.id}">${m2 === null ? '—' : fmtNum(m2) + ' m²'}</div></div>
+          ${f('Ocupación (personas)', 'ocupacion', { entero: true })}</div>
+        ${f('Observación', 'observacion', { area: true, filas: 2 })}
+        ${cargas ? `<fieldset class="grupo-cargas"><legend>Datos para el cálculo de cargas</legend>
+          ${campoCasillas('Orientación de fachadas exteriores', 'orientacion', ORIENTACIONES, a.orientacion, { l: 'areas', i: a.id })}
+          <div class="dos-columnas">${f('Paredes expuestas al sol (cantidad)', 'paredes_sol', { entero: true })}${f('Techos expuestos al sol (cantidad)', 'techos_sol', { entero: true })}</div>
+          <div class="dos-columnas">${f('Superficie de vidrio (m²)', 'vidrio_m2', { dec: true })}${campoSel('Tipo de vidrio', 'vidrio_tipo', VIDRIOS, a.vidrio_tipo, { l: 'areas', i: a.id })}</div>
+          <div class="tres-columnas">${campoSel('Techo o cubierta', 'techo_tipo', TECHOS, a.techo_tipo, { l: 'areas', i: a.id })}
+            ${campoSel('Techo con aislamiento', 'techo_aislado', SI_NO, a.techo_aislado, { l: 'areas', i: a.id })}
+            ${campoSel('Cielo raso', 'cielo_raso', SI_NO, a.cielo_raso, { l: 'areas', i: a.id })}</div>
+          ${f('Horario de uso', 'horario', { ph: 'p. ej., lun–vie 7:00–18:00' })}
+          ${f('Equipos internos que generan calor', 'equipos_internos', { area: true, filas: 2, ph: 'Cocinas, servidores, equipos médicos, iluminación especial…' })}
+          ${f('Condición especial', 'condicion_especial', { ph: 'Presión, filtración, temperatura o humedad controlada' })}</fieldset>` : ''}
+        ${bloqueFotos('area', a.id)}`);
+    }).join('');
+    return `<p class="ayuda">Una ficha por cada área o nivel. El área en m² se calcula sola.</p>${lista || '<p class="vacio">Todavía no hay áreas.</p>'}${botonAgregar('areas', 'Agregar área')}`;
+  },
+  equipos(c) {
+    if (ES_NUEVA(c.tipo)) return '<div class="aviso aviso-info">No aplica en una instalación nueva: el informe omite esta tabla. Si hay equipos que se conservan o retiran, cambie el tipo a <strong>Mixto</strong> en el paso 1.</div>';
+    const areas = opcionesAreas(c);
+    const lista = (c.equipos || []).map((e) => {
+      const f = (etq, campo, extra = {}) => campoTxt(etq, campo, e[campo], { ...extra, l: 'equipos', i: e.id });
+      const s = (etq, campo, dic) => campoSel(etq, campo, dic, e[campo], { l: 'equipos', i: e.id });
+      return itemLista('equipos', e, `<span class="n-item">${esc(e.tag || 'EQ')}</span><span>${esc(TIPOS_EQUIPO[e.tipo] || 'Equipo')}</span><span class="ayuda">${esc(e.capacidad || '')}</span>`,
+        `<div class="dos-columnas">${f('TAG', 'tag')}${s('Tipo', 'tipo', TIPOS_EQUIPO)}</div>
+        <div class="dos-columnas">${f('Marca / modelo', 'marca_modelo')}${f('Capacidad', 'capacidad', { ph: 'p. ej., 24.000 BTU/h · 5 TR' })}</div>
+        <div class="dos-columnas">${s('Refrigerante', 'refrigerante', REFRIGERANTES)}${s('Área servida', 'area_id', areas)}</div>
+        ${c.tipo === 'mixto' ? s('Destino', 'destino', DESTINOS) : ''}
+        ${f('Observación', 'observacion', { area: true, filas: 2 })}
+        ${bloqueFotos('equipo', e.id)}`);
+    }).join('');
+    return `${Object.keys(areas).length ? '' : '<div class="aviso aviso-alerta">Registre primero las áreas (paso 3) para indicar el área servida.</div>'}
+      ${lista || '<p class="vacio">Todavía no hay equipos.</p>'}${botonAgregar('equipos', 'Agregar equipo')}`;
+  },
+  facilidades(c) {
+    const x = c.facilidades || {};
+    const f = (etq, campo, extra = {}) => campoTxt(etq, 'facilidades.' + campo, leer(x, campo), extra);
+    const s = (etq, campo, dic) => campoSel(etq, 'facilidades.' + campo, dic, leer(x, campo));
+    return `<h3>Electricidad</h3>
+      <div class="dos-columnas">${f('Tablero disponible', 'electrica.tablero', { ph: 'Ubicación e identificación' })}${f('Tensión y fases', 'electrica.tension', { ph: 'p. ej., 208 V · 3F' })}</div>
+      ${f('Capacidad disponible', 'electrica.capacidad', { ph: 'Breakers libres, amperaje disponible' })}
+      ${f('Observaciones eléctricas', 'electrica.observacion', { area: true, filas: 2 })}
+      <h3>Sitio</h3>
+      ${f('Rutas para tuberías y ductos', 'rutas', { area: true, filas: 2 })}
+      ${f('Ubicación posible de equipos', 'ubicacion_equipos', { area: true, filas: 2 })}
+      <div class="dos-columnas">${f('Drenajes', 'drenajes')}${f('Acceso a techo o estructura', 'acceso_techo')}</div>
+      ${c.tipo !== 'existente' ? `<div class="dos-columnas">${s('Estado de la obra', 'estado_obra', ESTADOS_OBRA)}${s('¿El sitio coincide con los planos del cliente?', 'coincide_planos', COINCIDE)}</div>` : ''}
+      ${f('Otras observaciones', 'observaciones', { area: true, filas: 3 })}
+      ${bloqueFotos('facilidades', null)}`;
+  },
+  mediciones(c) {
+    const lista = (c.instrumentos || []).map((x) => {
+      const f = (etq, campo) => campoTxt(etq, campo, x[campo], { l: 'instrumentos', i: x.id });
+      return itemLista('instrumentos', x, `<span>${esc(x.instrumento || 'Instrumento')}</span><span class="ayuda">${esc(x.variable || '')}</span>`,
+        `<div class="dos-columnas">${f('Instrumento', 'instrumento')}${f('Marca / modelo', 'marca_modelo')}</div>
+         <div class="dos-columnas">${f('N.º de serie', 'serie')}${f('Variable medida', 'variable')}</div>`);
+    }).join('');
+    return `${campoTxt('Metodología', 'metodologia', c.metodologia, { area: true, ph: 'Secuencia de trabajo en sitio: inspección visual, mediciones eléctricas, mediciones de aire, registro histórico.' })}
+      <h3>Instrumentos</h3>${lista || '<p class="vacio">Sin instrumentos registrados.</p>'}${botonAgregar('instrumentos', 'Agregar instrumento')}
+      <h3>Registros de medición</h3>${campoTxt('Resumen de mediciones', 'mediciones', c.mediciones, { area: true, ph: 'Data logger, planillas de amperaje, velocidades de aire…' })}
+      ${bloqueFotos('medicion', null, 'Fotos de planillas o lecturas')}`;
+  },
+  hallazgos(c, t) {
+    const areas = opcionesAreas(c);
+    const lista = (c.hallazgos || []).map((h, j) => itemLista('hallazgos', h,
+      `<span class="n-item">${ES_NUEVA(c.tipo) ? 'C' : 'H'}-${pad2(j + 1)}</span><span>${esc((h.descripcion || t.hallazgo).slice(0, 60))}</span><span class="ayuda">${esc(SEVERIDAD[h.severidad] || '')}</span>`,
+      `${campoTxt(t.hallazgo, 'descripcion', h.descripcion, { area: true, filas: 3, l: 'hallazgos', i: h.id })}
+       <div class="dos-columnas">${campoSel('Ubicación (área)', 'area_id', areas, h.area_id, { l: 'hallazgos', i: h.id })}
+         ${campoSel(t.severidad, 'severidad', SEVERIDAD, h.severidad, { l: 'hallazgos', i: h.id })}</div>
+       ${campoTxt('Otra ubicación', 'ubicacion', h.ubicacion, { l: 'hallazgos', i: h.id, ph: 'Si no corresponde a un área registrada' })}
+       ${bloqueFotos('hallazgo', h.id)}`)).join('');
+    return `${ES_NUEVA(c.tipo) ? '<p class="ayuda">Condiciones del sitio que afectan el diseño, p. ej., «sin espacio en techo para condensadoras», «tablero sin capacidad disponible».</p>' : ''}
+      ${lista || `<p class="vacio">Sin ${t.hallazgos.toLowerCase()} registrados.</p>`}${botonAgregar('hallazgos', 'Agregar ' + t.hallazgo.toLowerCase())}`;
+  },
+  analisis(c, t) {
+    const lista = (c.recomendaciones || []).map((r, j) => itemLista('recomendaciones', r,
+      `<span class="n-item">R-${pad2(j + 1)}</span><span>${esc((r.texto || 'Recomendación').slice(0, 60))}</span>`,
+      `${campoTxt('Recomendación', 'texto', r.texto, { area: true, filas: 3, l: 'recomendaciones', i: r.id })}
+       <div class="dos-columnas">${campoSel('Prioridad', 'prioridad', PRIORIDAD_REC, r.prioridad, { l: 'recomendaciones', i: r.id })}
+         ${campoSel('Beneficio esperado', 'beneficio', BENEFICIO, r.beneficio, { l: 'recomendaciones', i: r.id })}</div>`)).join('');
+    return `<p class="ayuda">Se puede completar en la oficina, desde el teléfono o la computadora.</p>
+      ${campoTxt(t.analisis, 'analisis', c.analisis, { area: true, filas: 6, ph: ES_NUEVA(c.tipo) ? 'Sistema sugerido, supuestos y datos faltantes.' : 'Relacionar hallazgos con causas raíz; indicar supuestos y datos faltantes.' })}
+      <h3>Recomendaciones</h3>${lista || '<p class="vacio">Sin recomendaciones.</p>'}${botonAgregar('recomendaciones', 'Agregar recomendación')}
+      ${campoTxt('Conclusiones', 'conclusiones', c.conclusiones, { area: true, filas: 4, ph: 'Síntesis y próximos pasos.' })}`;
+  },
+  revision() { return '<div id="revision-lev"><div class="vacio">Revisando…</div></div>'; },
+};
+
+// Paso 9: lista de comprobación, informe y envío
+async function pasoRevisionDespues() {
+  const caja = $('#revision-lev'); if (!caja) return;
+  const L = ed.L, c = L.contenido, t = titulosLev(c.tipo), pend = await pendientesLocales();
+  const pendLev = L.sucio || !L.codigo, pendFotos = (await BD.fotosDe(L.id).catch(() => [])).filter((f) => !f.subida || f.descSucia || f.borrar).length;
+  const sinDesc = ed.fotos.filter((f) => !f.descripcion).length;
+  const chequeo = [
+    [!!c.visita?.fecha, 'Fecha de la visita (paso 1)', true],
+    [(c.areas || []).length > 0, 'Al menos un área (paso 3)', true],
+    [(c.areas || []).every((a) => a.nombre), 'Todas las áreas con nombre', false],
+    [ed.fotos.length > 0, `Registro fotográfico (${ed.fotos.length} foto(s))`, false],
+    [!sinDesc, sinDesc ? `${sinDesc} foto(s) sin descripción` : 'Todas las fotos con descripción', false],
+    [!!c.analisis, t.analisis + ' (paso 8)', false],
+    [!pendLev && !pendFotos, pendLev || pendFotos ? 'Hay cambios o fotos sin subir al servidor' : 'Todo subido al servidor', true],
+  ];
+  if (!caja.isConnected) return;    // la pantalla se volvió a pintar mientras se revisaba
+  const listo = chequeo.every(([ok, , oblig]) => ok || !oblig);
+  const edita = puedeEditarLev(L), revisa = tieneRol(CONDUCE) && L.estado === 'en_revision';
+  caja.innerHTML = `<ul class="chequeo">${chequeo.map(([ok, txt, oblig]) => `<li class="${ok ? 'ok' : oblig ? 'falta' : 'aviso'}">${ok ? '✓' : oblig ? '✗' : '!'} ${esc(txt)}${!ok && oblig ? ' <span class="ayuda">(obligatorio)</span>' : ''}</li>`).join('')}</ul>
+    <div class="botones-revision">
+      <button class="btn btn-secundario" id="b-pdf" type="button">${icono('documento')}Descargar informe PDF${L.estado === 'aprobado' ? '' : ' (borrador)'}</button>
+      ${edita ? `<button class="btn btn-primario" id="b-enviar-lev" type="button" ${listo && navigator.onLine ? '' : 'disabled'}>Enviar a revisión</button>` : ''}
+      ${revisa ? `<button class="btn btn-primario" id="b-aprobar-lev" type="button">Aprobar</button><button class="btn btn-peligro" id="b-devolver-lev" type="button">Devolver</button>` : ''}
+    </div>
+    ${edita && !navigator.onLine ? '<p class="ayuda">Para enviar a revisión se necesita señal.</p>' : ''}
+    ${ed.hist.length ? `<h3 style="margin-top:18px">Historial</h3><ol class="historial">${ed.hist.map((h) => `<li><strong>${esc(ESTADOS_LEV[h.estado_nuevo]?.[0] || h.estado_nuevo)}</strong>
+      <div class="detalle" style="color:var(--texto2)">${esc(fmtFechaHora(h.en))}${h.perfil ? ' · ' + esc(h.perfil.nombre) : ''}</div>${h.motivo ? `<div>${esc(h.motivo)}</div>` : ''}</li>`).join('')}</ol>` : ''}`;
+  void pend;
+  caja.querySelector('#b-pdf').addEventListener('click', async (ev) => {
+    const b = ev.currentTarget; b.disabled = true; const txt = b.innerHTML; b.textContent = 'Preparando el PDF…';
+    try { await generarInformePDF(ed.L, ed.fotos); } catch (e) { toast('No se pudo generar el PDF: ' + (e.message || e), 'error'); }
+    b.disabled = false; b.innerHTML = txt;
+  });
+  caja.querySelector('#b-enviar-lev')?.addEventListener('click', () => abrirDialogo({ titulo: `Enviar ${L.codigo} a revisión`, textoAceptar: 'Enviar',
+    html: '<p>La coordinación recibirá un aviso. Mientras esté en revisión no se puede modificar.</p>',
+    alAceptar: async (d, err) => {
+      await sincronizar();
+      const { error } = await estado.sb.rpc('rpc_levantamiento_enviar', { p_id: L.id });
+      if (error) { err(mensajeError(error)); return false; }
+      toast(`${L.codigo} enviado a revisión.`); editorLevantamiento($('#principal'), L.id); return true;
+    } }));
+  const revisar = (aprobar) => abrirDialogo({ titulo: `${aprobar ? 'Aprobar' : 'Devolver'} ${L.codigo}`, textoAceptar: aprobar ? 'Aprobar' : 'Devolver', peligro: !aprobar,
+    html: `<div class="campo"><label for="r-obs">${aprobar ? 'Comentario' : 'Observaciones *'}</label><textarea id="r-obs" rows="4"></textarea></div>`,
+    alAceptar: async (d, err) => {
+      const obs = valor(d, '#r-obs');
+      if (!aprobar && obs.length < 3) { err('Indique las observaciones.'); return false; }
+      const { error } = await estado.sb.rpc('rpc_levantamiento_revisar', { p_id: L.id, p_aprobar: aprobar, p_observaciones: obs || null });
+      if (error) { err(mensajeError(error)); return false; }
+      toast(`${L.codigo}: ${aprobar ? 'aprobado' : 'devuelto'}.`); editorLevantamiento($('#principal'), L.id); return true;
+    } });
+  caja.querySelector('#b-aprobar-lev')?.addEventListener('click', () => revisar(true));
+  caja.querySelector('#b-devolver-lev')?.addEventListener('click', () => revisar(false));
+}
+
+// ----------------------------------------------------------------------------- informe PDF (RFA-PRY-FOR-002)
+// Se arma en el propio equipo con pdfmake (cargado solo al pedir el PDF). Replica la plantilla
+// «Informe de Levantamiento de Campo» aprobada: portada, encabezado y pie en cada página,
+// control del documento, secciones 1 a 10 y firmas EN BLANCO (el sistema no firma por nadie).
+let pdfCargado = null;
+function cargarPdfmake() {
+  const script = (src) => new Promise((ok, mal) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => mal(new Error('no se pudo cargar ' + src)); document.head.appendChild(s); });
+  pdfCargado = pdfCargado || script('vendor/pdfmake-0.2.20.min.js').then(() => script('vendor/pdf-fuentes.js')).then(() => {
+    window.pdfMake.fonts = { SGPTexto: { normal: 'SGPTexto-Regular.ttf', bold: 'SGPTexto-Bold.ttf', italics: 'SGPTexto-It.ttf', bolditalics: 'SGPTexto-BoldIt.ttf' } };
+  }).catch((e) => { pdfCargado = null; throw e; });
+  return pdfCargado;
+}
+const comoDataURL = (blob) => new Promise((ok, mal) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = () => mal(r.error); r.readAsDataURL(blob); });
+async function imagenDataURL(url) { const r = await fetch(url); if (!r.ok) throw new Error('imagen no disponible'); return comoDataURL(await r.blob()); }
+const iniciales = (n) => (n || '').split(/\s+/).filter(Boolean).filter((x) => x.length > 2 || /^[A-ZÁÉÍÓÚÑ]/.test(x)).map((x) => x[0].toUpperCase()).join('');
+
+async function generarInformePDF(L, fotos) {
+  if (!navigator.onLine && fotos.some((f) => !f.blob)) toast('Sin señal: las fotos que no están en este equipo no aparecerán en el PDF.', 'alerta');
+  await cargarPdfmake();
+  const c = L.contenido, v = c.visita || {}, t = titulosLev(c.tipo), nueva = ES_NUEVA(c.tipo), mixto = c.tipo === 'mixto';
+  const aprobado = L.estado === 'aprobado';
+  const AZUL = '#00205C', AZUL2 = '#0075C9', VERDE = '#3DAF2C', GRIS = '#5B6573', FONDO = '#EEF2F7', LINEA = '#C9D2DE';
+  const fechaEmision = aprobado && L.meta?.aprobado_en ? fmtFecha(L.meta.aprobado_en.slice(0, 10)) : fmtFecha(new Date().toISOString().slice(0, 10));
+  const codigo = L.codigo || 'Código pendiente';
+  // pdfmake modifica los nodos al maquetar: cada uso necesita su propio objeto
+  const sinDato = () => ({ text: 'Sin información registrada.', italics: true, color: GRIS, margin: [0, 0, 0, 6] });
+  const parrafo = (x) => (x && String(x).trim() ? { text: String(x).trim(), margin: [0, 0, 0, 6] } : sinDato());
+  const h1 = (x) => ({ text: x, style: 'h1', headlineLevel: 1 }), h2 = (x) => ({ text: x, style: 'h2', headlineLevel: 1 });
+  const nombreArea = (id) => (c.areas || []).find((a) => a.id === id)?.nombre || '';
+
+  // Imágenes: logotipos y fotos (las del equipo o descargadas del depósito)
+  const [logoH, logoC] = await Promise.all([imagenDataURL('assets/logo-horizontal.png'), imagenDataURL('assets/logo-centrado.png')]);
+  const imgs = {};
+  for (const f of fotos) {
+    try { imgs[f.id] = f.blob ? await comoDataURL(f.blob) : ed.urls[f.id] ? await imagenDataURL(ed.urls[f.id]) : null; } catch { imgs[f.id] = null; }
+  }
+  const nFoto = (id) => 'F-' + pad2(fotos.findIndex((f) => f.id === id) + 1);
+  const fotosDe = (seccion, ref) => fotos.filter((f) => f.seccion === seccion && (f.referencia || null) === (ref || null)).map((f) => nFoto(f.id)).join(', ');
+
+  // Tablas
+  const tabla = (encab, filas, anchos, opc = {}) => ({
+    table: { headerRows: 1, widths: anchos, body: [encab.map((x) => ({ text: x, style: 'th' })), ...(filas.length ? filas : [encab.map((_, j) => (j === 0 ? { ...sinDato(), colSpan: encab.length } : ''))])] },
+    layout: { fillColor: (i) => (i === 0 ? AZUL : i % 2 === 0 ? FONDO : null), hLineColor: () => LINEA, vLineColor: () => LINEA, hLineWidth: () => 0.5, vLineWidth: () => 0.5,
+      paddingTop: () => 3, paddingBottom: () => 3 }, fontSize: 8.5, margin: [0, 2, 0, 10], ...opc });
+  const claveValor = (filas) => ({
+    table: { widths: [150, '*'], body: filas.map(([k, x]) => [{ text: k, bold: true, fillColor: FONDO }, { text: x || '—', color: x ? '#111' : GRIS }]) },
+    layout: { hLineColor: () => LINEA, vLineColor: () => LINEA, hLineWidth: () => 0.5, vLineWidth: () => 0.5, paddingTop: () => 3, paddingBottom: () => 3 },
+    fontSize: 9, margin: [0, 2, 0, 10] });
+
+  const areas = (c.areas || []).map((a) => {
+    const m2 = num(a.largo) !== null && num(a.ancho) !== null ? num(a.largo) * num(a.ancho) : null;
+    return [a.nombre || '', a.uso || '', fmtNum(num(a.largo)), fmtNum(num(a.ancho)), fmtNum(num(a.alto)), m2 === null ? '' : fmtNum(m2), a.ocupacion || '', a.observacion || ''];
+  });
+  const cargas = (c.areas || []).map((a) => [a.nombre || '', (a.orientacion || []).join(', '), a.paredes_sol || '', a.techos_sol || '',
+    [a.vidrio_m2 ? fmtNum(num(a.vidrio_m2)) + ' m²' : '', VIDRIOS[a.vidrio_tipo] || ''].filter(Boolean).join(' · '),
+    [TECHOS[a.techo_tipo], a.techo_aislado ? 'aislado: ' + SI_NO[a.techo_aislado].toLowerCase() : '', a.cielo_raso ? 'cielo raso: ' + SI_NO[a.cielo_raso].toLowerCase() : ''].filter(Boolean).join(' · '),
+    a.horario || '']);
+  const notasCargas = (c.areas || []).filter((a) => a.equipos_internos || a.condicion_especial).map((a) =>
+    ({ text: [{ text: (a.nombre || 'Área') + ': ', bold: true }, [a.equipos_internos && 'equipos internos: ' + a.equipos_internos, a.condicion_especial && 'condición especial: ' + a.condicion_especial].filter(Boolean).join('; ')], fontSize: 8.5, margin: [0, 0, 0, 3] }));
+  const fa = c.facilidades || {}, el = fa.electrica || {};
+  const pref = nueva ? 'C' : 'H';
+
+  // Registro fotográfico: dos por fila, como la plantilla
+  const celdasFoto = fotos.map((f) => ({ stack: [
+    imgs[f.id] ? { image: imgs[f.id], fit: [235, 175], alignment: 'center' } : { text: '[Foto no disponible en este equipo]', italics: true, color: GRIS, margin: [0, 70, 0, 70], alignment: 'center' },
+    { text: [{ text: `Foto ${nFoto(f.id)}. `, bold: true }, f.descripcion || ''], fontSize: 8.5, margin: [0, 4, 0, 0] }], margin: [0, 0, 0, 12], unbreakable: true }));
+  const filasFoto = []; for (let i = 0; i < celdasFoto.length; i += 2) filasFoto.push([celdasFoto[i], celdasFoto[i + 1] || '']);
+
+  const dd = {
+    pageSize: 'A4', pageMargins: [50, 82, 50, 56],
+    info: { title: `Informe de Levantamiento de Campo ${codigo}`, author: 'Grupo RefriAmerica', subject: c.visita?.cliente || '' },
+    defaultStyle: { font: 'SGPTexto', fontSize: 9.5, lineHeight: 1.15, color: '#111' },
+    styles: { h1: { fontSize: 13, bold: true, color: AZUL, margin: [0, 10, 0, 5] }, h2: { fontSize: 10.5, bold: true, color: AZUL2, margin: [0, 6, 0, 4] },
+      th: { bold: true, color: '#fff', fontSize: 8.5, alignment: 'center' } },
+    watermark: aprobado ? undefined : { text: 'BORRADOR', color: '#B00020', opacity: 0.07, bold: true },
+    // Franja de portada (posición absoluta y altura dentro de la página: si no, pdfmake no la dibuja)
+    background: (pag) => (pag === 1 ? { canvas: [{ type: 'rect', x: 0, y: 0, w: 22, h: 841, color: AZUL }, { type: 'rect', x: 22, y: 0, w: 5, h: 841, color: VERDE }], absolutePosition: { x: 0, y: 0 } } : { text: '' }),
+    // Un título nunca queda solo al pie de la página
+    pageBreakBefore: (nodo) => nodo.headlineLevel === 1 && nodo.startPosition.top > 841.89 - 56 - 110,
+    header: (pag) => (pag === 1 ? null : { margin: [50, 26, 50, 0], stack: [
+      { columns: [{ image: logoH, width: 105 }, { stack: [{ text: 'Informe de Levantamiento de Campo', bold: true, fontSize: 8.5, color: AZUL, alignment: 'right' },
+        { text: `Código: ${codigo}  |  Rev. 0  |  ${fechaEmision}`, fontSize: 7.5, color: GRIS, alignment: 'right' }], margin: [0, 6, 0, 0] }] },
+      { canvas: [{ type: 'line', x1: 0, y1: 6, x2: 495, y2: 6, lineWidth: 1.2, lineColor: AZUL2 }, { type: 'line', x1: 0, y1: 8.5, x2: 495, y2: 8.5, lineWidth: 1.2, lineColor: VERDE }] }] }),
+    footer: (pag) => (pag === 1 ? null : { margin: [50, 14, 50, 0], stack: [
+      { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 495, y2: 0, lineWidth: 0.5, lineColor: LINEA }] },
+      { columns: [{ text: 'Grupo RefriAmerica · Ventas, instalación y servicio de sistemas HVAC-R', fontSize: 7.5, color: GRIS },
+        { text: 'Página ' + (pag - 1), fontSize: 7.5, color: GRIS, alignment: 'right', width: 60 }], margin: [0, 5, 0, 0] }] }),
+    content: [
+      // Portada
+      { image: logoC, width: 210, alignment: 'center', margin: [0, 40, 0, 70] },
+      { text: 'Informe de Levantamiento de Campo', fontSize: 22, bold: true, color: AZUL },
+      { text: v.sistemas || (nueva ? 'Sistemas a proyectar' : 'Sistemas inspeccionados'), fontSize: 12, italics: true, color: GRIS, margin: [0, 4, 0, 40] },
+      { table: { widths: [130, '*'], body: [
+          ['Cliente', v.cliente || '—'], ['Ubicación', v.direccion || '—'], ['Fecha de inspección', fmtFecha(v.fecha) || '—'],
+          ['Código del documento', codigo], ['Revisión / Emisión', `0 · ${fechaEmision}`], ['Elaborado por', L.meta?.responsable || estado.perfil.nombre]]
+          .map(([k, x]) => [{ text: k, bold: true, color: AZUL }, { text: x }]) },
+        layout: { hLineWidth: (i) => (i === 0 ? 0 : 0.5), vLineWidth: () => 0, hLineColor: () => LINEA, paddingTop: () => 6, paddingBottom: () => 6 }, margin: [30, 0, 30, 0] },
+      ...(!aprobado ? [{ text: 'BORRADOR · no válido para emisión hasta su aprobación por la Coordinación de Proyectos', color: '#B00020', bold: true, fontSize: 9, margin: [30, 18, 30, 0] }] : []),
+      { text: 'Documento técnico de uso exclusivo del cliente. Su reproducción parcial requiere autorización de Grupo RefriAmerica.', italics: true, fontSize: 8, color: GRIS, margin: [0, 60, 0, 0] },
+
+      // Control del documento
+      { text: 'Control del documento', style: 'h1', pageBreak: 'before', margin: [0, 0, 0, 5] },
+      tabla(['Rev.', 'Fecha', 'Descripción', 'Elaboró', 'Revisó / Aprobó'],
+        [['0', aprobado ? fechaEmision : '', 'Emisión original', iniciales(L.meta?.responsable || estado.perfil.nombre), aprobado ? iniciales(L.meta?.aprobador) : '']], [30, 70, '*', 70, 85]),
+
+      h1('1. Datos generales'),
+      claveValor([['Cliente / razón social', v.cliente], ['RIF', v.rif], ['Dirección', v.direccion], ['Persona de contacto', v.contacto],
+        ['Tipo de instalación', v.tipo_instalacion], ['Fecha y horario de la visita', [fmtFecha(v.fecha), [v.hora_inicio, v.hora_fin].filter(Boolean).join(' a ')].filter(Boolean).join(' · ')],
+        ['Responsable de la inspección', L.meta?.responsable || estado.perfil.nombre], ['Personal de apoyo', v.personal_apoyo],
+        ['Ubicación GPS', v.gps ? `${v.gps.lat}, ${v.gps.lon} (±${v.gps.precision} m)` : '']]),
+      h2(nueva ? '1.1 Áreas del sitio' : '1.1 Áreas inspeccionadas'),
+      tabla(['Área / nivel', 'Uso', 'Largo (m)', 'Ancho (m)', 'Alto (m)', 'Área (m²)', 'Ocup.', 'Observación'], areas, ['*', 60, 38, 38, 36, 42, 32, '*']),
+      ...(c.tipo !== 'existente' ? [h2('1.2 Datos para el cálculo de cargas'),
+        tabla(['Área', 'Orientación', 'Paredes al sol', 'Techos al sol', 'Vidrio', 'Techo', 'Horario'], cargas, ['*', 50, 38, 38, 62, 85, 62]), ...notasCargas] : []),
+
+      h1('2. ' + t.antecedentes), parrafo(c.antecedentes),
+      h1('3. Alcance'), parrafo(c.alcance),
+      ...(c.exclusiones ? [{ text: [{ text: 'Exclusiones: ', bold: true }, c.exclusiones], margin: [0, 0, 0, 6] }] : []),
+      h1('4. Metodología e instrumentación'), parrafo(c.metodologia),
+      tabla(['Instrumento', 'Marca / modelo', 'N.º de serie', 'Variable medida'], (c.instrumentos || []).map((x) => [x.instrumento || '', x.marca_modelo || '', x.serie || '', x.variable || '']), ['*', '*', 90, '*']),
+
+      h1('5. ' + t.descripcion),
+      ...(!nueva ? [h2('5.1 Equipos existentes'),
+        tabla(['TAG', 'Tipo', 'Marca / modelo', 'Capacidad', 'Refrigerante', 'Área servida', ...(mixto ? ['Destino'] : [])],
+          (c.equipos || []).map((e) => [e.tag || '', TIPOS_EQUIPO[e.tipo] || '', e.marca_modelo || '', e.capacidad || '', REFRIGERANTES[e.refrigerante] || '', nombreArea(e.area_id), ...(mixto ? [DESTINOS[e.destino] || ''] : [])]),
+          mixto ? [40, 58, '*', 55, 52, 70, 50] : [40, 65, '*', 65, 58, 80])] : []),
+      h2((nueva ? '5.1' : '5.2') + ' Facilidades para la instalación'),
+      claveValor([['Tablero disponible', el.tablero], ['Tensión y fases', el.tension], ['Capacidad disponible', el.capacidad], ['Observaciones eléctricas', el.observacion],
+        ['Rutas para tuberías y ductos', fa.rutas], ['Ubicación posible de equipos', fa.ubicacion_equipos], ['Drenajes', fa.drenajes], ['Acceso a techo o estructura', fa.acceso_techo],
+        ...(c.tipo !== 'existente' ? [['Estado de la obra', ESTADOS_OBRA[fa.estado_obra]], ['Coincidencia con planos del cliente', COINCIDE[fa.coincide_planos]]] : []),
+        ['Otras observaciones', fa.observaciones]]),
+
+      h1('6. ' + t.hallazgos),
+      tabla(['N.º', t.hallazgo, 'Ubicación', t.severidad, 'Foto'], (c.hallazgos || []).map((h, j) => [`${pref}-${pad2(j + 1)}`, h.descripcion || '',
+        [nombreArea(h.area_id), h.ubicacion].filter(Boolean).join(' · '), SEVERIDAD[h.severidad] || '', fotosDe('hallazgo', h.id)]), [34, '*', 85, 80, 45]),
+      h1('7. ' + t.analisis), parrafo(c.analisis),
+      h1('8. Recomendaciones'),
+      tabla(['N.º', 'Recomendación', 'Prioridad', 'Beneficio esperado'], (c.recomendaciones || []).map((r, j) => [`R-${pad2(j + 1)}`, r.texto || '', PRIORIDAD_REC[r.prioridad] || '', BENEFICIO[r.beneficio] || '']), [34, '*', 75, 85]),
+      h1('9. Conclusiones'), parrafo(c.conclusiones),
+      h1('10. Anexos'), h2('10.1 Registro fotográfico'),
+      filasFoto.length ? { table: { widths: ['*', '*'], body: filasFoto }, layout: 'noBorders' } : sinDato(),
+      h2('10.2 Registros de medición'), parrafo(c.mediciones),
+
+      // Firmas en blanco: firma quien corresponda, sobre el documento emitido
+      { text: 'Firmas', style: 'h2', margin: [0, 18, 0, 6], headlineLevel: 1 },
+      { columns: [
+        { stack: [{ text: 'Elaborado por:', bold: true }, { text: ' ', margin: [0, 28, 0, 0] }, { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 200, y2: 0, lineWidth: 0.6 }] },
+          { text: L.meta?.responsable || estado.perfil.nombre, margin: [0, 3, 0, 0] }, { text: 'Responsable de la inspección', fontSize: 8, color: GRIS }] },
+        { stack: [{ text: 'Revisado / Aprobado por:', bold: true }, { text: ' ', margin: [0, 28, 0, 0] }, { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 200, y2: 0, lineWidth: 0.6 }] },
+          { text: aprobado ? L.meta?.aprobador || '' : ' ', margin: [0, 3, 0, 0] }, { text: 'Coordinación de Proyectos', fontSize: 8, color: GRIS }] }], unbreakable: true },
+    ],
+  };
+  const doc = window.pdfMake.createPdf(dd);
+  const blob = await new Promise((ok) => doc.getBlob(ok));
+  const nombre = `${(L.codigo || 'Levantamiento').replace(/[^\w.-]+/g, '_')}_Rev0${aprobado ? '' : '_BORRADOR'}.pdf`;
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nombre;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+  estado.ultimoPDF = { nombre, bytes: blob.size, paginas: null };
+  toast(`Informe ${nombre} generado.`);
+  return blob;
+}
+
 // ----------------------------------------------------------------------------- latido de avisos
 async function latido() {
-  if (!estado.perfil?.rol || !navigator.onLine) return;
+  if (!estado.perfil?.rol || !navigator.onLine || estado.sinConexion) return;
+  pendientesLocales().then((x) => { if (x.lev + x.fotos) programarSinc(100); });
   const { count, error } = await estado.sb.from('notificaciones').select('id', { count: 'exact', head: true }).is('leida_en', null);
   if (!error) { estado.noLeidos = count || 0; pintarContador(); }
 }
@@ -1155,8 +2189,34 @@ function pintarContador() {
 function iniciarLatido() { detenerLatido(); latido(); estado.latido = setInterval(latido, CONFIG.latidoMs); }
 function detenerLatido() { if (estado.latido) clearInterval(estado.latido); estado.latido = null; }
 
+// ----------------------------------------------------------------------------- versión nueva
+// Un teléfono puede retomar la app desde memoria sin descargar lo publicado. Se compara la
+// versión en uso con version.json del servidor al volver a la app y cada 5 minutos.
+async function revisarVersion() {
+  if (!navigator.onLine) return;
+  try {
+    const r = await fetch('version.json?t=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) return;
+    const { version } = await r.json();
+    const f = $('#franja-version');
+    if (f && version && version !== APP_VERSION) f.hidden = false;
+  } catch { /* sin conexión o sin archivo: no se avisa */ }
+}
+async function actualizarAhora() {
+  const b = $('#b-actualizar'); if (b) { b.disabled = true; b.textContent = 'Actualizando…'; }
+  try { const reg = await navigator.serviceWorker?.getRegistration(); await reg?.update(); } catch { /* se recarga igual */ }
+  location.reload();
+}
+document.addEventListener('click', (ev) => { if (ev.target.closest('#b-actualizar')) actualizarAhora(); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') revisarVersion(); });
+setInterval(revisarVersion, 5 * 60 * 1000);
+
 // ----------------------------------------------------------------------------- conexión y arranque
-addEventListener('online', () => { $('#franja-red')?.setAttribute('hidden', ''); latido(); });
+addEventListener('online', () => {
+  $('#franja-red')?.setAttribute('hidden', '');
+  if (estado.sinConexion) { iniciarSesion(); return; }   // se recupera la sesión y se sincroniza
+  latido(); programarSinc(500);
+});
 addEventListener('offline', () => $('#franja-red')?.removeAttribute('hidden'));
 
 estado.sb.auth.onAuthStateChange((evento) => {

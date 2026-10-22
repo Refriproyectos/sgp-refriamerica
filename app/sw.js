@@ -4,7 +4,7 @@
 // guardada. Si solo se sube index.html, los teléfonos pueden quedarse con la versión
 // anterior sin avisar (lección del SGS).
 // =============================================================================
-const VERSION = 'sgp-0.3.0';
+const VERSION = 'sgp-0.4.0';
 
 const BASE = [
   './', 'index.html', 'manifest.webmanifest',
@@ -46,6 +46,13 @@ self.addEventListener('fetch', (ev) => {
     return;
   }
 
-  // Librerías, tipografía e imágenes: primero la copia guardada.
-  ev.respondWith(caches.match(req).then((guardado) => guardado || fetch(req)));
+  // version.json siempre de la red (aviso de versión nueva)
+  if (url.pathname.endsWith('/version.json')) return;
+
+  // Librerías, tipografía e imágenes: primero la copia guardada. Las librerías del PDF no se
+  // descargan al instalar (pesan ~1,6 MB): se guardan la primera vez que se usan.
+  ev.respondWith(caches.match(req).then((guardado) => guardado || fetch(req).then((r) => {
+    if (r.ok && url.pathname.includes('/vendor/pdf')) { const copia = r.clone(); caches.open(VERSION).then((c) => c.put(req, copia)); }
+    return r;
+  })));
 });
