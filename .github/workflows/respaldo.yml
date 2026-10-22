@@ -67,3 +67,25 @@ jobs:
           if [ -z "$ORIGEN_URL" ]; then echo "Falta el secreto SUPABASE_DB_URL"; exit 1; fi
           if [ -z "$RCLONE_CONFIG_SGP_SERVICE_ACCOUNT_CREDENTIALS" ]; then echo "Falta el secreto GDRIVE_SA_JSON"; exit 1; fi
           bash banco/respaldo.sh
+
+                - name: Copia de las fotos de levantamientos (si hay llaves S3)
+        env:
+          RCLONE_CONFIG_SUPA_TYPE: s3
+          RCLONE_CONFIG_SUPA_PROVIDER: Other
+          RCLONE_CONFIG_SUPA_ENDPOINT: https://lwhczkzhsnqawettzzfw.storage.supabase.co/storage/v1/s3
+          RCLONE_CONFIG_SUPA_REGION: ${{ secrets.SUPABASE_S3_REGION }}
+          RCLONE_CONFIG_SUPA_ACCESS_KEY_ID: ${{ secrets.SUPABASE_S3_KEY_ID }}
+          RCLONE_CONFIG_SUPA_SECRET_ACCESS_KEY: ${{ secrets.SUPABASE_S3_SECRET }}
+          RCLONE_CONFIG_SUPA_FORCE_PATH_STYLE: 'true'
+          RCLONE_CONFIG_ARCH_TYPE: drive
+          RCLONE_CONFIG_ARCH_SCOPE: drive
+          RCLONE_CONFIG_ARCH_SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.GDRIVE_SA_JSON }}
+          RCLONE_CONFIG_ARCH_TEAM_DRIVE: 0AIjs8_Zac5QIUk9PVA
+          RCLONE_CONFIG_ARCH_ROOT_FOLDER_ID: 1R_6eXCSlIwvvOTA6N8MT9OqPKObKWaIt
+        run: |
+          if [ -z "$RCLONE_CONFIG_SUPA_ACCESS_KEY_ID" ]; then
+            echo "⚠ Sin llaves S3 de Supabase: las fotos NO se copian a Drive (ver bitácora v0.4)."; exit 0
+          fi
+          # copy (no sync): una foto quitada en la app se conserva en el archivo de Drive
+          rclone copy supa:levantamientos arch:levantamientos --size-only --transfers 4
+          rclone size arch:levantamientos
