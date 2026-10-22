@@ -1,0 +1,69 @@
+# =============================================================================
+# Respaldo nocturno del SGP → unidad compartida SGP/Respaldos/BaseDatos
+#
+# Corre todos los días a las 02:00 de Caracas (06:00 UTC) y también a mano desde
+# Actions → "Respaldo nocturno" → Run workflow.
+# Si falla, GitHub envía un correo a la cuenta dueña del repositorio.
+#
+# Secretos (Settings → Secrets and variables → Actions):
+#   SUPABASE_DB_URL   cadena "Session pooler" de Supabase, con la contraseña de la base
+#   GDRIVE_SA_JSON    contenido completo de la llave JSON de la cuenta de servicio sgp-respaldo
+# =============================================================================
+name: Respaldo nocturno
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: respaldo
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  respaldo:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    services:
+      # Servidor vacío para la prueba de restauración (misma versión que producción)
+      restauracion:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: banco
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Herramientas de PostgreSQL 17 y rclone
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q postgresql-common rclone
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y -q postgresql-client-17
+          /usr/lib/postgresql/17/bin/pg_dump --version
+          rclone version | head -1
+
+      - name: Respaldo, prueba de restauración y subida a Drive
+        env:
+          ORIGEN_URL: ${{ secrets.SUPABASE_DB_URL }}
+          RESTAURAR_URL: postgresql://postgres:banco@localhost:5432/postgres
+          PG_BIN: /usr/lib/postgresql/17/bin
+          SALIDA: ${{ runner.temp }}/respaldos
+          RCLONE_DESTINO: 'sgp:'
+          RCLONE_CONFIG_SGP_TYPE: drive
+          RCLONE_CONFIG_SGP_SCOPE: drive
+          RCLONE_CONFIG_SGP_SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.GDRIVE_SA_JSON }}
+          RCLONE_CONFIG_SGP_TEAM_DRIVE: 0AIjs8_Zac5QIUk9PVA
+          RCLONE_CONFIG_SGP_ROOT_FOLDER_ID: 1K3U3NHrQsRiyO0bgLcZupzCP3cOLcAoh
+        run: |
+          if [ -z "$ORIGEN_URL" ]; then echo "Falta el secreto SUPABASE_DB_URL"; exit 1; fi
+          if [ -z "$RCLONE_CONFIG_SGP_SERVICE_ACCOUNT_CREDENTIALS" ]; then echo "Falta el secreto GDRIVE_SA_JSON"; exit 1; fi
+          bash banco/respaldo.sh
