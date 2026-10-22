@@ -4,7 +4,7 @@
 // guardada. Si solo se sube index.html, los teléfonos pueden quedarse con la versión
 // anterior sin avisar (lección del SGS).
 // =============================================================================
-const VERSION = 'sgp-0.2.0';
+const VERSION = 'sgp-0.3.0';
 
 const BASE = [
   './', 'index.html', 'manifest.webmanifest',

@@ -206,6 +206,25 @@ dialog .botones { display: flex; gap: 10px; justify-content: flex-end; flex-wrap
 .toast { position: fixed; left: 50%; bottom: calc(var(--tabs-alto) + 16px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 50; max-width: calc(100vw - 32px); }
 @media (min-width: 900px) { .toast { bottom: 24px; } }
 .version { color: var(--texto2); font-size: .82rem; }
+.distintivo.error { background: var(--error-fondo); color: var(--error); }
+.distintivo.info { background: var(--info-fondo); color: var(--enlace); }
+.codigo { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--marca); letter-spacing: .01em; }
+fieldset { border: 1px solid var(--linea); border-radius: var(--radio); padding: 14px 16px 4px; margin: 0 0 16px; background: var(--tarjeta); }
+legend { font-weight: 700; color: var(--marca); padding: 0 6px; }
+.casillas { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 4px 12px; margin-bottom: 14px; }
+.casillas label { display: flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 400; cursor: pointer; }
+.casillas input { width: 22px; height: 22px; min-height: 0; flex: none; accent-color: var(--p286); }
+.tres-columnas { display: grid; gap: 0 12px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .tres-columnas { grid-template-columns: repeat(3, 1fr); } }
+.fila-req { cursor: pointer; }
+.fila-req:hover { background: var(--suave); }
+.historial { list-style: none; margin: 0; padding: 0 0 0 14px; border-left: 2px solid var(--linea); }
+.historial li { position: relative; padding: 0 0 14px 12px; }
+.historial li::before { content: ''; position: absolute; left: -21px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--p3005); }
+.contadores { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.contadores .tarjeta { padding: 12px 14px; cursor: pointer; }
+.contadores .cifra { font-size: 1.7rem; font-weight: 700; color: var(--marca); line-height: 1.1; }
+.contadores .etiqueta { color: var(--texto2); font-size: .9rem; }
 </style>
 </head>
 <body>
@@ -217,6 +236,9 @@ dialog .botones { display: flex; gap: 10px; justify-content: flex-end; flex-wrap
   <symbol id="i-avisos" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15zM10 20a2 2 0 0 0 4 0"/></symbol>
   <symbol id="i-personal" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1M16 3.5a4 4 0 0 1 0 7M22 21v-1a6 6 0 0 0-4-5.6"/></symbol>
   <symbol id="i-cuenta" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-requerimientos" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M9 4h6v3H9zM9 5.5H6a1 1 0 0 0-1 1V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6.5a1 1 0 0 0-1-1h-3M8.5 12h7M8.5 16h5"/></symbol>
+  <symbol id="i-clientes" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16M14 9h5a1 1 0 0 1 1 1v11M3 21h18M7.5 8h3M7.5 12h3M7.5 16h3M17 13h0M17 17h0"/></symbol>
+  <symbol id="i-volver" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
   <symbol id="i-mas" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-reloj" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2"/></symbol>
 </svg>
@@ -229,7 +251,7 @@ dialog .botones { display: flex; gap: 10px; justify-content: flex-end; flex-wrap
 // Aplicación de un solo archivo. Toda la lógica de permisos vive en la base (RLS y
 // funciones rpc_*): lo que aquí se oculta es cortesía, no seguridad.
 // =============================================================================
-const APP_VERSION = '0.2.0';
+const APP_VERSION = '0.3.0';
 
 // Configuración pública. La clave publicable PUEDE estar aquí: los datos los protegen
 // las reglas de la base. La clave secreta NUNCA va en la aplicación.
@@ -246,10 +268,12 @@ const ROLES = {
 const DISCIPLINAS = { HV: 'HVAC mecánico', AU: 'Automatización y controles', GE: 'General' };
 const CONDUCE = ['admin', 'gerente', 'coordinador'];
 const VE_TODO = [...CONDUCE, 'control_gestion'];
+const VE_REQ = [...VE_TODO, 'ingeniero', 'ventas'];          // ven el módulo (la base filtra qué filas)
+const VE_CLIENTES = [...VE_TODO, 'ventas'];
+const REGISTRA_REQ = [...CONDUCE, 'ventas'];
 
 // Módulos que llegan en las próximas sesiones (Plan de arranque, sección 6)
 const PROXIMOS = [
-  { nombre: 'Requerimientos', proceso: 'PRY-01', sesion: 2, texto: 'Registro de solicitudes de Ventas, código PRY-AA-NNNN, modalidad y asignación.' },
   { nombre: 'Levantamientos', proceso: 'PRY-02', sesion: 3, texto: 'Visitas a sitio desde el teléfono, con fotos y GPS aunque no haya señal.' },
   { nombre: 'Control documental', proceso: 'PRY-03 · 07 · 10', sesion: 4, texto: 'Documentos codificados, revisiones, aprobación y firma con número CIV.' },
   { nombre: 'Equipos', proceso: 'PRY-07 · 08 · 10', sesion: 5, texto: 'Ficha única de equipo, compatible con el sistema de Servicios.' },
@@ -289,7 +313,7 @@ const enlace = new URLSearchParams(location.hash.replace(/^#/, '') + '&' + locat
 const estado = {
   sb: null, sesion: null, perfil: null, ruta: 'inicio',
   definirClave: ['invite', 'recovery'].includes(enlace.get('type')),
-  latido: null, noLeidos: 0, personal: [],
+  latido: null, noLeidos: 0, personal: [], param: null, clientes: [], reqs: [],
 };
 
 if (!window.supabase || !window.supabase.createClient) {
@@ -412,8 +436,9 @@ async function iniciarSesion() {
     return pantallaLogin(mensajeError(r.error));
   }
   estado.perfil = r.data;
-  const ruta = location.hash.replace(/^#\/?/, '');
+  const [ruta, param] = location.hash.replace(/^#\/?/, '').split('/');
   estado.ruta = rutasPermitidas().some((x) => x.id === ruta) ? ruta : 'inicio';
+  estado.param = estado.ruta === ruta ? (param || null) : null;
   pintarAplicacion();
   iniciarLatido();
 }
@@ -430,6 +455,8 @@ const tieneRol = (lista) => !!estado.perfil && lista.includes(estado.perfil.rol)
 
 function rutasPermitidas() {
   const r = [{ id: 'inicio', nombre: 'Inicio', icono: 'inicio' }];
+  if (tieneRol(VE_REQ)) r.push({ id: 'requerimientos', nombre: 'Requerimientos', icono: 'requerimientos' });
+  if (tieneRol(VE_CLIENTES)) r.push({ id: 'clientes', nombre: 'Clientes', icono: 'clientes', soloLateral: true });
   if (estado.perfil?.rol) r.push({ id: 'avisos', nombre: 'Avisos', icono: 'avisos' });
   if (tieneRol(VE_TODO)) r.push({ id: 'personal', nombre: 'Personal', icono: 'personal' });
   r.push({ id: 'cuenta', nombre: 'Mi cuenta', icono: 'cuenta' });
@@ -439,7 +466,7 @@ function rutasPermitidas() {
 // ----------------------------------------------------------------------------- estructura
 function pintarAplicacion() {
   const rutas = rutasPermitidas();
-  const nav = (clase) => rutas.map((x) => `<a href="#/${x.id}" data-ruta="${x.id}" ${x.id === estado.ruta ? 'aria-current="page"' : ''}>${icono(x.icono)}<span>${x.nombre}</span></a>`).join('');
+  const nav = (clase) => rutas.filter((x) => clase === 'lateral' || !x.soloLateral).map((x) => `<a href="#/${x.id}" data-ruta="${x.id}" ${x.id === estado.ruta ? 'aria-current="page"' : ''}>${icono(x.icono)}<span>${x.nombre}</span></a>`).join('');
   $('#raiz').innerHTML = `
     ${estado.perfil.modo === 'prueba' ? '<div class="franja-modo" role="note">MODO PRUEBA · los datos registrados son de práctica</div>' : ''}
     <div class="franja-red" id="franja-red" role="status" ${navigator.onLine ? 'hidden' : ''}>Sin conexión · lo que vea puede no estar actualizado</div>
@@ -459,10 +486,10 @@ function pintarAplicacion() {
   pintarRuta();
 }
 
-function ir(ruta) {
-  if (!rutasPermitidas().some((x) => x.id === ruta)) ruta = 'inicio';
-  estado.ruta = ruta;
-  history.replaceState(null, '', '#/' + ruta);
+function ir(ruta, param = null) {
+  if (!rutasPermitidas().some((x) => x.id === ruta)) { ruta = 'inicio'; param = null; }
+  estado.ruta = ruta; estado.param = param;
+  history.replaceState(null, '', '#/' + ruta + (param ? '/' + param : ''));
   document.querySelectorAll('[data-ruta]').forEach((a) => {
     if (a.dataset.ruta === ruta) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
@@ -471,7 +498,9 @@ function ir(ruta) {
 
 function pintarRuta() {
   const p = $('#principal'); if (!p) return;
-  ({ inicio: vistaInicio, avisos: vistaAvisos, personal: vistaPersonal, cuenta: vistaCuenta }[estado.ruta] || vistaInicio)(p);
+  const vistas = { inicio: vistaInicio, avisos: vistaAvisos, personal: vistaPersonal, cuenta: vistaCuenta,
+                   clientes: vistaClientes, requerimientos: vistaRequerimientos };
+  (vistas[estado.ruta] || vistaInicio)(p);
   p.focus({ preventScroll: true }); window.scrollTo(0, 0);
 }
 
@@ -488,13 +517,14 @@ function vistaInicio(p) {
   p.innerHTML = `
     <div class="cabecera-modulo"><div><h1>Hola, ${esc(primerNombre)}</h1>
       <p>${esc(ROLES[pf.rol] || pf.rol)}${pf.cargo && pf.cargo !== ROLES[pf.rol] ? ' · ' + esc(pf.cargo) : ''}</p></div></div>
-    <div class="aviso aviso-info">Versión inicial del sistema: ya funcionan el acceso, el personal y los avisos. Los módulos de trabajo se incorporan en las próximas sesiones.</div>
-    <h2 style="margin-top:6px">Módulos en preparación</h2>
+    <div id="resumen-req"></div>
+    <h2 style="margin-top:18px">Módulos en preparación</h2>
     <div class="rejilla tres">
       ${PROXIMOS.map((m) => `<section class="tarjeta modulo-proximo" aria-label="${esc(m.nombre)}">
         <h3>${esc(m.nombre)} <span class="distintivo apagado">${icono('reloj').replace('class="icono"', 'class="icono" style="width:14px;height:14px;margin-right:4px"')}Sesión ${m.sesion}</span></h3>
         <p><strong>${esc(m.proceso)}</strong> · ${esc(m.texto)}</p></section>`).join('')}
     </div>`;
+  if (tieneRol(VE_REQ)) resumenRequerimientos($('#resumen-req'));
 }
 
 // ----------------------------------------------------------------------------- Avisos
@@ -509,8 +539,16 @@ async function vistaAvisos(p) {
       <div class="principal-fila"><div class="nombre">${esc(n.titulo)}</div>
         ${n.cuerpo ? `<div class="detalle">${esc(n.cuerpo)}</div>` : ''}
         <div class="detalle">${esc(fmtFechaHora(n.creado_en))}</div></div>
-      ${n.leida_en ? '' : `<div class="acciones"><button class="btn btn-secundario" data-leer="${n.id}" type="button">Marcar leído</button></div>`}
+      <div class="acciones">
+        ${n.enlace ? `<button class="btn btn-secundario" data-abrir="${esc(n.enlace)}" data-id="${n.id}" data-leido="${n.leida_en ? 1 : 0}" type="button">Abrir</button>` : ''}
+        ${n.leida_en ? '' : `<button class="btn btn-secundario" data-leer="${n.id}" type="button">Marcar leído</button>`}
+      </div>
     </li>`).join('');
+  ul.querySelectorAll('[data-abrir]').forEach((b) => b.addEventListener('click', async () => {
+    if (b.dataset.leido === '0') await estado.sb.rpc('rpc_marcar_leida', { p_id: Number(b.dataset.id) });
+    const [ruta, param] = b.dataset.abrir.replace(/^#\/?/, '').split('/');
+    latido(); ir(ruta, param || null);
+  }));
   ul.querySelectorAll('[data-leer]').forEach((b) => b.addEventListener('click', async () => {
     b.disabled = true;
     const { error: e } = await estado.sb.rpc('rpc_marcar_leida', { p_id: Number(b.dataset.leer) });
@@ -668,6 +706,438 @@ function vistaCuenta(p) {
     if (error) return mostrarError(mensajeError(error));
     $('#msj').innerHTML = '<div class="aviso aviso-ok" role="status">Contraseña actualizada.</div>';
     ev.target.reset();
+  });
+}
+
+// ----------------------------------------------------------------------------- catálogos de la ficha
+// Formato RFA-PRY-FOR-001 Ficha de requerimiento (aprobado el 22/10/2026). Las listas
+// replican las restricciones de la base: si la base rechaza un valor, el error es real.
+const ESTADOS_VE = ['Amazonas', 'Anzoátegui', 'Apure', 'Aragua', 'Barinas', 'Bolívar', 'Carabobo', 'Cojedes',
+  'Delta Amacuro', 'Dependencias Federales', 'Distrito Capital', 'Falcón', 'Guárico', 'La Guaira', 'Lara', 'Mérida',
+  'Miranda', 'Monagas', 'Nueva Esparta', 'Portuguesa', 'Sucre', 'Táchira', 'Trujillo', 'Yaracuy', 'Zulia'];
+const CANALES = { visita: 'Visita', llamada: 'Llamada', correo: 'Correo', whatsapp: 'WhatsApp', licitacion: 'Licitación', referido: 'Referido' };
+const EDIFICACIONES = { residencial: 'Residencial', comercial: 'Comercial', oficinas: 'Oficinas', industrial: 'Industrial',
+  salud: 'Salud', educativo: 'Educativo', gubernamental_militar: 'Gubernamental / militar', otro: 'Otro' };
+const SOLICITUDES = { sistema_nuevo: 'Sistema nuevo', ampliacion: 'Ampliación', reemplazo: 'Reemplazo', adecuacion: 'Adecuación', diagnostico: 'Diagnóstico' };
+const SISTEMAS = { expansion_directa: 'Expansión directa', vrf: 'VRF', agua_helada: 'Agua helada', uma: 'UMA',
+  ventilacion_extraccion: 'Ventilación / extracción', presurizacion: 'Presurización', controles_bms: 'Controles / BMS', otro: 'Otro' };
+const INFO_RECIBIDA = { planos: 'Planos', fotos: 'Fotos', especificaciones: 'Especificaciones', ninguna: 'Ninguna' };
+const PRIORIDADES = { normal: 'Normal', alta: 'Alta', urgente: 'Urgente' };
+const TIPOS_CLIENTE = { privado: 'Privado', publico: 'Público', militar: 'Militar', residencial: 'Residencial' };
+const MODALIDADES = { A: 'A · Apoyo técnico a venta directa', B: 'B · Ingeniería básica como herramienta de venta',
+  C: 'C · Ingeniería como producto', D: 'D · Proyecto adjudicado' };
+const ESTADOS_REQ = {
+  registrado: ['Registrado', 'apagado'], asignado: ['Asignado', 'info'], en_levantamiento: ['En levantamiento', 'info'],
+  en_ingenieria: ['En ingeniería', 'info'], enviado_ventas: ['Enviado a Ventas', 'alerta'], aprobado: ['Aprobado', 'ok'],
+  en_espera: ['En espera', 'alerta'], rechazado: ['Rechazado', 'error'], cerrado: ['Cerrado', 'apagado'] };
+const distEstado = (e) => `<span class="distintivo ${ESTADOS_REQ[e]?.[1] || ''}">${esc(ESTADOS_REQ[e]?.[0] || e)}</span>`;
+const opciones = (obj, sel, vacio) => (vacio !== undefined ? `<option value="">${esc(vacio)}</option>` : '') +
+  Object.entries(obj).map(([k, v]) => `<option value="${esc(k)}" ${k === sel ? 'selected' : ''}>${esc(v)}</option>`).join('');
+const casillas = (nombre, obj, sel = []) => `<div class="casillas">${Object.entries(obj).map(([k, v]) =>
+  `<label><input type="checkbox" name="${nombre}" value="${esc(k)}" ${sel.includes(k) ? 'checked' : ''}>${esc(v)}</label>`).join('')}</div>`;
+const marcadas = (raiz, nombre) => [...raiz.querySelectorAll(`input[name="${nombre}"]:checked`)].map((x) => x.value);
+const fmtFecha = (d) => d ? d.split('-').reverse().join('/') : '';
+const valor = (raiz, sel) => (raiz.querySelector(sel)?.value ?? '').trim();
+
+// Diálogo genérico: alAceptar(dialogo, error) devuelve true para cerrar.
+function abrirDialogo({ titulo, html, textoAceptar = 'Guardar', alAceptar, peligro = false }) {
+  const d = document.createElement('dialog');
+  d.innerHTML = `<form method="dialog" novalidate><h2>${esc(titulo)}</h2><div class="msj-d"></div>${html}
+    <div class="botones"><button class="btn btn-secundario" type="button" data-cancelar>Cancelar</button>
+    <button class="btn ${peligro ? 'btn-peligro' : 'btn-primario'}" type="submit" data-aceptar>${esc(textoAceptar)}</button></div></form>`;
+  document.body.appendChild(d);
+  const cerrar = () => { d.close(); d.remove(); };
+  const err = (t) => { $('.msj-d', d).innerHTML = `<div class="aviso aviso-error" role="alert">${esc(t)}</div>`; };
+  d.addEventListener('cancel', (ev) => { ev.preventDefault(); cerrar(); });
+  $('[data-cancelar]', d).addEventListener('click', cerrar);
+  $('form', d).addEventListener('input', () => { $('.msj-d', d).innerHTML = ''; });
+  $('form', d).addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const b = $('[data-aceptar]', d); b.disabled = true;
+    try { if (await alAceptar(d, err)) cerrar(); } finally { b.disabled = false; }
+  });
+  d.showModal();
+  setTimeout(() => d.querySelector('input:not([type=checkbox]),select,textarea')?.focus(), 30);
+  return d;
+}
+
+// Transiciones permitidas: espejo de rpc_requerimiento_estado. Solo decide qué botones mostrar;
+// la base vuelve a validar todo.
+function siguientesEstados(r) {
+  const yo = estado.perfil.perfil_id, conduce = tieneRol(CONDUCE);
+  const t = { asignado: ['en_levantamiento', 'en_ingenieria'], en_levantamiento: ['en_ingenieria'], en_ingenieria: ['enviado_ventas'],
+    enviado_ventas: ['aprobado', 'en_espera', 'rechazado'], en_espera: ['enviado_ventas', 'aprobado', 'rechazado'],
+    aprobado: ['cerrado'], rechazado: ['cerrado'] };
+  const lista = [...(t[r.estado] || [])];
+  if (r.modalidad === 'A' && ['asignado', 'en_levantamiento', 'en_ingenieria'].includes(r.estado)) lista.push('cerrado');
+  return lista.filter((n) => {
+    if (conduce) return true;
+    if (['en_levantamiento', 'en_ingenieria', 'enviado_ventas'].includes(n) || (n === 'cerrado' && r.modalidad === 'A')) return r.ingeniero_id === yo;
+    if (['aprobado', 'en_espera', 'rechazado'].includes(n)) return r.vendedor_id === yo;
+    return false;
+  });
+}
+
+// ----------------------------------------------------------------------------- Inicio: resumen
+async function resumenRequerimientos(caja) {
+  if (!caja) return;
+  const { data, error } = await estado.sb.from('requerimientos').select('estado');
+  if (error || !caja.isConnected) return;
+  const n = (e) => data.filter((x) => e.includes(x.estado)).length;
+  const fichas = [
+    ['Sin asignar', ['registrado'], 'registrado'],
+    ['En ingeniería', ['asignado', 'en_levantamiento', 'en_ingenieria'], 'trabajo'],
+    ['Con Ventas', ['enviado_ventas', 'en_espera'], 'ventas'],
+    ['Abiertos', ['registrado', 'asignado', 'en_levantamiento', 'en_ingenieria', 'enviado_ventas', 'en_espera', 'aprobado', 'rechazado'], 'abiertos'],
+  ];
+  caja.innerHTML = `<h2>Requerimientos</h2><div class="contadores">${fichas.map(([t, e, f]) =>
+    `<div class="tarjeta" role="button" tabindex="0" data-filtro="${f}"><div class="cifra">${n(e)}</div><div class="etiqueta">${t}</div></div>`).join('')}</div>`;
+  caja.querySelectorAll('[data-filtro]').forEach((x) => {
+    const abrir = () => { estado.filtroReq = x.dataset.filtro; ir('requerimientos'); };
+    x.addEventListener('click', abrir); x.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') abrir(); });
+  });
+}
+
+// ----------------------------------------------------------------------------- Requerimientos: lista
+const GRUPOS_FILTRO = {
+  abiertos: ['Abiertos', (e) => e !== 'cerrado'], registrado: ['Sin asignar', (e) => e === 'registrado'],
+  trabajo: ['En ingeniería', (e) => ['asignado', 'en_levantamiento', 'en_ingenieria'].includes(e)],
+  ventas: ['Con Ventas', (e) => ['enviado_ventas', 'en_espera'].includes(e)],
+  aprobado: ['Aprobados', (e) => e === 'aprobado'], cerrado: ['Cerrados', (e) => e === 'cerrado'], todos: ['Todos', () => true],
+};
+
+async function vistaRequerimientos(p) {
+  if (estado.param === 'nuevo') return formularioRequerimiento(p);
+  if (estado.param) return detalleRequerimiento(p, estado.param);
+  const filtro = estado.filtroReq || 'abiertos';
+  p.innerHTML = `<div class="cabecera-modulo"><div><h1>Requerimientos</h1><p>PRY-01 · solicitudes recibidas de Ventas.</p></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${tieneRol(VE_CLIENTES) ? `<button class="btn btn-secundario" id="b-clientes" type="button">${icono('clientes')}Clientes</button>` : ''}
+        ${tieneRol(REGISTRA_REQ) ? `<button class="btn btn-primario" id="b-nuevo-req" type="button">${icono('mas')}Nuevo requerimiento</button>` : ''}
+      </div></div>
+    <div class="filtros">
+      <input id="f-buscar" type="search" placeholder="Buscar por código, obra, cliente o ciudad" aria-label="Buscar">
+      <select id="f-grupo" aria-label="Estado">${Object.entries(GRUPOS_FILTRO).map(([k, [t]]) => `<option value="${k}" ${k === filtro ? 'selected' : ''}>${t}</option>`).join('')}</select>
+    </div>
+    <div class="tarjeta"><ul class="lista" id="l-req"><li class="vacio">Cargando…</li></ul></div>`;
+  $('#b-clientes')?.addEventListener('click', () => ir('clientes'));
+  $('#b-nuevo-req')?.addEventListener('click', () => ir('requerimientos', 'nuevo'));
+  $('#f-buscar').addEventListener('input', pintarListaReq);
+  $('#f-grupo').addEventListener('change', () => { estado.filtroReq = $('#f-grupo').value; pintarListaReq(); });
+  const { data, error } = await estado.sb.from('requerimientos')
+    .select('id,codigo,obra_nombre,ciudad,estado_geo,estado,prioridad,modalidad,registrado_en,fecha_compromiso,cliente:clientes(razon_social),ingeniero:perfiles!requerimientos_ingeniero_id_fkey(nombre)')
+    .order('registrado_en', { ascending: false }).limit(500);
+  const ul = $('#l-req'); if (!ul) return;
+  if (error) { ul.innerHTML = `<li class="vacio">${esc(mensajeError(error))}</li>`; return; }
+  estado.reqs = data; pintarListaReq();
+}
+
+function pintarListaReq() {
+  const ul = $('#l-req'); if (!ul) return;
+  const q = ($('#f-buscar')?.value || '').trim().toLowerCase();
+  const pasa = (GRUPOS_FILTRO[$('#f-grupo')?.value] || GRUPOS_FILTRO.abiertos)[1];
+  const lista = estado.reqs.filter((r) => pasa(r.estado) &&
+    (!q || [r.codigo, r.obra_nombre, r.cliente?.razon_social, r.ciudad].some((v) => (v || '').toLowerCase().includes(q))));
+  if (!lista.length) { ul.innerHTML = `<li class="vacio">${estado.reqs.length ? 'No hay requerimientos que coincidan.' : 'Todavía no hay requerimientos.'}</li>`; return; }
+  ul.innerHTML = lista.map((r) => `<li class="fila-req" data-id="${r.id}" tabindex="0" role="link" aria-label="${esc(r.codigo)} ${esc(r.obra_nombre)}">
+      <div class="principal-fila">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="codigo">${esc(r.codigo)}</span>${distEstado(r.estado)}
+          ${r.prioridad !== 'normal' ? `<span class="distintivo ${r.prioridad === 'urgente' ? 'error' : 'alerta'}">${esc(PRIORIDADES[r.prioridad])}</span>` : ''}
+          ${r.modalidad ? `<span class="distintivo apagado">Modalidad ${esc(r.modalidad)}</span>` : ''}</div>
+        <div class="nombre" style="margin-top:4px">${esc(r.obra_nombre)}</div>
+        <div class="detalle">${esc(r.cliente?.razon_social || '')} · ${esc(r.ciudad)}, ${esc(r.estado_geo)}</div>
+        <div class="detalle">${r.ingeniero ? 'Responsable: ' + esc(r.ingeniero.nombre) : 'Sin asignar'} · registrado ${esc(fmtFechaHora(r.registrado_en))}
+          ${r.fecha_compromiso ? ' · entrega ' + esc(fmtFecha(r.fecha_compromiso)) : ''}</div>
+      </div></li>`).join('');
+  ul.querySelectorAll('[data-id]').forEach((li) => {
+    li.addEventListener('click', () => ir('requerimientos', li.dataset.id));
+    li.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') ir('requerimientos', li.dataset.id); });
+  });
+}
+
+// ----------------------------------------------------------------------------- Requerimientos: registro
+async function formularioRequerimiento(p) {
+  if (!tieneRol(REGISTRA_REQ)) return ir('requerimientos');
+  const conduce = tieneRol(CONDUCE);
+  p.innerHTML = `<div class="cabecera-modulo"><div><button class="btn-texto" id="b-volver" type="button">${icono('volver')}Requerimientos</button>
+      <h1>Nuevo requerimiento</h1><p>Ficha RFA-PRY-FOR-001 · los campos con * son obligatorios.</p></div></div>
+    <form id="f-req" novalidate>
+      <div id="msj"></div>
+      <fieldset><legend>Origen</legend><div class="dos-columnas">
+        ${conduce ? `<div class="campo"><label for="r-vendedor">Vendedor responsable *</label><select id="r-vendedor"><option value="">Cargando…</option></select>
+          <span class="ayuda">Personal con rol Ventas, tenga o no cuenta de acceso.</span></div>`
+        : `<div class="campo"><label>Vendedor responsable</label><input value="${esc(estado.perfil.nombre)}" disabled></div>`}
+        <div class="campo"><label for="r-canal">Canal de entrada</label><select id="r-canal">${opciones(CANALES, '', '—')}</select></div>
+      </div></fieldset>
+      <fieldset><legend>Cliente</legend>
+        <div class="campo"><label for="r-cliente">Cliente *</label>
+          <div style="display:flex;gap:8px"><select id="r-cliente" style="flex:1"><option value="">Cargando…</option></select>
+          <button class="btn btn-secundario" id="b-cliente-nuevo" type="button">${icono('mas')}<span>Nuevo</span></button></div></div>
+        <div class="dos-columnas">
+          <div class="campo"><label for="r-cnombre">Persona de contacto</label><input id="r-cnombre" autocomplete="off"></div>
+          <div class="campo"><label for="r-ccargo">Cargo</label><input id="r-ccargo"></div>
+          <div class="campo"><label for="r-ctel">Teléfono</label><input id="r-ctel" type="tel" inputmode="tel"></div>
+          <div class="campo"><label for="r-ccorreo">Correo</label><input id="r-ccorreo" type="email" inputmode="email" autocapitalize="none"></div>
+        </div></fieldset>
+      <fieldset><legend>Obra / sitio</legend>
+        <div class="campo"><label for="r-obra">Nombre de la obra *</label><input id="r-obra"></div>
+        <div class="campo"><label for="r-dir">Dirección *</label><input id="r-dir"></div>
+        <div class="dos-columnas">
+          <div class="campo"><label for="r-edo">Estado *</label><select id="r-edo"><option value="">—</option>${ESTADOS_VE.map((e) => `<option>${esc(e)}</option>`).join('')}</select></div>
+          <div class="campo"><label for="r-ciudad">Ciudad *</label><input id="r-ciudad"></div>
+        </div>
+        <div class="tres-columnas">
+          <div class="campo"><label for="r-edif">Tipo de edificación</label><select id="r-edif">${opciones(EDIFICACIONES, '', '—')}</select></div>
+          <div class="campo"><label for="r-area">Área aproximada (m²)</label><input id="r-area" inputmode="decimal"></div>
+          <div class="campo"><label for="r-niveles">Niveles</label><input id="r-niveles" inputmode="numeric"></div>
+        </div>
+        <div class="campo"><label for="r-csitio">Contacto en sitio</label><input id="r-csitio"></div>
+      </fieldset>
+      <fieldset><legend>Alcance</legend>
+        <div class="campo"><label for="r-tsol">Tipo de solicitud *</label><select id="r-tsol">${opciones(SOLICITUDES, '', '—')}</select></div>
+        <div class="campo"><label>Sistemas requeridos</label>${casillas('sistemas', SISTEMAS)}</div>
+        <div class="campo"><label for="r-desc">Descripción del alcance *</label><textarea id="r-desc" rows="4"></textarea></div>
+        <div class="campo"><label>Información recibida del cliente</label>${casillas('info', INFO_RECIBIDA)}</div>
+        <div class="campo"><label for="r-lev">¿Requiere levantamiento en sitio?</label><select id="r-lev"><option value="">—</option><option value="true">Sí</option><option value="false">No</option></select></div>
+      </fieldset>
+      <fieldset><legend>Plazos</legend><div class="tres-columnas">
+        <div class="campo"><label for="r-freq">Fecha requerida por el cliente</label><input id="r-freq" type="date"></div>
+        <div class="campo"><label for="r-prio">Prioridad</label><select id="r-prio">${opciones(PRIORIDADES, 'normal')}</select></div>
+        <div class="campo"><label for="r-ppto">Presupuesto estimado (USD)</label><input id="r-ppto" inputmode="decimal"></div>
+      </div></fieldset>
+      <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
+        <button class="btn btn-secundario" id="b-cancelar" type="button">Cancelar</button>
+        <button class="btn btn-primario" id="b-registrar" type="submit">Registrar requerimiento</button>
+      </div>
+    </form>`;
+  const volver = () => ir('requerimientos');
+  $('#b-volver').addEventListener('click', volver); $('#b-cancelar').addEventListener('click', volver);
+  const cargarClientes = async (elegir) => {
+    const { data } = await estado.sb.from('clientes').select('id,codigo,razon_social,rif,contacto_nombre,contacto_cargo,contacto_telefono,contacto_correo').eq('activo', true).order('razon_social');
+    estado.clientes = data || [];
+    $('#r-cliente').innerHTML = '<option value="">— Seleccione —</option>' + estado.clientes.map((c) =>
+      `<option value="${c.id}" ${c.id === elegir ? 'selected' : ''}>${esc(c.razon_social)}${c.rif ? ' · ' + esc(c.rif) : ''}</option>`).join('');
+  };
+  cargarClientes();
+  if (conduce) {
+    const { data } = await estado.sb.from('perfiles').select('id,nombre,auth_id').eq('activo', true).eq('rol', 'ventas').order('nombre');
+    const sel = $('#r-vendedor'); if (sel) sel.innerHTML = (data?.length ? '<option value="">— Seleccione —</option>' : '<option value="">No hay personal con rol Ventas: agréguelo en Personal</option>') +
+      (data || []).map((v) => `<option value="${v.id}">${esc(v.nombre)}${v.auth_id ? '' : ' (sin cuenta)'}</option>`).join('');
+  }
+  $('#b-cliente-nuevo').addEventListener('click', () => dialogoCliente(null, (id) => cargarClientes(id)));
+  // Al elegir el cliente se proponen sus datos de contacto, solo en las casillas vacías.
+  $('#r-cliente').addEventListener('change', () => {
+    const c = estado.clientes.find((x) => x.id === $('#r-cliente').value); if (!c) return;
+    for (const [sel, v] of [['#r-cnombre', c.contacto_nombre], ['#r-ccargo', c.contacto_cargo], ['#r-ctel', c.contacto_telefono], ['#r-ccorreo', c.contacto_correo]]) {
+      if (v && !$(sel).value.trim()) $(sel).value = v;
+    }
+  });
+  $('#f-req').addEventListener('input', () => { $('#msj').innerHTML = ''; });
+  $('#f-req').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const f = $('#f-req');
+    const faltan = [];
+    if (conduce && !valor(f, '#r-vendedor')) faltan.push('vendedor');
+    if (!valor(f, '#r-cliente')) faltan.push('cliente');
+    if (valor(f, '#r-obra').length < 2) faltan.push('nombre de la obra');
+    if (valor(f, '#r-dir').length < 3) faltan.push('dirección');
+    if (!valor(f, '#r-edo')) faltan.push('estado');
+    if (valor(f, '#r-ciudad').length < 2) faltan.push('ciudad');
+    if (!valor(f, '#r-tsol')) faltan.push('tipo de solicitud');
+    if (valor(f, '#r-desc').length < 5) faltan.push('descripción del alcance');
+    const num = (sel) => valor(f, sel).replace(/\./g, '').replace(',', '.');
+    for (const [sel, nombre] of [['#r-area', 'área'], ['#r-niveles', 'niveles'], ['#r-ppto', 'presupuesto']]) {
+      if (valor(f, sel) && !(Number(num(sel)) > 0 || (sel === '#r-ppto' && Number(num(sel)) === 0))) faltan.push(nombre + ' (número válido)');
+    }
+    if (faltan.length) {
+      $('#msj').innerHTML = `<div class="aviso aviso-error" role="alert">Complete: ${esc(faltan.join(', '))}.</div>`;
+      $('#msj').scrollIntoView({ block: 'center' }); return;
+    }
+    const b = $('#b-registrar'); b.disabled = true; b.textContent = 'Registrando…';
+    const ficha = {
+      vendedor_id: conduce ? valor(f, '#r-vendedor') : null, canal: valor(f, '#r-canal'), cliente_id: valor(f, '#r-cliente'),
+      contacto_nombre: valor(f, '#r-cnombre'), contacto_cargo: valor(f, '#r-ccargo'), contacto_telefono: valor(f, '#r-ctel'), contacto_correo: valor(f, '#r-ccorreo'),
+      obra_nombre: valor(f, '#r-obra'), direccion: valor(f, '#r-dir'), estado_geo: valor(f, '#r-edo'), ciudad: valor(f, '#r-ciudad'),
+      tipo_edificacion: valor(f, '#r-edif'), area_m2: num('#r-area'), niveles: num('#r-niveles'), contacto_sitio: valor(f, '#r-csitio'),
+      tipo_solicitud: valor(f, '#r-tsol'), sistemas: marcadas(f, 'sistemas'), descripcion: valor(f, '#r-desc'),
+      info_recibida: marcadas(f, 'info'), requiere_levantamiento: valor(f, '#r-lev') || null,
+      fecha_requerida: valor(f, '#r-freq'), prioridad: valor(f, '#r-prio'), presupuesto_estimado_usd: num('#r-ppto'),
+    };
+    const { data, error } = await estado.sb.rpc('rpc_requerimiento_registrar', { p: ficha });
+    if (error) {
+      b.disabled = false; b.textContent = 'Registrar requerimiento';
+      $('#msj').innerHTML = `<div class="aviso aviso-error" role="alert">${esc(mensajeError(error))}</div>`; $('#msj').scrollIntoView({ block: 'center' }); return;
+    }
+    toast(`Requerimiento ${data.codigo} registrado.`);
+    ir('requerimientos', data.id);
+  });
+}
+
+// ----------------------------------------------------------------------------- Requerimientos: ficha
+async function detalleRequerimiento(p, id) {
+  p.innerHTML = '<div class="vacio">Cargando…</div>';
+  const [{ data: r, error }, { data: hist }] = await Promise.all([
+    estado.sb.from('requerimientos').select('*, cliente:clientes(codigo,razon_social,rif), vendedor:perfiles!requerimientos_vendedor_id_fkey(nombre), ingeniero:perfiles!requerimientos_ingeniero_id_fkey(nombre)').eq('id', id).maybeSingle(),
+    estado.sb.from('requerimiento_estados').select('estado_antes,estado_nuevo,motivo,en,perfil:perfiles(nombre)').eq('requerimiento_id', id).order('en'),
+  ]);
+  if (estado.param !== id) return;   // el usuario ya navegó a otra parte
+  if (error || !r) {
+    p.innerHTML = `<button class="btn-texto" id="b-volver" type="button">${icono('volver')}Requerimientos</button>
+      <div class="aviso aviso-alerta" style="margin-top:12px">${error ? esc(mensajeError(error)) : 'El requerimiento no existe o no tiene acceso a él.'}</div>`;
+    $('#b-volver').addEventListener('click', () => ir('requerimientos')); return;
+  }
+  const lista = (arr, dic) => (arr || []).map((x) => dic[x] || x).join(', ') || '—';
+  const fila = (t, v) => v ? `<dt>${esc(t)}</dt><dd>${v}</dd>` : '';
+  const puedeAsignar = tieneRol(CONDUCE) && ['registrado', 'asignado', 'en_levantamiento', 'en_ingenieria'].includes(r.estado);
+  const sig = siguientesEstados(r);
+  p.innerHTML = `<button class="btn-texto" id="b-volver" type="button">${icono('volver')}Requerimientos</button>
+    <div class="cabecera-modulo" style="margin-top:6px"><div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="codigo" style="font-size:1.3rem">${esc(r.codigo)}</span>${distEstado(r.estado)}
+        ${r.prioridad !== 'normal' ? `<span class="distintivo ${r.prioridad === 'urgente' ? 'error' : 'alerta'}">${esc(PRIORIDADES[r.prioridad])}</span>` : ''}</div>
+      <h1 style="margin-top:6px">${esc(r.obra_nombre)}</h1>
+      <p>${esc(r.cliente?.razon_social || '')} · ${esc(r.ciudad)}, ${esc(r.estado_geo)}</p>
+      ${r.motivo_estado && ['rechazado', 'en_espera'].includes(r.estado) ? `<p style="margin-top:4px"><strong>Motivo:</strong> ${esc(r.motivo_estado)}</p>` : ''}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${puedeAsignar ? `<button class="btn btn-primario" id="b-asignar" type="button">${r.estado === 'registrado' ? 'Asignar' : 'Reasignar'}</button>` : ''}
+        ${sig.map((n) => `<button class="btn ${n === 'rechazado' ? 'btn-peligro' : 'btn-secundario'}" data-estado="${n}" type="button">${esc(ESTADOS_REQ[n][0])}</button>`).join('')}
+      </div></div>
+    <div class="rejilla">
+      <section class="tarjeta"><h2>Clasificación</h2><dl class="datos">
+        ${fila('Modalidad', r.modalidad ? esc(MODALIDADES[r.modalidad]) : '<span style="color:var(--texto2)">Sin asignar</span>')}
+        ${fila('Responsable', r.ingeniero ? esc(r.ingeniero.nombre) : '—')}
+        ${fila('Disciplinas', r.disciplinas?.length ? esc(r.disciplinas.join(', ')) : '')}
+        ${fila('Entrega comprometida', esc(fmtFecha(r.fecha_compromiso)))}
+        ${fila('Observaciones', esc(r.observaciones))}
+      </dl></section>
+      <section class="tarjeta"><h2>Origen y cliente</h2><dl class="datos">
+        ${fila('Vendedor', esc(r.vendedor?.nombre))}
+        ${fila('Canal', esc(CANALES[r.canal]))}
+        ${fila('Cliente', esc(r.cliente?.razon_social) + (r.cliente?.rif ? ' · ' + esc(r.cliente.rif) : ''))}
+        ${fila('Contacto', esc([r.contacto_nombre, r.contacto_cargo].filter(Boolean).join(' · ')))}
+        ${fila('Teléfono', esc(r.contacto_telefono))}
+        ${fila('Correo', esc(r.contacto_correo))}
+      </dl></section>
+      <section class="tarjeta"><h2>Obra / sitio</h2><dl class="datos">
+        ${fila('Dirección', esc(r.direccion))}
+        ${fila('Ubicación', esc(r.ciudad + ', ' + r.estado_geo))}
+        ${fila('Edificación', esc(EDIFICACIONES[r.tipo_edificacion]))}
+        ${fila('Área', r.area_m2 ? esc(Number(r.area_m2).toLocaleString('es-VE')) + ' m²' : '')}
+        ${fila('Niveles', esc(r.niveles))}
+        ${fila('Contacto en sitio', esc(r.contacto_sitio))}
+      </dl></section>
+      <section class="tarjeta"><h2>Alcance y plazos</h2><dl class="datos">
+        ${fila('Solicitud', esc(SOLICITUDES[r.tipo_solicitud]))}
+        ${fila('Sistemas', esc(lista(r.sistemas, SISTEMAS)))}
+        ${fila('Información recibida', esc(lista(r.info_recibida, INFO_RECIBIDA)))}
+        ${fila('Levantamiento', r.requiere_levantamiento === null ? '' : (r.requiere_levantamiento ? 'Sí' : 'No'))}
+        ${fila('Fecha requerida', esc(fmtFecha(r.fecha_requerida)))}
+        ${fila('Presupuesto estimado', r.presupuesto_estimado_usd !== null ? 'USD ' + esc(Number(r.presupuesto_estimado_usd).toLocaleString('es-VE', { minimumFractionDigits: 2 })) : '')}
+      </dl>
+      <h3 style="margin-top:14px">Descripción</h3><p style="white-space:pre-wrap;margin:0">${esc(r.descripcion)}</p></section>
+    </div>
+    <section class="tarjeta" style="margin-top:14px"><h2>Historial</h2><ol class="historial">
+      ${(hist || []).map((h) => `<li><strong>${esc(ESTADOS_REQ[h.estado_nuevo]?.[0] || h.estado_nuevo)}</strong>
+        <div class="detalle" style="color:var(--texto2)">${esc(fmtFechaHora(h.en))}${h.perfil ? ' · ' + esc(h.perfil.nombre) : ''}</div>
+        ${h.motivo ? `<div>${esc(h.motivo)}</div>` : ''}</li>`).join('')}</ol></section>`;
+  $('#b-volver').addEventListener('click', () => ir('requerimientos'));
+  $('#b-asignar')?.addEventListener('click', () => dialogoAsignar(r));
+  p.querySelectorAll('[data-estado]').forEach((b) => b.addEventListener('click', () => dialogoEstado(r, b.dataset.estado)));
+}
+
+async function dialogoAsignar(r) {
+  const { data: gente } = await estado.sb.from('perfiles').select('id,nombre,rol,disciplina').eq('activo', true).in('rol', ['ingeniero', 'coordinador']).order('nombre');
+  abrirDialogo({
+    titulo: `Asignar ${r.codigo}`, textoAceptar: 'Asignar',
+    html: `<div class="campo"><label for="a-mod">Modalidad *</label><select id="a-mod">${opciones(MODALIDADES, r.modalidad || '', '— Seleccione —')}</select></div>
+      <div class="campo"><label for="a-ing">Responsable *</label><select id="a-ing"><option value="">— Seleccione —</option>
+        ${(gente || []).map((g) => `<option value="${g.id}" ${g.id === r.ingeniero_id ? 'selected' : ''}>${esc(g.nombre)}${g.disciplina ? ' · ' + esc(g.disciplina) : ''}</option>`).join('')}</select></div>
+      <div class="campo"><label>Disciplinas</label>${casillas('disc', { HV: 'HV · HVAC mecánico', AU: 'AU · Automatización y controles' }, r.disciplinas || [])}</div>
+      <div class="campo"><label for="a-fecha">Entrega comprometida</label><input id="a-fecha" type="date" value="${esc(r.fecha_compromiso || '')}"></div>
+      <div class="campo"><label for="a-obs">Observaciones</label><textarea id="a-obs" rows="3">${esc(r.observaciones || '')}</textarea></div>`,
+    alAceptar: async (d, err) => {
+      if (!valor(d, '#a-mod')) { err('Seleccione la modalidad.'); return false; }
+      if (!valor(d, '#a-ing')) { err('Seleccione el responsable.'); return false; }
+      const { error } = await estado.sb.rpc('rpc_requerimiento_asignar', {
+        p_id: r.id, p_modalidad: valor(d, '#a-mod'), p_ingeniero: valor(d, '#a-ing'), p_disciplinas: marcadas(d, 'disc'),
+        p_fecha_compromiso: valor(d, '#a-fecha') || null, p_observaciones: valor(d, '#a-obs') || null });
+      if (error) { err(mensajeError(error)); return false; }
+      toast(`${r.codigo} asignado.`); ir('requerimientos', r.id); return true;
+    },
+  });
+}
+
+function dialogoEstado(r, nuevo) {
+  const exige = ['rechazado', 'en_espera'].includes(nuevo);
+  abrirDialogo({
+    titulo: `${r.codigo}: ${ESTADOS_REQ[nuevo][0]}`, textoAceptar: 'Confirmar', peligro: nuevo === 'rechazado',
+    html: `<p>El requerimiento pasa de <strong>${esc(ESTADOS_REQ[r.estado][0])}</strong> a <strong>${esc(ESTADOS_REQ[nuevo][0])}</strong>.</p>
+      <div class="campo"><label for="e-motivo">${exige ? 'Motivo *' : 'Comentario'}</label><textarea id="e-motivo" rows="3"></textarea></div>`,
+    alAceptar: async (d, err) => {
+      const motivo = valor(d, '#e-motivo');
+      if (exige && motivo.length < 3) { err('Indique el motivo.'); return false; }
+      const { error } = await estado.sb.rpc('rpc_requerimiento_estado', { p_id: r.id, p_nuevo: nuevo, p_motivo: motivo || null });
+      if (error) { err(mensajeError(error)); return false; }
+      toast(`${r.codigo}: ${ESTADOS_REQ[nuevo][0]}.`); ir('requerimientos', r.id); return true;
+    },
+  });
+}
+
+// ----------------------------------------------------------------------------- Clientes
+async function vistaClientes(p) {
+  const edita = tieneRol(REGISTRA_REQ);
+  p.innerHTML = `<div class="cabecera-modulo"><div><h1>Clientes</h1><p>Catálogo propio del Departamento de Proyectos.</p></div>
+      ${edita ? `<button class="btn btn-primario" id="b-cli-nuevo" type="button">${icono('mas')}Nuevo cliente</button>` : ''}</div>
+    <div class="filtros"><input id="f-buscar" type="search" placeholder="Buscar por razón social, RIF o código" aria-label="Buscar"></div>
+    <div class="tarjeta"><ul class="lista" id="l-cli"><li class="vacio">Cargando…</li></ul></div>`;
+  $('#b-cli-nuevo')?.addEventListener('click', () => dialogoCliente(null, () => vistaClientes(p)));
+  $('#f-buscar').addEventListener('input', () => pintarClientes(edita, p));
+  const { data, error } = await estado.sb.from('clientes').select('*').order('razon_social');
+  if (error) { $('#l-cli').innerHTML = `<li class="vacio">${esc(mensajeError(error))}</li>`; return; }
+  estado.clientes = data; pintarClientes(edita, p);
+}
+
+function pintarClientes(edita, p) {
+  const ul = $('#l-cli'); if (!ul) return;
+  const q = ($('#f-buscar')?.value || '').trim().toLowerCase();
+  const lista = estado.clientes.filter((c) => !q || [c.razon_social, c.nombre_comercial, c.rif, c.codigo].some((v) => (v || '').toLowerCase().includes(q)));
+  if (!lista.length) { ul.innerHTML = `<li class="vacio">${estado.clientes.length ? 'No hay clientes que coincidan.' : 'Todavía no hay clientes. Agregue el primero.'}</li>`; return; }
+  ul.innerHTML = lista.map((c) => `<li><div class="principal-fila">
+      <div class="nombre">${esc(c.razon_social)}</div>
+      <div class="detalle"><span class="codigo" style="font-size:.9rem">${esc(c.codigo)}</span>${c.rif ? ' · ' + esc(c.rif) : ''} · ${esc(TIPOS_CLIENTE[c.tipo])}</div>
+      ${c.contacto_nombre ? `<div class="detalle">${esc([c.contacto_nombre, c.contacto_telefono, c.contacto_correo].filter(Boolean).join(' · '))}</div>` : ''}
+    </div>${edita ? `<div class="acciones"><button class="btn btn-secundario" data-editar="${c.id}" type="button">Editar</button></div>` : ''}</li>`).join('');
+  ul.querySelectorAll('[data-editar]').forEach((b) => b.addEventListener('click', () =>
+    dialogoCliente(estado.clientes.find((c) => c.id === b.dataset.editar), () => vistaClientes(p))));
+}
+
+function dialogoCliente(c, alGuardar) {
+  const nuevo = !c; c = c || {};
+  abrirDialogo({
+    titulo: nuevo ? 'Nuevo cliente' : `Editar ${c.codigo}`,
+    html: `<div class="campo"><label for="c-razon">Razón social *</label><input id="c-razon" value="${esc(c.razon_social)}"></div>
+      <div class="dos-columnas">
+        <div class="campo"><label for="c-comercial">Nombre comercial</label><input id="c-comercial" value="${esc(c.nombre_comercial)}"></div>
+        <div class="campo"><label for="c-rif">RIF</label><input id="c-rif" value="${esc(c.rif)}" placeholder="J-12345678-9" autocapitalize="characters"></div>
+        <div class="campo"><label for="c-tipo">Tipo de cliente</label><select id="c-tipo">${opciones(TIPOS_CLIENTE, c.tipo || 'privado')}</select></div>
+        <div class="campo"><label for="c-cnombre">Contacto principal</label><input id="c-cnombre" value="${esc(c.contacto_nombre)}"></div>
+        <div class="campo"><label for="c-ccargo">Cargo</label><input id="c-ccargo" value="${esc(c.contacto_cargo)}"></div>
+        <div class="campo"><label for="c-ctel">Teléfono</label><input id="c-ctel" type="tel" inputmode="tel" value="${esc(c.contacto_telefono)}"></div>
+      </div>
+      <div class="campo"><label for="c-ccorreo">Correo</label><input id="c-ccorreo" type="email" inputmode="email" autocapitalize="none" value="${esc(c.contacto_correo)}"></div>
+      <div class="campo"><label for="c-dir">Dirección fiscal</label><textarea id="c-dir" rows="2">${esc(c.direccion_fiscal)}</textarea></div>`,
+    alAceptar: async (d, err) => {
+      const razon = valor(d, '#c-razon');
+      const rif = valor(d, '#c-rif').toUpperCase().replace(/\s/g, '');
+      if (razon.length < 2) { err('La razón social es obligatoria.'); return false; }
+      if (rif && !/^[JGVEPC]-\d{8}-\d$/.test(rif)) { err('El RIF debe tener el formato J-12345678-9.'); return false; }
+      const { data, error } = await estado.sb.rpc('rpc_cliente_guardar', { p_id: c.id || null, p: {
+        razon_social: razon, nombre_comercial: valor(d, '#c-comercial'), rif, tipo: valor(d, '#c-tipo'),
+        direccion_fiscal: valor(d, '#c-dir'), contacto_nombre: valor(d, '#c-cnombre'), contacto_cargo: valor(d, '#c-ccargo'),
+        contacto_telefono: valor(d, '#c-ctel'), contacto_correo: valor(d, '#c-ccorreo') } });
+      if (error) { err(mensajeError(error)); return false; }
+      toast(nuevo ? `Cliente ${data.codigo} registrado.` : 'Cliente actualizado.');
+      alGuardar?.(data.id); return true;
+    },
   });
 }
 
