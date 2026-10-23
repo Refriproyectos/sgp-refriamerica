@@ -8,6 +8,8 @@
 # Secretos (Settings → Secrets and variables → Actions):
 #   SUPABASE_DB_URL   cadena "Session pooler" de Supabase, con la contraseña de la base
 #   GDRIVE_SA_JSON    contenido completo de la llave JSON de la cuenta de servicio sgp-respaldo
+# Opcionales (copia de las fotos de levantamientos a SGP/Respaldos/Archivos):
+#   SUPABASE_S3_REGION, SUPABASE_S3_KEY_ID, SUPABASE_S3_SECRET  (Storage → Settings → S3 access keys)
 # =============================================================================
 name: Respaldo nocturno
 
@@ -68,7 +70,7 @@ jobs:
           if [ -z "$RCLONE_CONFIG_SGP_SERVICE_ACCOUNT_CREDENTIALS" ]; then echo "Falta el secreto GDRIVE_SA_JSON"; exit 1; fi
           bash banco/respaldo.sh
 
-                - name: Copia de las fotos de levantamientos (si hay llaves S3)
+      - name: Copia de las fotos de levantamientos (si hay llaves S3)
         env:
           RCLONE_CONFIG_SUPA_TYPE: s3
           RCLONE_CONFIG_SUPA_PROVIDER: Other
